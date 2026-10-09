@@ -2,6 +2,10 @@
 
 Logout AI landing page for vacation rental operators. The approved copy and visual guidance are in DESIGN.md.
 
+Live site: https://grateful-llama-909.convex.site
+
+Public source code: https://github.com/mohit-LOGOUT/VACATIO
+
 ## Local preview
 
 Run `npm run build`, then `npm run dev`. Open the printed address on a phone connected to the same Wi-Fi.
