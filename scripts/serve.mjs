@@ -11,7 +11,8 @@ createServer(async (req, res) => {
   if (!file.startsWith(root + '/')) { res.writeHead(403); res.end(); return; }
   try {
     const body = await readFile(file);
-    res.writeHead(200, { 'Content-Type': name.endsWith('.css') ? 'text/css; charset=utf-8' : 'text/html; charset=utf-8' });
+    const contentType = name.endsWith('.png') ? 'image/png' : name.endsWith('.css') ? 'text/css; charset=utf-8' : 'text/html; charset=utf-8';
+    res.writeHead(200, { 'Content-Type': contentType });
     res.end(body);
   } catch { res.writeHead(404); res.end('Not found'); }
 }).listen(port, '0.0.0.0', () => {

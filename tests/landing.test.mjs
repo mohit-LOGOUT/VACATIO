@@ -9,5 +9,6 @@ test('landing page preserves approved copy and opens the supplied WhatsApp numbe
   assert.equal((html.match(/class="main-action"/g) || []).length, 1);
 });
 test('build contains only intended public files', async () => {
-  assert.deepEqual((await readdir('dist')).sort(), ['index.html', 'styles.css']);
+  assert.deepEqual((await readdir('dist')).sort(), ['images', 'index.html', 'styles.css']);
+  assert.deepEqual(await readdir('dist/images'), ['landing-hero.png']);
 });

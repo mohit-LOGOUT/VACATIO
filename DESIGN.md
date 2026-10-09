@@ -12,6 +12,24 @@ Before building or changing any screen, read DESIGN.md and follow it. If a choic
 
 ## 2. References, one per component
 
+### Landing hero
+Reference: **Landing hero: design-refs/landing-hero.png**
+
+Take:
+- Use this exact image as the landing page hero, without regenerating or recolouring it.
+- The welcoming host, arriving guests and luggage communicate a warm arrival at a vacation rental.
+- Keep the host and guests visible when adapting the image for phone and desktop screens.
+- Keep the headline and main action on a separate cream surface so they remain easy to read.
+
+Ignore:
+- Do not copy the image's greens and blues into navigation, buttons or status colours.
+- Do not add text over the detailed foliage or people.
+- Do not imply that an in-person welcome is a required part of the product's check-in flow.
+
+Palette fit and proposed fix:
+- The greens and blues work with cream **#FFF7F0**, which echoes the villa walls and warm sunlight. Their strong saturation could compete with the red **#F04438** main action if the button sits directly over the image.
+- Keep the image's original colours, frame it with generous cream space, and place the red main action beside or above it on cream. Use the image as the only large green/blue area; retain the section 3 palette for the interface.
+
 ### Check-in cards
 Reference: **MISSING — add screenshot/link**
 
