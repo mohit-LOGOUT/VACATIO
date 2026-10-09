@@ -1,0 +1,23 @@
+{
+  "name": "vacatio",
+  "version": "1.0.0",
+  "description": "Logout AI landing page",
+  "main": "index.js",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/serve.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "deploy": "npx @convex-dev/static-hosting deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@convex-dev/static-hosting": "^0.2.1",
+    "convex": "^1.46.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

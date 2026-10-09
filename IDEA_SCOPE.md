@@ -1,0 +1,45 @@
+IDEA LOCK · Build Sprint
+
+The idea, in one line: AI Front Desk For Vacation Rentals
+Why me (at least 1 of 3: an audience that trusts me, years inside the workflow, data nobody else has): My current startup is Logout.Studio, we are building AI OS ffor tarvel and hospitality and already have 100+ paid clients across india out of which 15 are hospitality brands handling 300+ properties. These properties are listed in the logout DB, we act as channel manager for these properties already.
+
+GOAL
+The one goal they hire it for (money, time, status or life): Time
+Delta 4 (the steps today → the steps with my product): Currently the Currently, the whole process is manual. So, for example, if somebody has booked a vacation rental, they are contacted by the owner to give them the PAN card, Aadhaar card, so that they are able to check in to the Airbnb. And this is a very manual and very painstaking process. What the AI agent will do is that it will follow up without the intervention of any human. So by the time the guest reaches the hotel, the hotel owner or the Airbnb owner already has everything with them. And once they check in, the same WhatsApp number can be used to create orders for them via the menu card or to know what are things to do around here. So there is absolutely no need for a to and fro working. So every vacation rental and hotel can have their own AI agents that are typically tuned to the behavior of the host and also be able to provide accurate information about things to do, the attractions nearby, so that it's a very seamless experience for the guest to check in during the stay.
+
+USER
+The trigger (when the pain hits): For the user, the whole journey is painstaking because the guest has to manually be followed up, and then it's very irritating. It's very irritating for the guest to provide information of check-in details and PAN card, Aadhaar card, and whatever the host might need. For the host owner, for the host as well, it is quite painstaking to follow up again and again. Generally, the B&Bs are checked in during late night, right? And then how to reach that place, and if there is a parking available in the space, or then where floor it is in, where are the keys kept. So just provide the owner. The owner can simply provide basic information around the B&B, the setup, and what all documents are required. And then the guest can simply talk to the user, and if they have to order anything, they can simply order via AI assistant. Moreover, there is a command center that the B&B owner can now see for operations.
+Today's path, step by step (including not solving it at all): Today's path is very manual and crude. When the user, when the guest books, they generally receive a confirmation message either from the OTA or from the property that they have booked. Then the follow-up starts. Somebody who is asking them, What time are you going to check in? And once they come to the desk, they have to do a very manual process of giving identity cards of people who are going to stay, either Aadhaar card or PAN card, and then they get a room to check into. When they enter the room, they have to manually ask for the menu card, and then they have to maybe place order from the room by calling, which can all be done from the WhatsApp window itself. There is no need of a phone within the room, and it can be a very silent process and not a very to-and-fro thing. So let's suppose if the guest wants a towel or a bed sheet change, it can all be managed within the WhatsApp window, and they don't really need to do it separately. That's what I personally feel. So the assistant can actually understand what the user wants, and the guest does not have to necessarily call everyone or anyone inside the hotel to do it. And it's like magic. You first tell the WhatsApp window what to do, and the towel magically appears at your doorstep after some time. Whereas the hotel owner or the hotel manager gets the list of queries and inquiries that are there pending, or the tasks that are scheduled and were completed on time, or what time it took to serve that query. So that can be done.
+Who they trust on this decision: So currently, it's a very manual process. The guest picks up the call, dials in the extension number, and then has to— this task has to be picked up by somebody on the other side of the line. So if the hotel runs on limited capacity or capability, the operations are distributed in two ways. First of all, there has to be somebody to get the information or to get the task, and then there is somebody who will have to execute it. So, I mean, the guest has to depend on the hotel staff, and then the person who is executing also has to depend upon somebody who is relaying the task to them. So that is where the journey is fractured.
+Would they pay? (what exists today that people pay for): Yes, the BNB owners and the hotel owners will pay for it because it is definitely a cost reduction and efficiency boost for them. So as of today, they are paying softwares or the phone extensions and the hotel staff to do it. The hotel staff will still have to execute it, but the whole task of coordination and ticket raising and task management is totally reduced because once the guest puts in the task, we can immediately shoot out a task list in the queue to all the relevant folks in a particular department, or maybe through WhatsApp.
+
+PRODUCT
+Onboarding (how a first-time user feels the value fastest):
+
+So it will all happen on a WhatsApp window. Once the user has booked, once the guest has booked, the AI assistant will get on to play. First thing they'll do is collect all the information that is required for check-in. Once they self-check in, immediately when they land on the desk, the complete check-in process becomes 100% frictionless. No question asked, only keys to be collected. And that is where the value the first time is created because there is completely no hassle around to and fro. And also while I'm reaching the hotel or the B&B, my first query is around, is there parking, or if we have to do something around, something around, I mean what are the check-in timings and everything. Everything can be taken care by the AI assistant itself. So the host does not have to engage anywhere. The guest can keep interacting with the AI agent. Yeah.
+
+
+The core loop (user stories, written by me):
+
+When a guest books, they immediately get a booking confirmation on their WhatsApp, and with a message that, Hey, I am your assistant from XYZ Hotel or Airbnb. You can ask me anything. And for a smoother check-in, I will need your pan card and your Aadhaar card of all the guests, right? And that is where the AI agent plugs in for the first time, and it makes it incredibly easy for the guest because the whole experience is now hyped up. And it is also incredibly easy for the host to manage and hyper-personalize the journey for a particular guest because every guest comes with their own set of questions, despite you give them a page to read about. But now the agent does the mundane task of answering all the questions in a fashion that is hyper-personalized for a client.
+
+
+Coming back (optional):The guests will of course keep coming back because now they have the phone number of the host. And once you have the phone number of the host, next time I'm visiting that destination, I will definitely ping that number again. And now the support agent becomes your sales agent. Because now once somebody is trying to book, they can book again from the same number without getting back to the Airbnb path, or the hotel's path, or Booking.com path. So you delight a customer first. The next time the customer becomes your retained customer. So there's no going back to the same Odia again to book. You can simply book from the WhatsApp number.
+The AI-first part (onboarding, engagement or the core loop): The AI first part is engagement, because once you, once the guest has booked, the host can send personalized WhatsApp messages, booking confirmation messages, and everything, and help. And the guest keeps coming back with their set of questions while the AI is answering all of them. So yeah, the engagement is the core AI first delivery.
+
+MARKET
+Tailwinds (where funding is going, what Google Trends shows, timing):
+
+In the last one year, four YC companies have been funded on this idea, where they are building AI operating system for hospitality businesses. One of them is Conduit AI and Lance.live
+
+
+Competitors (and the flows I liked, with screenshots and why):
+
+Conduent AI, Lance.live . These are two competitors. Then there is Gestera in India.
+
+
+
+
+Size and fit (how many people in my extended network fit): So we have currently 20 paying customers who already use Logos Studio for other parts, but I can definitely talk to them. So they are part of my extended network as of now.
+
+Shaktimaan, this is what I have thought about user, product and market. Lock it in.
