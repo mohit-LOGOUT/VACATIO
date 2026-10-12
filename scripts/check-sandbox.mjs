@@ -6,9 +6,8 @@ import { randomBytes } from 'node:crypto';
 const base=process.env.SANDBOX_TEST_URL||'https://grateful-llama-909.convex.site/sandbox.html';
 const env=await readFile('.env.local','utf8');const convexUrl=process.env.CONVEX_URL || (base.includes('.convex.site') ? new URL(base).origin.replace('.convex.site','.convex.cloud') : env.match(/^CONVEX_URL=(https:\/\/[^\s]+)$/m)[1]);
 const client=new ConvexHttpClient(convexUrl);
-const accessKey=process.env.SANDBOX_ACCESS_KEY || await readFile('/private/tmp/hermes-sandbox-access','utf8');
 const token=randomBytes(32).toString('hex');
-await client.action(api.sandbox.open,{accessKey,token});
+await client.action(api.sandbox.open,{token});
 await writeFile('/private/tmp/hermes-test-session',token,{mode:0o600});
 const browser=await chromium.launch({ channel: process.env.PLAYWRIGHT_CHANNEL || "chrome" });
 
@@ -67,7 +66,7 @@ try{
    await capture.close();
  }
  // Server ownership guard: another valid session cannot read or change this booking.
- const other=randomBytes(32).toString('hex');await client.action(api.sandbox.open,{accessKey,token:other});
+ const other=randomBytes(32).toString('hex');await client.action(api.sandbox.open,{token:other});
  let denied=false;try{await client.mutation(api.sandbox.restart,{token:other,bookingId:values[0]});}catch{denied=true;}expect(denied).toBe(true);
  expect(errors).toEqual([]);
  console.log(unavailable?'Sandbox layout, saved context, booking separation, restart and failed-reply retry checked. Real AI replies are blocked.':'Real Hermes flow passed: factual answer, follow-up, host answer, updated context, isolated bookings, reload and restart. Layout checked at 320/390/768/1280px.');

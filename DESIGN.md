@@ -4,7 +4,9 @@ Before building or changing any screen, read DESIGN.md and follow it. If a choic
 
 ## Current build: Hermes sandbox
 
-This is the next interface to build. It takes priority over the later dashboard screens described below. The operator tests as a guest in a browser chat; WhatsApp number integration comes later. Hermes is the assistant's name in this interface. The sandbox interface and Hermes backend were implemented on 12 October 2026. Browser checks verified real model replies, follow-ups, host input, updated saved context, booking separation, reload and restart, and layouts at 320px, 390px, 768px and 1280px. Live WhatsApp and full document onboarding remain unbuilt.
+Public demo requirement (12 October 2026): anyone landing on the website can choose a fictional booking and its property and immediately chat with Hermes. Load the sample data from Convex automatically. Do not require sign-up, an access key, booking creation or an inquiry form. Keep each visitor’s conversation and test edits independent behind the scenes. An inquiry popup is later work.
+
+This is the next interface to build. It takes priority over the later dashboard screens described below. A website visitor tests as a guest in a browser chat; WhatsApp number integration comes later. Hermes is the assistant's name in this interface. The sandbox interface and Hermes backend were implemented on 12 October 2026. Browser checks verified real model replies, follow-ups, host input, updated saved context, booking separation, reload and restart, and layouts at 320px, 390px, 768px and 1280px. Live WhatsApp and full document onboarding remain unbuilt.
 
 Published location: **https://grateful-llama-909.convex.site/**. The sandbox sits below the landing hero image; “Try with a booking” scrolls to it. A same-origin embedded sandbox preserves the approved chat design and expands to fit booking edits or host requests. `/sandbox.html` remains available as a direct view. The published frontend and Hermes backend use the same production deployment.
 

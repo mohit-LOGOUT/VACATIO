@@ -5,6 +5,18 @@ import { createHash } from 'node:crypto';
 const load = async file => { const r=buildSync({entryPoints:[file],bundle:true,platform:'node',format:'esm',write:false});return import('data:text/javascript;base64,'+Buffer.from(r.outputFiles[0].text).toString('base64')); };
 const sandbox=await load('convex/sandbox.ts'), rules=await load('convex/sandboxRules.ts');
 const token='a'.repeat(64), hash=createHash('sha256').update(token).digest('hex');
+test('any visitor can start testing with only an automatically generated session token',async()=>{
+ let initialized;
+ assert.equal(await sandbox.open._handler({runMutation:async(_ref,args)=>{initialized=args;}},{token}),null);
+ assert.deepEqual(initialized,{hash});
+});
+test('returning visitors keep their fictional bookings when their session is renewed',async()=>{
+ const {ctx,tables}=database();tables.sandboxSessions[0].expiresAt=0;
+ await sandbox.initialize._handler(ctx,{hash});
+ assert.ok(tables.sandboxSessions[0].expiresAt>Date.now());
+ assert.equal(tables.sandboxBookings.length,1);
+ assert.equal(tables.sandboxBookings[0].threadId,'thread');
+});
 function database(){
  const tables={sandboxSessions:[{_id:'owner',tokenHash:hash,expiresAt:Date.now()+100000,usage:0,windowStart:Date.now()}],sandboxBookings:[{_id:'booking',sessionId:'owner',context:rules.samples[0],generation:0,threadId:'thread'}],sandboxTurns:[]};
  const db={get:async(table,id)=>tables[table].find(x=>x._id===id)||null,patch:async(table,id,fields)=>Object.assign(tables[table].find(x=>x._id===id),fields),query(table){const checks=[];const builder={eq(k,value){checks.push([k,value]);return builder;}};const rows=()=>tables[table].filter(x=>checks.every(([k,value])=>x[k]===value));return {withIndex(_name,cb){cb(builder);return {first:async()=>rows()[0]||null,take:async n=>rows().slice(0,n)};}};}};

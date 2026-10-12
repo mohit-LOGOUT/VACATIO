@@ -4,7 +4,9 @@ Build instructions, updated 12 October 2026. This file guides implementation; it
 
 ## 1. How the current build works
 
-Interface: The operator opens **Test Hermes** below the landing banner at https://grateful-llama-909.convex.site/, a WhatsApp-like browser sandbox, and acts as a guest. Follow the current sandbox sections in PRODUCT.md and DESIGN.md: booking/property details on the left, phone-shaped chat in the centre, and real agent activity plus host input on the right. On phones, show full-width chat with collapsible supporting sections.
+Public demo requirement (12 October 2026): anyone landing on the website can choose a fictional booking and its property and immediately chat with Hermes. Load the sample data from Convex automatically. Do not require sign-up, an access key, booking creation or an inquiry form. Keep each visitor’s conversation and test edits independent behind the scenes. An inquiry popup is later work.
+
+Interface: A website visitor opens **Test Hermes** below the landing banner at https://grateful-llama-909.convex.site/, a WhatsApp-like browser sandbox, and acts as a guest. Follow the current sandbox sections in PRODUCT.md and DESIGN.md: booking/property details on the left, phone-shaped chat in the centre, and real agent activity plus host input on the right. On phones, show full-width chat with collapsible supporting sections.
 
 Business logic: Start with two clearly fictional bookings and editable property context. Hermes answers arrival questions using the selected booking, current saved property facts and that conversation's history. Missing facts and permission-dependent requests require host input in the sandbox. A host answer continues that conversation; it is not silently saved as permanent property knowledge.
 

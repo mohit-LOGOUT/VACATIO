@@ -23,9 +23,22 @@ function wire() {
     error(); bookings = rows;
     if (!current()) selected = rows[0]?.id;
     localStorage.setItem('hermes-booking', selected || '');
-    $('workspace').hidden = false; $('unlock').hidden = true;
+    $('workspace').hidden = false; $('startup').hidden = true;
     render();
-  }, err => { error(readable(err)); $('unlock').hidden = false; $('workspace').hidden = true; });
+  }, err => { startupError(err); });
+}
+function startupError(err) {
+  error(readable(err)); $('startup').hidden=false; $('workspace').hidden=true;
+  $('startup-status').textContent='The test bookings couldn’t load. Please try again.';
+  $('retry-start').hidden=false; $('retry-start').disabled=false;
+}
+async function start() {
+  if(!client){startupError(new Error('The chat connection is unavailable. Please try again later.'));return;}
+  error(); $('startup').hidden=false; $('startup-status').textContent='Loading fictional bookings…'; $('retry-start').hidden=true;
+  if(!/^[a-f0-9]{64}$/.test(token))token=randomToken();
+  localStorage.setItem('hermes-session',token);
+  try { await client.action(api.sandbox.open,{token}); wire(); }
+  catch(err) { startupError(err); }
 }
 function render() {
   const b = current(); if (!b) return;
@@ -100,10 +113,10 @@ $('cancel-edit').addEventListener('click',closeEdit);
 $('context-form').addEventListener('submit',async e=>{e.preventDefault();const b=current(),context={};for(const[key,,type]of fields)context[key]=type==='number'?Number($(`field-${key}`).value):$(`field-${key}`).value.trim();const button=e.submitter;button.disabled=true;error();try{await client.mutation(api.sandbox.edit,{token,bookingId:b.id,context});closeEdit();$('save-status').textContent='Test details saved. Hermes will use them in its next reply.';}catch(err){error(readable(err));}finally{button.disabled=false;}});
 $('restart').addEventListener('click',()=>$('restart-dialog').showModal());
 $('restart-dialog').addEventListener('close',async()=>{if($('restart-dialog').returnValue!=='restart')return;const b=current();error();try{await client.mutation(api.sandbox.restart,{token,bookingId:b.id});drafts.delete(b.id);$('message-input').value='';closeEdit();following=true;}catch(err){error(readable(err));}});
-$('unlock-form').addEventListener('submit',async e=>{e.preventDefault();if(!client)return;const button=e.submitter;button.disabled=true;error();const candidate=randomToken();try{await client.action(api.sandbox.open,{token:candidate,accessKey:$('access-key').value});token=candidate;localStorage.setItem('hermes-session',token);$('access-key').value='';wire();}catch(err){error(readable(err));}finally{button.disabled=false;}});
+$('retry-start').addEventListener('click',start);
 const fragment=new URLSearchParams(location.hash.slice(1));const supplied=fragment.get('session');if(supplied&&/^[a-f0-9]{64}$/.test(supplied)){token=supplied;localStorage.setItem('hermes-session',token);history.replaceState(null,'',location.pathname+location.search);}
 if(innerWidth<768){$('booking-panel').open=false;$('activity-panel').open=false;}
-if(!client){error('The Convex connection is not configured. Rebuild with CONVEX_URL set.');$('unlock').hidden=false;}else if(token)wire();else $('unlock').hidden=false;
+start();
 if (window.parent !== window) {
   new ResizeObserver(() => window.parent.postMessage({ type: 'hermes-height', height: Math.ceil(document.body.getBoundingClientRect().height) + 24 }, location.origin)).observe(document.body);
 }

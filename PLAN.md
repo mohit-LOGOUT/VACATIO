@@ -2,7 +2,7 @@
 
 ## Current build: Hermes sandbox
 
-Approved 12 October 2026. Build the browser chat before WhatsApp or the dashboard.
+Approved 12 October 2026. Build the browser chat before WhatsApp or the dashboard. Public visitors enter directly, choose a fictional stay loaded from Convex and chat without a key or form.
 
 1. Select a fictional booking and receive a real Hermes answer from saved property details. <- now
 2. Test conversation memory and host input for unknown or permission-dependent questions.
@@ -25,6 +25,7 @@ These milestones resume after the sandbox works and WhatsApp is connected:
 8. I can close it, reopen it, and my data is still there.
 
 Parked (not now):
+- Inquiry form popup before testing
 - In-stay concierge
 - Menus and food ordering
 - Personalised upsells

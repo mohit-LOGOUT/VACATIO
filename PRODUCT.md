@@ -2,11 +2,13 @@
 
 ## Current requirement: Hermes sandbox first
 
+Public demo requirement (12 October 2026): anyone landing on the website can choose a fictional booking and its property and immediately chat with Hermes. Load the sample data from Convex automatically. Do not require sign-up, an access key, booking creation or an inquiry form. Keep each visitor’s conversation and test edits independent behind the scenes. An inquiry popup is later work.
+
 Updated 12 October 2026. This section defines the immediate build and takes priority over references below to starting with live WhatsApp or a real booking. The broader guest onboarding product remains the destination; we first prove its conversation flow with fictional bookings in a browser.
 
-**Who uses this first:** the vacation rental operator, acting as a guest to test Hermes before connecting a WhatsApp number.
+**Who uses this first:** any website visitor, including vacation rental operators, acting as a fictional guest to test Hermes.
 
-**The job:** give Hermes a dummy booking and property details, then have a realistic arrival conversation, check its answers and supply host input when it does not know enough.
+**The job:** choose a supplied fictional booking and property, then have a realistic arrival conversation, check its answers and supply host input when it does not know enough.
 
 **First value:** the operator asks an arrival question in the sandbox and receives a correct answer based on the selected booking and property, then asks a follow-up that Hermes understands from the conversation.
 

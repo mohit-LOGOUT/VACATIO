@@ -28,10 +28,8 @@ async function budget(ctx: MutationCtx, owner: NonNullable<Awaited<ReturnType<ty
   await ctx.db.patch("sandboxSessions", owner._id, { usage: fresh ? 1 : owner.usage + 1, windowStart: fresh ? Date.now() : owner.windowStart });
 }
 export const open = action({
-  args: { accessKey: v.string(), token: v.string() }, returns: v.null(),
+  args: { token: v.string() }, returns: v.null(),
   handler: async (ctx, args) => {
-    const expected = process.env.SANDBOX_ACCESS_KEY;
-    if (!expected || expected.length < 32 || args.accessKey !== expected) throw new Error("The sandbox access key is incorrect or not configured.");
     await ctx.runMutation(internal.sandbox.initialize, { hash: await tokenHash(args.token) });
     return null;
   },
@@ -39,7 +37,11 @@ export const open = action({
 export const initialize = internalMutation({
   args: { hash: v.string() }, returns: v.null(),
   handler: async (ctx, { hash }) => {
-    if (await ctx.db.query("sandboxSessions").withIndex("by_token_hash", q => q.eq("tokenHash", hash)).first()) return null;
+    const existing = await ctx.db.query("sandboxSessions").withIndex("by_token_hash", q => q.eq("tokenHash", hash)).first();
+    if (existing) {
+      await ctx.db.patch("sandboxSessions", existing._id, { expiresAt: Date.now() + 30 * 86400000 });
+      return null;
+    }
     const sessionId = await ctx.db.insert("sandboxSessions", { tokenHash: hash, expiresAt: Date.now() + 30 * 86400000, usage: 0, windowStart: Date.now() });
     for (const context of samples) {
       const threadId = await createThread(ctx, components.agent, { userId: sessionId, title: `Hermes: ${context.guestName}` });
