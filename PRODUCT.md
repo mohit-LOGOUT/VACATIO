@@ -1,8 +1,90 @@
 # Product
 
-## Next build: authenticated admin dashboard and property import
+## Current priority: Hermes completes pre-check-in
 
-Requested 12 October 2026. **These are must-have features**, next after the public Hermes sandbox and before live WhatsApp integration. This section supersedes the earlier plan to defer the dashboard until after WhatsApp. Implementation status: the ID/password screen, protected catalogue, editable details, and listing-import workflow are built. Development browser checks verified login, edits/reload, duplicates, failure handling and sign-out; real Airbnb and SaffronStays imports were saved in the development database. The owner account is now configured on production. Live Chrome checks passed for correct/incorrect login, the supplied Airbnb import, editing/reload, duplicate protection, blocked private URLs, phone layout and sign-out. The second listing source was verified in development only. Visual redesign and photos are deferred.
+Approved 13 October 2026. This section supersedes the earlier text-only sandbox scope and the old sequence that put WhatsApp before document collection. The property dashboard and question-answering sandbox already work; the workflow below is the next build, not a claim about existing capabilities. Prove it in the browser first, then connect WhatsApp. Visual redesign remains deferred.
+
+**Primary job:** get every person on a booking ready before arrival by collecting the property's required IDs, checking each document's type, readability and name, resolving missing or uncertain information, and confirming completion to the guest and host. Answer property questions helpfully throughout this process.
+
+### Booking, people and document requirements
+
+- Use the booking ID as the link between the property, booking contact, expected guest count, each guest's record, documents, messages and completion status. Store each person's document against that person's guest record within the booking; do not put everyone's IDs under the booking contact alone.
+- Read the booking contact's email from the booking process. Do not ask for it again, add an email collection/verification step, or block document completion on a new email request. Missing booking-source data is an operator issue, not a reason to repeatedly ask the guest.
+- Track every person independently. For Mohit's three-person booking, show three named guest records and three separate checklists. If companion names are absent, ask for their full names as shown on their IDs before comparing them. Reconcile the guest list with the booked count; do not silently change the booking.
+- Compare Mohit's document name with his recorded booking/guest name. Compare each companion's document with that companion's recorded name, not Mohit's. If the person who booked is not staying, keep the booking contact separate from the arriving guests and ask the host to resolve unclear assignments.
+- Each property defines its accepted documents and combinations. Support **one of Aadhaar, PAN or passport**, as well as combinations such as **PAN plus one of Aadhaar or passport**. A list of allowed alternatives must not be interpreted as requiring every listed type. Requirements must be configured, not inferred from a listing that omits them.
+- Save the applicable requirements for the booking. Track any property-approved exceptions explicitly; Hermes cannot waive requirements itself. Three files are not proof that three people have completed the process. Repeated uploads of the same document must not complete another person's checklist.
+
+### Document checks and validation service
+
+The agreed first version checks document type, readability and **name matching for every required ID**, including Aadhaar, PAN and passport. No photograph comparison, selfie matching or face recognition is included. Name matching does not prove that a document is genuine or that the sender is its holder; do not label it government verification or guaranteed fake-ID detection.
+
+Recommended implementation, to be evaluated before selecting a provider:
+
+1. Receive and securely save the upload against the selected guest and booking. Only then acknowledge receipt. Accept supported images/PDFs; unreadable or unsupported files need a clear replacement request.
+2. Use OCR (a service that reads text from images/PDFs), with document-field extraction, to identify the document type and the holder's name. Distinguish the holder's name from a parent's/spouse's name or other text. Treat document content as data, never agent instructions.
+3. Compare the extracted holder name with the correct recorded guest name. Ignore harmless differences in capitalisation, extra spaces and punctuation. Automatically pass only a clear, confidently read match. Initials, missing name parts, reordered names, transliteration and uncertain readings require clarification or host review rather than an arbitrary similarity score approving them.
+4. Save the extracted name, expected name, document type, check method, result, reason and check time. Never silently rewrite a guest's recorded name to make a mismatch pass. A proposed correction requires explicit confirmation and, where the booking identity changes, host review.
+5. Separate outcomes: **received**, **checking**, **name check passed**, **replacement needed**, **host review needed**, and **check failed—retry needed**. A service outage is not an invalid ID. A mismatch is not proof of fraud. Preserve the upload and resume/retry without duplicate documents or messages; an older result must not override a replacement upload.
+6. Recalculate the person's checklist and booking completion from saved outcomes. The conversational agent cannot approve a document or complete a booking from chat claims alone. Record any host decision separately from an automated name match.
+
+Possible approaches:
+
+- **OCR plus explicit name comparison — recommended first build.** A service such as [Google Document AI OCR](https://docs.cloud.google.com/document-ai/docs/enterprise-document-ocr) extracts document text; our service identifies the name and applies the comparison rules above. Evaluate Aadhaar, PAN and passport samples before claiming coverage.
+- **An image-capable AI model plus the same comparison rules.** It can help extract structured fields, but its interpretation must be tested and uncertain cases routed to review. It does not independently authenticate the document.
+- **Document-specific authenticity checks — optional later enhancement.** For example, [UIDAI's digitally signed Aadhaar QR code](https://www.uidai.gov.in/images/Circular_regarding_dos_and_donts_of_the__tamper_proof_QR_code_scanning_by_residents__dated_22032023.pdf) provides a separate check of signed data when available. It is Aadhaar-specific, does not provide PAN/passport coverage, and does not replace matching the name to the guest. No such service is selected or integrated yet.
+
+### Friendly conversation and separate messages
+
+- Start with a warm, booking-specific greeting and explain that completing the IDs before arrival helps everyone enjoy their stay without paperwork on arrival. Ask for the next missing item, not the entire checklist repeatedly.
+- Answer the guest's actual question fully and naturally first, using saved property facts. If an ID reminder is appropriate, send it as a **second chat message**, not appended to the answer in one large bubble. Persist messages in order; reload/retry must not repeat either bubble.
+- Use specific, friendly reminders: say whose ID is missing and which accepted options they can send. Do not interrupt every answer with another request. Skip reminders while a submitted document is being checked, after a recent request, when the guest has asked to continue later, and after completion. For a pending host review, explain that review is in progress instead of asking for the same ID again.
+- Record pending items and the last reminder so the conversation can resume after questions or reload. Any later scheduled outreach must have an explicit timing/channel policy; the browser version must not pretend to send messages to a guest who is offline.
+- Keep wording warm and varied without pressure, excessive apologies or repeated sales language. Explain the benefit once; later reminders can be shorter. Do not withhold useful property answers until IDs arrive.
+
+Example when the property confirms parking inside the gate and one guest's ID remains missing:
+
+**Message 1:** “Yes, there's a parking spot inside the gate—you can park your car there.”
+
+**Message 2:** “When you have a moment, could you send an ID for your third guest? We'd love to finish the paperwork before you arrive, so you can settle in and enjoy your stay.”
+
+After an upload is successfully saved:
+
+**Receipt message:** “Thanks, we've received your ID. We're checking the name and details now and will let you know when the check is complete.”
+
+After that person's required checks pass but another guest is incomplete:
+
+**Result message:** “Your ID name check has passed, Mohit. Thank you!”
+
+**Separate next-step message, when appropriate:** “We just need Priya's ID to finish pre-check-in for everyone.”
+
+For a mismatch, ask for clarification without accusing the guest: “The name we read on this ID doesn't match Priya's booking details. Could you check that you've sent the right document for Priya?”
+
+### Completion, host notice and stored records
+
+- A person's checklist is complete only when their property's required document choice/combination passes the agreed checks or receives a recorded host resolution. Receipt alone is never acceptance.
+- Booking pre-check-in is complete only when every expected guest is accounted for, each required checklist is complete, essential arrival information has been provided, and no blocking onboarding review remains open. An unrelated optional question must not block completion.
+- Confirm to the guest only after completion is saved: “The ID name checks for all three guests have passed, and your pre-check-in is complete. We look forward to welcoming you!” Adapt wording honestly if a host reviewed a document instead of an automatic check passing.
+- Create a host completion notice linked to the booking and guest checklist: “Mohit's booking: pre-check-in complete for all 3 guests. Required ID checks are complete.” Show the check method and any host decisions in the protected detail view, not full ID numbers in the notification.
+- For this browser build, show the guest confirmation in chat and the host notice in the authenticated admin view. Keep any public-demo host preview confined to that visitor's fictional session. WhatsApp/email delivery is later work; never claim those notifications were sent now.
+- Save completion separately from notification delivery so a failed notification can retry without rechecking documents or sending duplicate completion notices. If a relevant requirement, guest or accepted document changes, reassess readiness and clearly show any reopened task.
+- **Pre-check-in complete / ready for check-in** means the pre-arrival tasks are finished. It does not mark the guest physically checked in or imply they have arrived.
+- Keep files and results in protected storage linked to the guest and booking. Limit access to the correct booking session and authorised host; keep raw IDs out of public chat/activity, logs and generic model history. Before real-ID use, define the retention/deletion policy and the permitted validation-service handling. Do not expose existing real documents in the open demo.
+
+### Required proof before calling this flow working
+
+1. A three-person booking starts with three separate checklists and an existing booking email. Hermes requests missing guest names/IDs and never asks for the email again.
+2. A property's one-of requirement accepts one allowed document; a combination requirement stays incomplete until each required part passes. Missing requirements trigger host setup, not guessed rules.
+3. Aadhaar, PAN and passport checks compare the holder name to the correct guest. Test clear matches, harmless formatting changes, a parent's name, initials, mismatches, unclear text, the wrong document type, duplicate uploads and random PDFs. Ambiguous cases must not auto-pass.
+4. A parking question receives a useful answer, with an appropriate friendly ID reminder in a separate bubble. Repeated questions do not produce repetitive reminders; a request to continue later is respected.
+5. Successful upload gets a receipt acknowledgement before a later check result. Upload failures never say “received”; pending checks never say “complete.” A validation-service outage is retryable and does not imply a fake ID.
+6. Two completed guests out of three remain incomplete. A replacement document can resolve the third guest's failure and complete the booking exactly once. The guest confirmation and protected host notice reflect the saved result.
+7. Switching/reloading bookings preserves progress without leaking documents or messages. A guest chat instruction cannot approve an ID. Retry and late results cannot duplicate notices or overwrite a newer check.
+8. Prove the workflow with clearly labelled fictional fixtures in the public browser demo. Fixture outcomes demonstrate the flow, not real validation accuracy. Separately evaluate the selected service on authorised document samples in a protected test before claiming real-ID support. Record results; this evaluation has not run yet.
+
+## Implemented foundation: authenticated admin dashboard and property import
+
+Requested 12 October 2026. **These must-have foundation features are implemented**, following the public Hermes sandbox and ahead of live WhatsApp integration. This section supersedes the earlier plan to defer the dashboard until after WhatsApp. Implementation status: the ID/password screen, protected catalogue, editable details, and listing-import workflow are built. Development browser checks verified login, edits/reload, duplicates, failure handling and sign-out; real Airbnb and SaffronStays imports were saved in the development database. The owner account is now configured on production. Live Chrome checks passed for correct/incorrect login, the supplied Airbnb import, editing/reload, duplicate protection, blocked private URLs, phone layout and sign-out. The second listing source was verified in development only. Visual redesign and photos are deferred.
 
 ### Admin entry and access
 
@@ -40,11 +122,11 @@ After signing in, show all property records already added to the existing Convex
 
 Public demo requirement (12 October 2026): anyone landing on the website can choose a fictional booking and its property and immediately chat with Hermes. Load the sample data from Convex automatically. Do not require sign-up, an access key, booking creation or an inquiry form. Keep each visitor’s conversation and test edits independent behind the scenes. An inquiry popup is later work.
 
-Updated 12 October 2026. This section defines the existing sandbox to preserve while building the admin features above. The broader guest onboarding product remains the destination; we first prove its conversation flow with fictional bookings in a browser.
+Implemented baseline from 12 October 2026. The conversation capabilities below must remain working while the current pre-check-in priority adds per-person document collection and checks. The baseline is not the full onboarding product.
 
 **Who uses this first:** any website visitor, including vacation rental operators, acting as a fictional guest to test Hermes.
 
-**The job:** choose a supplied fictional booking and property, then have a realistic arrival conversation, check its answers and supply host input when it does not know enough.
+**Existing baseline:** choose a supplied fictional booking and property, test arrival answers and supply host input. **Next outcome:** complete the per-person pre-check-in flow specified above in the same browser interface.
 
 **First value:** the operator asks an arrival question in the sandbox and receives a correct answer based on the selected booking and property, then asks a follow-up that Hermes understands from the conversation.
 
@@ -61,13 +143,13 @@ Updated 12 October 2026. This section defines the existing sandbox to preserve w
 9. Switch to another booking and test again. Conversations and facts remain separate. Restarting a test clears only that selected conversation and activity after confirmation, preserving its booking and property details.
 10. Reload and confirm saved context and conversation history are retained. Failed replies preserve the conversation and offer retry without duplicate messages.
 
-### Scope of the first working version
+### Implemented baseline and next scope
 
 Must have: editable dummy booking/property context; a real Hermes agent; browser chat; saved conversation history per booking; follow-up understanding; answers grounded in the selected context; host input for unknown or permission-dependent questions; truthful activity/error states; restart and booking switching; responsive layout matching the sandbox section of DESIGN.md.
 
-Outside the sandbox itself: admin property management (the next build above), WhatsApp integration or sending real messages, booking API/PMS integration, billing counters, real guest onboarding, ID uploads or automatic document verification, scheduled reminders, payments, booking changes, in-stay services, automatic permanent learning.
+The next browser build adds guest checklists, test-document uploads, type/readability/name checks, separate chat messages and guest/host completion notices as specified above. Continue to defer WhatsApp and other external message delivery, booking API/PMS integration, billing counters, unattended scheduled outreach, payments, booking changes, in-stay services and automatic permanent learning. Real-ID use requires the protected validation evaluation; the public demo uses fictional fixtures.
 
-Hermes may explain saved ID requirements, but must not mark IDs verified or a guest ready for check-in based on a guest's chat claim. A text-only sandbox does not prove the document verification flow.
+Hermes must never mark IDs checked or guests ready from a chat claim. The next build may report completion only from saved document-check results and booking readiness. The existing text-only sandbox does not yet prove this flow.
 
 ### Sandbox milestones and proof
 
@@ -79,11 +161,11 @@ Hermes may explain saved ID requirements, but must not mark IDs verified or a gu
 6. Reload to verify persistence; restart one test and confirm the other test and saved booking/property details remain intact.
 7. Check the flow on desktop and phone widths, including a failed reply and successful retry.
 
-Success: the operator can run these checks through the sandbox, trust the answer sources, and provide their own dummy property/booking details for a second round. Only then connect a WhatsApp number and test delivery separately. Full onboarding still requires the document and readiness milestones below.
+Baseline success: the operator can run these conversation checks and trust the answer sources. Next, complete the document and readiness milestones above in the browser; only after that connect WhatsApp and test delivery separately.
 
 ### After the sandbox works
 
-Build the authenticated admin property dashboard and URL import described above. Then connect WhatsApp to the same agent and booking context, verify sending/receiving and delivery, and add ID collection, document checks, missing-ID tracking and arrival-information delivery. The broader guest-operations dashboard remains later work. Sandbox testing is preparation for this live flow, not evidence that live messaging or full check-in works.
+Use the implemented admin property catalogue as the foundation. Build and verify the complete pre-check-in workflow in the browser first, including the selected document service and protected host notices. Then connect WhatsApp to the same booking state and verify actual sending/receiving and delivery separately. The broader guest-operations dashboard remains later work.
 
 ## Broader product: guest onboarding
 
@@ -99,7 +181,7 @@ Today they hire: themselves, their operations team, property managers or caretak
 
 More than one person in the product? Yes. The guest interacts with Logout, but the person we build for this weekend is the vacation rental operator / property management company.
 
-What needs doing: collect the required guest IDs before arrival, make sure the uploaded files are actually valid IDs, answer pre-arrival questions from the booking and property context, and escalate anything that needs human input.
+What needs doing: collect the required guest IDs before arrival, check document type, readability and the holder name against the correct guest, answer pre-arrival questions from the booking and property context, and escalate anything that needs human input.
 
 How they want to feel: in control and free from anxiety, knowing someone is taking care of the guest without needing their constant involvement.
 
@@ -128,7 +210,7 @@ Push -> Logout follows up for IDs and handles routine arrival questions before t
 
 Pull -> Logout behaves like the first line of guest operations and escalates only when it cannot safely complete the job itself.
 
-Anxiety -> Logout verifies that uploaded files are actually the required identity documents, answers only from booking and property context, and escalates when it is unsure instead of guessing.
+Anxiety -> Logout checks document type, readability and name against the correct guest, answers from booking/property context, and sends uncertain document checks or unanswered questions to the host. These checks do not guarantee authenticity.
 
 Habit -> Logout starts with one real booking and lets the operator see the full pre-arrival flow work correctly before trusting it with more guests.
 
@@ -137,61 +219,21 @@ The one worry onboarding must remove: “I should not have to check whether the 
 
 ### Flow
 
-1. **[Host] Adds the booking**  
-   The host adds or imports the upcoming guest booking and property details.
-
-2. **[LOGOUT AI] Reads the booking context**  
-   LOGOUT AI understands the guest, stay dates, number of guests, property rules and ID requirements.
-
-3. **[Guest] Receives the pre-arrival WhatsApp message**  
-   The guest is greeted and told what needs to be completed before arrival.
-
-4. **[Guest] Uploads the required IDs**  
-   The guest submits their own ID and the IDs of the other guests in the booking.
-
-5. **[LOGOUT AI] Checks the uploaded files**  
-   LOGOUT AI verifies that each upload is actually the required identity document and is readable.
-
-6. **[Guest] Gets asked again if something is missing or invalid**  
-   LOGOUT AI follows up for a missing guest ID, wrong document or unusable upload.
-
-7. **[Host] Sees the onboarding status update**  
-   The host can see which guests are complete, which IDs are missing and which documents have been flagged.
-
-8. **[Guest] Receives arrival and check-in information**  
-   LOGOUT AI sends the relevant check-in timing, access instructions and essential house rules.
-
-9. **[Guest] Asks an arrival question on WhatsApp**  
-   For example: “Can we arrive early?”, “Where do we park?” or “How do we enter the property?”
-
-10. **[LOGOUT AI] Answers from the booking and property context**  
-    If the answer is known and safe, LOGOUT AI replies without involving the host.
-
-11. **[Host] Receives an escalation if LOGOUT AI cannot safely answer**  
-    The host sees exactly what the guest asked and why LOGOUT AI needs help.
-
-12. **[Host] Resolves the escalation**  
-    The host gives the missing answer or corrects the information.
-
-13. **[LOGOUT AI] Replies to the guest**  
-    LOGOUT AI continues the conversation on WhatsApp using the host's resolution.
-
-14. **[LOGOUT AI] Marks the onboarding complete**  
-    All required IDs are valid and the guest has the information needed to arrive.
-
-15. **[Host] Sees “Ready for check-in”**  
-    The host knows no further pre-arrival action is required.
-
-16. **[Guest] Arrives at the property**  
-    The guest is welcomed instead of being asked to complete administrative work.
-
-17. **Job done**  
-    The guest reaches the property ready for check-in, while the host only intervenes when LOGOUT AI genuinely needs help.
+1. **Read the booking.** Load property requirements, booking contact and existing email, guest count and named guests. Ask only for missing companion names needed for their checks.
+2. **Welcome the guest and start pre-check-in.** Explain the benefit of completing IDs before arrival and ask for the next missing document. Start in browser chat; WhatsApp is a later channel.
+3. **Answer questions throughout.** Give useful, friendly answers from saved property facts. Send a separate ID reminder when appropriate; do not repeat it after every answer. Escalate unknown facts or permission-dependent requests to the host.
+4. **Receive and acknowledge each upload.** Save the file against the correct guest and booking, then say it was received and is being checked. Do not claim completion yet.
+5. **Run document checks.** Identify the document type, read the holder name and compare it with that guest's recorded name. No photograph comparison. Save the method, result and reason.
+6. **Resolve outstanding items.** Ask for a replacement when necessary, route ambiguity to host review, and track each person's remaining requirements. Resume after questions or reload without losing progress.
+7. **Provide arrival information.** Share the saved arrival/check-in details and essential house rules. Missing essential information requires host input.
+8. **Confirm readiness from saved records.** Account for all guests, satisfy each document requirement and resolve blocking onboarding issues. Then save pre-check-in completion.
+9. **Confirm to both sides.** Send the guest a completion message and create the protected host notice. Track notification delivery separately and retry failures without duplication.
+10. **Welcome the guest on arrival.** Pre-check-in completion means the paperwork is ready; physical arrival/check-in remains a separate event.
 
 ## 4. Onboarding
 
 **First value (the moment it first does the job for them):**  
-Logout reads one real booking and the property information, then correctly handles the first pre-arrival guest interaction — for example, asking for IDs or answering an arrival question.
+Hermes reads a booking and its property requirements, shows the named guest checklist, and begins collecting the next missing ID while answering arrival questions. Full success is completion for every guest and a saved host notice.
 
 **The smallest commitment we ask for:**  
 One real booking + the minimum property information needed for check-in: check-in timing, location/access instructions, house rules and ID requirements.
@@ -210,11 +252,12 @@ Check-in timing, directions/access, ID requirements and essential house rules. N
 **Removes:** “Don’t ask me to keep adding Q&As to the system.”
 
 **3. Logout shows how it would handle that guest’s pre-arrival onboarding**  
-It drafts/sends the ID request and can answer a real arrival question using the booking and property context.  
+It sends a friendly request for the next missing guest ID in browser chat and can answer an arrival question, using a separate message for an appropriate reminder.
+
 **First value:** the operator sees that Logout can correctly handle a real guest without being manually taught every question.
 
 **Login:**  
-No login is needed for the public fictional-booking demo. The admin dashboard and real property catalogue require the configured admin ID and password, as specified in the next-build requirements above.
+No login is needed for the public fictional-booking demo. The admin dashboard and real property catalogue require the configured admin ID and password, as specified in the admin requirements above.
 
 **What we don’t ask on day one:**  
 Profile setup, full property catalogue, long product tour, complete SOPs, FAQs, PMS integration, staff permissions, payment setup.
@@ -223,7 +266,7 @@ Profile setup, full property catalogue, long product tour, complete SOPs, FAQs, 
 Additional property information only when Logout encounters something it cannot safely answer from the existing context.
 
 ## 5. v1
-Does (the must haves: one person finishes the one job): understand one real booking and property context; answer pre-arrival and check-in questions from that context; collect required guest identity documents; verify that the uploaded files are actually valid identity documents before marking them as received; track which guest documents are still missing; send the correct arrival/check-in information; escalate when it does not know the answer instead of guessing.
+Does (the must haves: one person finishes the one job): understand one real booking and property context; answer pre-arrival and check-in questions from that context; collect required guest identity documents; acknowledge successfully saved uploads immediately, then check type, readability and each holder name against the correct guest; support alternative and combined document requirements; track missing items per person; use the existing booking email without collecting it again; send separate friendly answers and appropriate reminders; confirm saved pre-check-in completion to guest and host; send the correct arrival/check-in information; escalate when it does not know the answer instead of guessing.
 
 Doesn't (not this sprint: parked, not forgotten): menus, upsells, in-stay concierge, housekeeping coordination, checkout flows, payments, pricing, inventory, refunds, booking modifications, PMS replacement.
 
@@ -232,16 +275,18 @@ Nice to have (only after the must haves work): local recommendations, early chec
 How I'll know it worked (what they do again, not what they say): a vacation rental operator gives Logout a second real booking and lets it handle that guest's pre-arrival ID collection and arrival questions without manually taking over.
 
 ## 6. The riskiest guess
-If this is false, the product is pointless: Logout can reliably tell whether the files uploaded by guests are actually the required identity documents, and does not approve a guest for check-in when they have uploaded a random PDF, wrong document or unusable file.
 
-Thirty-minute check, no code (run it while you build), and what happened: give the AI a mixed set of real identity-document images, blurry documents, wrong document types and random PDFs, and check whether it correctly accepts the valid documents and rejects or escalates everything else. What happened: MISSING.
+The document service can reliably read each supported ID's holder name and distinguish clear matches from uncertain or mismatched names without falsely approving a guest. Reading an image is not proof of authenticity or of the sender's identity.
+
+Validation trial: use authorised samples for Aadhaar, PAN and passport, including clear/blurred text, alternate name formatting, parent names, mismatches, incorrect document types and random PDFs. Record extraction accuracy and false approvals separately from whether the conversation works. Uncertain results must go to review. Status: **not run; validation service not selected or integrated**.
 
 ## 7. Milestones
-1. I can upload a valid identity document and a random PDF, and Logout accepts the ID but rejects the random file.
-2. I can give Logout one real booking and property context, ask an arrival question, and get the correct answer.
-3. I can start onboarding for a booking and the guest receives an ID request.
-4. I can upload IDs for multiple guests and see exactly which required documents are still missing.
-5. I can see Logout mark the guest as ready for check-in only when the required valid IDs have been received.
-6. I can see Logout send the guest the correct arrival and check-in information.
-7. I can ask something Logout cannot safely answer and see it escalate instead of making up an answer.
-8. I can close it, reopen it, and my data is still there.
+
+1. A booking with three named guests and an existing contact email starts three individual ID checklists without asking for the email again.
+2. Hermes answers an arrival question fully and gives an appropriate, friendly ID reminder as a separate message without nagging.
+3. Each successful upload is saved against its guest and booking and acknowledged as received before checking finishes.
+4. Aadhaar, PAN and passport type/readability/name checks pass or request replacement/review based on saved results, with no photograph matching or unsupported authenticity claims.
+5. Property requirements support both one-of alternatives and required combinations; two completed guests out of three never complete the booking.
+6. Resolving the final required check and other blocking onboarding tasks saves pre-check-in completion and produces the guest confirmation and protected host notice without duplicates.
+7. The browser flow survives reload, booking switching, failed checks, replacements and retries; unrelated questions do not lose progress or block completion.
+8. After browser proof and protected document-service evaluation, connect WhatsApp and verify real message delivery separately.
