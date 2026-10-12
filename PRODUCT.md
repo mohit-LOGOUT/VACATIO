@@ -2,7 +2,7 @@
 
 ## Next build: authenticated admin dashboard and property import
 
-Requested 12 October 2026. **These are must-have features**, next after the public Hermes sandbox and before live WhatsApp integration. This section supersedes the earlier plan to defer the dashboard until after WhatsApp. It records requirements; these features are not implemented yet.
+Requested 12 October 2026. **These are must-have features**, next after the public Hermes sandbox and before live WhatsApp integration. This section supersedes the earlier plan to defer the dashboard until after WhatsApp. Implementation status: the ID/password screen, protected catalogue, editable details, and listing-import workflow are built. Development browser checks verified login, edits/reload, duplicates, failure handling and sign-out; real Airbnb and SaffronStays imports were saved in the development database. Production sign-in and import verification remain pending approved credential setup. Visual redesign and photos are deferred.
 
 ### Admin entry and access
 

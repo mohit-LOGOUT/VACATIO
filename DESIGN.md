@@ -2,7 +2,11 @@
 
 Before building or changing any screen, read DESIGN.md and follow it. If a choice isn't covered there, ask me instead of guessing.
 
-## Current build: Hermes sandbox
+## Admin phase: function first
+
+The owner deferred visual redesign on 12 October 2026. Add the requested top-right Sign up link to `/admin.html`. Use basic labelled ID/password inputs, a protected property list, a listing URL import form, progress/error feedback and an editable property detail form. Support desktop and phone use with visible keyboard focus. Retain the landing and public sandbox; do not undertake a new visual direction or polish cycle in this phase.
+
+## Existing build: Hermes sandbox
 
 Public demo requirement (12 October 2026): anyone landing on the website can choose a fictional booking and its property and immediately chat with Hermes. Load the sample data from Convex automatically. Do not require sign-up, an access key, booking creation or an inquiry form. Keep each visitor’s conversation and test edits independent behind the scenes. An inquiry popup is later work.
 

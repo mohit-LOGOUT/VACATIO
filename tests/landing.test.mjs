@@ -9,14 +9,15 @@ test('landing page preserves approved copy and opens the Hermes sandbox below th
   assert.match(html, /href="#test-hermes">Try with a booking<\/a>/);
   assert.match(html, /src="\/sandbox.html" title="Test Hermes with a dummy booking"/);
   assert.equal((html.match(/class="main-action"/g) || []).length, 1);
+  assert.match(html,/href="\/admin.html">Sign up<\/a>/);
 });
 test('build contains only intended public files', async () => {
   const names=(await readdir('dist')).map(name=>name.replace(/\.[a-f0-9]{16}(?=\.(js|css)$)/,''));
-  assert.deepEqual(names.sort(), ['images', 'index.html', 'landing-sandbox.js', 'review-config.js', 'review.css', 'review.html', 'review.js', 'sandbox-app.js', 'sandbox.css', 'sandbox.html', 'styles.css']);
+  assert.deepEqual(names.sort(), ['admin-app.js', 'admin.css', 'admin.html', 'images', 'index.html', 'landing-sandbox.js', 'review-config.js', 'review.css', 'review.html', 'review.js', 'sandbox-app.js', 'sandbox.css', 'sandbox.html', 'styles.css']);
   assert.deepEqual(await readdir('dist/images'), ['landing-hero.png']);
 });
 test('pages reference matching content-versioned code and styles so old browser caches cannot break updates', async () => {
-  for(const name of ['index.html','sandbox.html','review.html']){
+  for(const name of ['index.html','sandbox.html','review.html','admin.html']){
     const page=await readFile(`dist/${name}`,'utf8');
     const paths=[...page.matchAll(/(?:src|href)="(\/[^"?]+\.(?:js|css))"/g)].map(match=>match[1]);
     assert.ok(paths.length>0);

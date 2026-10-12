@@ -1,8 +1,12 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { authTables } from "@convex-dev/auth/server";
 import { contextValidator } from "./sandboxRules";
 
 export default defineSchema({
+  ...authTables,
+  adminSettings: defineTable({key:v.literal("owner"),userId:v.id("users"),expiresAt:v.optional(v.number())}).index("by_key",["key"]),
+  propertyImports: defineTable({sourceUrl:v.string(),requestedBy:v.id("users"),status:v.union(v.literal("queued"),v.literal("reading"),v.literal("extracting"),v.literal("complete"),v.literal("failed")),propertyId:v.optional(v.id("properties")),error:v.optional(v.string()),createdAt:v.number(),finishedAt:v.optional(v.number())}).index("by_source",["sourceUrl"]).index("by_status",["status"]),
   sandboxSessions: defineTable({ tokenHash: v.string(), expiresAt: v.number(), usage: v.number(), windowStart: v.number() }).index("by_token_hash", ["tokenHash"]),
   sandboxBookings: defineTable({ sessionId: v.id("sandboxSessions"), context: contextValidator, generation: v.number(), threadId: v.string(), busyTurnId: v.optional(v.id("sandboxTurns")) }).index("by_session", ["sessionId"]),
   sandboxTurns: defineTable({
@@ -15,6 +19,11 @@ export default defineSchema({
   }).index("by_booking_generation", ["bookingId", "generation"]).index("by_booking_request", ["bookingId", "requestId"]),
   properties: defineTable({
     name: v.string(),
+    sourceUrl: v.optional(v.string()), importedAt: v.optional(v.number()),
+    description: v.optional(v.string()), propertyType: v.optional(v.string()),
+    guestCapacity: v.optional(v.number()), bedrooms: v.optional(v.number()), beds: v.optional(v.number()), bathrooms: v.optional(v.number()),
+    amenities: v.optional(v.array(v.string())), directions: v.optional(v.string()), notes: v.optional(v.string()),
+    missingFields: v.optional(v.array(v.string())), revision: v.optional(v.number()),
     logoutPropertyId: v.optional(v.string()),
     address: v.string(),
     mapLink: v.optional(v.string()),
@@ -25,7 +34,7 @@ export default defineSchema({
     entryInstructions: v.string(),
     houseRules: v.string(),
     requiredIdTypes: v.array(v.string()),
-  }).index("by_logout_property_id", ["logoutPropertyId"]),
+  }).index("by_logout_property_id", ["logoutPropertyId"]).index("by_source",["sourceUrl"]),
 
   bookings: defineTable({
     propertyId: v.id("properties"),

@@ -4,6 +4,8 @@ Build instructions, updated 12 October 2026. This file guides implementation; it
 
 ## 1. How the current build works
 
+Current authorized phase: implement the admin property catalogue and listing URL import in PRODUCT.md and PLAN.md before WhatsApp. The owner explicitly deferred visual redesign; use basic usable forms and lists. Use Convex Auth for ID/password sign-in, protect all property reads/writes, and keep public account creation disabled. Use the existing agent component for extraction and a Convex workflow for durable imports. Credentials are configured securely later; temporary test access must expire or be revoked. Keep the public demo open and preserve existing data.
+
 Public demo requirement (12 October 2026): anyone landing on the website can choose a fictional booking and its property and immediately chat with Hermes. Load the sample data from Convex automatically. Do not require sign-up, an access key, booking creation or an inquiry form. Keep each visitor’s conversation and test edits independent behind the scenes. An inquiry popup is later work.
 
 Interface: A website visitor opens **Test Hermes** below the landing banner at https://grateful-llama-909.convex.site/, a WhatsApp-like browser sandbox, and acts as a guest. Follow the current sandbox sections in PRODUCT.md and DESIGN.md: booking/property details on the left, phone-shaped chat in the centre, and real agent activity plus host input on the right. On phones, show full-width chat with collapsible supporting sections.
@@ -16,7 +18,7 @@ Agent implementation: Use @convex-dev/agent for real model replies and saved thr
 
 External integrations: No WhatsApp number, LOGOUT booking API, vision service or real messaging in this build. WhatsApp connects to the same agent and booking context after the sandbox passes. All secrets stay in server-side environment variables.
 
-Not in this build: Dashboard, live WhatsApp, real guest onboarding, ID uploads/verification, scheduled follow-ups, billing counters, booking-source integration, payments, pricing, inventory, booking changes, refunds, in-stay services and automatic learning without host review.
+Not in this build: Full guest-operations dashboard, live WhatsApp, real guest onboarding, ID uploads/verification, scheduled follow-ups, billing counters, booking-source integration, payments, pricing, inventory, booking changes, refunds, in-stay services and automatic learning without host review.
 
 When I report a bug, I'll name the part. Look there first, and tell me if you think I named the wrong one.
 
@@ -44,7 +46,7 @@ When I report a bug, I'll name the part. Look there first, and tell me if you th
 - Never say "done" until you've seen it work through a test or a screenshot at phone width and told me exactly how to check it on my phone.
 - When I report a bug, find the cause before changing anything. Fix only that.
 - When we add something new, write tests so what already works doesn't break. When I drop a feature, drop its tests.
-- Publish and test the approved browser sandbox on the existing production Convex link, using the real Hermes agent. Local checks may supplement this but are not the user-facing delivery. WhatsApp and the dashboard come later. Sandbox success does not prove live message delivery.
+- Publish and test the approved browser sandbox on the existing production Convex link, using the real Hermes agent. Local checks may supplement this but are not the user-facing delivery. WhatsApp and the broader guest-operations dashboard come later. Sandbox success does not prove live message delivery.
 - After I confirm a milestone works: commit, push, and add one line to PROGRESS.md.
 - Never put a key or password in code, in a VITE_ variable, or in a committed file. Anything secret stays server-side.
 - Test Hermes is the approved browser exception to the eventual WhatsApp guest channel. Do not build another guest app beyond this sandbox.
