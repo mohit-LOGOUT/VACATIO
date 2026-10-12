@@ -34,7 +34,9 @@ export const state=query({args:access,returns:v.any(),handler:async(ctx,args)=>{
  return {...s,events:events.filter(e=>e.revision===s.run.revision).map(e=>({id:e._id,text:e.text,kind:e.kind,createdAt:e.createdAt})),hostNotice:s.run.complete?`Pre-check-in complete for ${s.guests.length} guests. Required ID name checks completed. Fictional test booking.`:null};
 }});
 export const begin=mutation({args:access,returns:v.null(),handler:async(ctx,args)=>{
- const {booking}=await ownedBooking(ctx,args.token,args.bookingId);if(await runFor(ctx,booking._id))return null;
+ const {booking}=await ownedBooking(ctx,args.token,args.bookingId);
+ if(booking.context.idRequirements.includes('Document upload is not available in this sandbox.'))await ctx.db.patch('sandboxBookings',booking._id,{context:{...booking.context,idRequirements:'One of Aadhaar, PAN or passport for each guest. Use fictional samples in this test.'}});
+ if(await runFor(ctx,booking._id))return null;
  const c=booking.context,names=Array.from({length:c.guestCount},(_,i)=>i===0?c.guestName:i===1?'Priya Sharma':i===2?'Dev Patel':`Test Guest ${i+1}`);
  const id=await ctx.db.insert('precheckRuns',{bookingId:booking._id,names,requirements:[['aadhaar','pan','passport']],revision:1,email:'booking-contact@example.test',complete:false,arrivalProvided:!!(c.location&&c.entry&&c.checkInTime&&c.houseRules),paused:false,lastReminderAt:Date.now(),createdAt:Date.now(),updatedAt:Date.now()});
  const run=(await ctx.db.get('precheckRuns',id))!;

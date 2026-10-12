@@ -10,7 +10,7 @@ Authorized: build and deploy image-AI name checking in the existing browser sand
 4. Save completion only after every guest satisfies requirements and essential arrival information is provided. Show guest and protected host notices; preserve isolation, retry safety and reload progress.
 5. Test fictional images/PDFs through the actual image reader and live browser. Publish on the existing Convex link. Report real-ID evaluation and external delivery as separate, unproven capabilities.
 
-Status: implementation in progress. No WhatsApp integration or design overhaul in this phase.
+Status: deployed on the existing production Convex site on 13 October 2026. Live Chrome checks passed for Aadhaar/PAN/passport fictional-image reading, PDF reading, wrong-name rejection, three-guest completion, reload/isolation, reminder pause, host data protection, host-created property tests and phone widths. 27 automated checks and TypeScript validation passed. Real-ID accuracy, real booking integration and external notifications remain future work. No WhatsApp integration or design overhaul in this phase.
 
 ## Implemented: admin dashboard and property URL import
 

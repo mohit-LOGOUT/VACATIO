@@ -2,7 +2,7 @@
 
 ## Current priority: Hermes completes pre-check-in
 
-Approved 13 October 2026. This section supersedes the earlier text-only sandbox scope and the old sequence that put WhatsApp before document collection. The property dashboard and question-answering sandbox already work; the workflow below is the next build, not a claim about existing capabilities. Prove it in the browser first, then connect WhatsApp. Visual redesign remains deferred.
+Approved 13 October 2026. This section supersedes the earlier text-only sandbox scope and the old sequence that put WhatsApp before document collection. The property dashboard and question-answering sandbox already work; the fictional-document workflow below is now deployed for browser testing, while real-ID accuracy and live booking integration remain unproven. Prove it in the browser first, then connect WhatsApp. Visual redesign remains deferred.
 
 **Primary job:** get every person on a booking ready before arrival by collecting the property's required IDs, checking each document's type, readability and name, resolving missing or uncertain information, and confirming completion to the guest and host. Answer property questions helpfully throughout this process.
 
@@ -19,7 +19,7 @@ Approved 13 October 2026. This section supersedes the earlier text-only sandbox 
 
 The agreed first version checks document type, readability and **name matching for every required ID**, including Aadhaar, PAN and passport. No photograph comparison, selfie matching or face recognition is included. Name matching does not prove that a document is genuine or that the sender is its holder; do not label it government verification or guaranteed fake-ID detection.
 
-Selected approach (13 October 2026): image-reading AI extracts document type and holder name; explicit comparison rules determine the outcome. No separate OCR service is required for the first build. GPT-4.1 mini is the initial evaluation candidate, not a proven winner on our documents; pin a tested model version before release. The document reader can use a different model from the Hermes conversation agent. The fictional-document browser workflow is implemented and development-tested with actual model calls. Real-ID accuracy evaluation has not started.
+Selected approach (13 October 2026): image-reading AI extracts document type and holder name; explicit comparison rules determine the outcome. No separate OCR service is required for the first build. GPT-4.1 mini is the initial evaluation candidate, not a proven winner on our documents; pin a tested model version before release. The document reader can use a different model from the Hermes conversation agent. The fictional-document browser workflow is deployed and tested in development and production with actual model calls. Real-ID accuracy evaluation has not started.
 
 1. Receive and securely save the upload against the selected guest and booking. Only then acknowledge receipt. Accept supported images/PDFs; unreadable or unsupported files need a clear replacement request.
 2. Use image-reading AI to extract the document type, holder's name as printed, and any unreadable/uncertain fields into a fixed result format. For PDFs, use a supported document-input path or render the relevant pages as images; do not assume an image endpoint accepts PDFs. Distinguish the holder's name from a parent's/spouse's name or other text. Do not send the expected guest name to the reader: compare it afterward to reduce the risk of the reader copying the expected answer. Treat document content as data, never agent instructions.
@@ -84,7 +84,7 @@ For a mismatch, ask for clarification without accusing the guest: “The name we
 5. Successful upload gets a receipt acknowledgement before a later check result. Upload failures never say “received”; pending checks never say “complete.” A validation-service outage is retryable and does not imply a fake ID.
 6. Two completed guests out of three remain incomplete. A replacement document can resolve the third guest's failure and complete the booking exactly once. The guest confirmation and protected host notice reflect the saved result.
 7. Switching/reloading bookings preserves progress without leaking documents or messages. A guest chat instruction cannot approve an ID. Retry and late results cannot duplicate notices or overwrite a newer check.
-8. Prove the workflow with clearly labelled fictional fixtures in the public browser demo. Fixture outcomes demonstrate the flow, not real validation accuracy. Separately evaluate the selected service on authorised document samples in a protected test before claiming real-ID support. Record results; this evaluation has not run yet.
+8. Prove the workflow with clearly labelled fictional fixtures in the public browser demo. Fixture outcomes demonstrate the flow, not real validation accuracy. Separately evaluate the selected service on authorised document samples in a protected test before claiming real-ID support. Record results. Fictional Aadhaar/PAN/passport image and PDF checks passed on the live site on 13 October 2026; the authorised real-document evaluation has not run yet.
 
 ## Implemented foundation: authenticated admin dashboard and property import
 
@@ -282,7 +282,7 @@ How I'll know it worked (what they do again, not what they say): a vacation rent
 
 The document service can reliably read each supported ID's holder name and distinguish clear matches from uncertain or mismatched names without falsely approving a guest. Reading an image is not proof of authenticity or of the sender's identity.
 
-Validation trial: use authorised samples for Aadhaar, PAN and passport, including clear/blurred text, alternate name formatting, parent names, mismatches, incorrect document types and random PDFs. Record extraction accuracy and false approvals separately from whether the conversation works. Uncertain results must go to review. Status: **not run; image-reading AI selected, model candidate identified, service not integrated**.
+Validation trial: use authorised samples for Aadhaar, PAN and passport, including clear/blurred text, alternate name formatting, parent names, mismatches, incorrect document types and random PDFs. Record extraction accuracy and false approvals separately from whether the conversation works. Uncertain results must go to review. Status: **fictional image/PDF flow tested with GPT-4.1 mini on production; authorised real-ID accuracy evaluation not run**.
 
 ## 7. Milestones
 
