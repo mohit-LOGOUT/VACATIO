@@ -2,6 +2,119 @@
 
 Before building or changing any screen, read DESIGN.md and follow it. If a choice isn't covered there, ask me instead of guessing.
 
+## Current build: Hermes sandbox
+
+This is the next interface to build. It takes priority over the later dashboard screens described below. The operator tests as a guest in a browser chat; WhatsApp number integration comes later. Hermes is the assistant's name in this interface. The sandbox interface and Hermes backend were implemented on 12 October 2026. Browser checks verified real model replies, follow-ups, host input, updated saved context, booking separation, reload and restart, and layouts at 320px, 390px, 768px and 1280px. Live WhatsApp and full document onboarding remain unbuilt.
+
+Published location: **https://grateful-llama-909.convex.site/**. The sandbox sits below the landing hero image; “Try with a booking” scrolls to it. A same-origin embedded sandbox preserves the approved chat design and expands to fit booking edits or host requests. `/sandbox.html` remains available as a direct view. The published frontend and Hermes backend use the same production deployment.
+
+Reference: **[Hermes sandbox screenshot](design-refs/hermes-sandbox.png)**, supplied on 12 October 2026. Use its centered title, three-column layout, phone silhouette, generous empty space and familiar chat composition. The screenshot is a visual reference, not evidence of billing, available features or live agent activity.
+
+### Layout and reference map
+
+The screenshot is approximately 1964 × 1356 pixels. Measurements and colours below are visual estimates, not sampled values.
+
+Read as a 5 × 5 grid:
+
+| Row | Left two columns | Centre column | Right two columns |
+| --- | --- | --- | --- |
+| 1 | White margin; left panel begins near bottom | Centered title and subtitle; phone begins below | White margin; activity panel begins near bottom |
+| 2 | Session card and explanatory caption | Phone header, greeting, chat | Activity card, then empty space |
+| 3 | Empty space | Tall chat body | Empty space |
+| 4 | Empty space | Tall chat body | Empty space |
+| 5 | Empty space | Composer, home indicator and bottom phone frame | Empty space |
+
+The phone is the visual focus. Side panels align with its top and remain lighter than the dark frame. Preserve this hierarchy, but fit the chat into the available screen height so sending a message never requires scrolling the whole desktop page.
+
+### Elements from the screenshot
+
+- Page: white background; centered “Test xyz” heading, approximately 48px bold; gray subtitle “Chat with your agent to make sure everything feels right.”, approximately 22px.
+- Left card: white surface, thin pale border, approximately 24px corners and 32px padding. Coin icon, “Credits this session”, Reset with a circular arrow, large “0.00”, “Nothing spent yet”, divider, “Last reply”, “Avg / reply”, dash values, wallet icon, “Balance left”, “4,769.39”. Muted billing/reset caption underneath. These financial figures are reference content only; do not reproduce them as real product data.
+- Phone: approximately 550px wide in the reference, near-black frame, deeply rounded corners, soft large shadow and small side buttons. Decorative status time, camera cutout, signal/Wi-Fi/battery icons and bottom home indicator.
+- Chat header: deep teal surface, round mint robot avatar, “xyz”, “online”, back arrow and call/video icons. The latter icons are not functional requirements.
+- Chat body: warm beige background, white left-aligned greeting bubble “Hello, how can I help you?” with soft corners and a small shadow; otherwise empty.
+- Composer: pale gray strip, white pill input “Type a message” and round muted teal send button with a paper-plane icon.
+- Right card: white surface, thin border, approximately 24px corners; sparkle icon, “Agent activity” heading and muted explanation of reading/searching/composing. Its compact size gives the chat room to breathe.
+
+### Our screen: Test Hermes
+
+Heading: **Test Hermes**
+
+Subtitle: **Chat as a guest and test Hermes with a dummy booking.**
+
+Small visible note: **Sandbox only. Messages stay here.**
+
+Desktop layout: centered container, maximum width 1440px, 32px outer padding and 32px gaps. Three columns: flexible left panel (about 300–360px), phone chat (about 380–460px), flexible right panel (about 300–360px). All content is left aligned within panels; only the page heading is centered.
+
+**Left: Test booking**
+
+- Booking selector; clearly identify fictional sample bookings.
+- Summary: guest name, property name, arrival/departure dates and guest count.
+- Expandable “Property details”: check-in/out times, location/directions, entry instructions, parking, house rules and ID requirements.
+- “Edit test details” opens labelled editable fields within this panel; “Save test details” and Cancel finish the edit. Validate required fields, dates and positive guest count. Failed saves retain the entered text and the last saved context.
+- “Restart test” starts a fresh conversation for the selected booking after confirmation. Explain that it clears this test's chat and activity, not property or booking details. Do not imply provider charges are refunded.
+- Switching bookings loads a separate conversation and its own activity. A reply already in progress stays with its original booking.
+
+Use this panel instead of the reference's credits card. Do not add invented credit balances, price counters or billing notices. Usage tracking can be designed separately when actual billing data exists.
+
+**Centre: Guest chat**
+
+- Phone silhouette and chat colours follow the reference. Phone decorations are optional desktop-only, hidden from assistive tools, and never obscure messages or controls.
+- Header: robot avatar, **Hermes**, and an honest status: “Ready”, “Replying…” or “Unavailable”. Do not claim a live WhatsApp connection or show “online” without a real connection state.
+- Initial welcome uses the selected booking: “Hi [guest name], I’m Hermes, your arrival assistant for [property name]. Ask me about your stay.” Show only once per fresh conversation.
+- Hermes replies on the left in white bubbles; guest messages on the right in pale green bubbles. Maximum bubble width 85%; preserve paragraphs, wrap long links and show readable timestamps.
+- Scrollable message area; header and composer remain visible. Scroll to new messages when the reader is near the bottom; otherwise show a “New message” control.
+- Bottom composer: labelled multiline input with “Type a message”, circular Send button. Enter sends; Shift+Enter adds a line. Send is disabled for empty input and during a pending reply; keep unsent text when a request fails.
+- Show typing/loading feedback, failed-message feedback and Retry without duplicating an already accepted message.
+- No call/video/back controls unless they have a working purpose. No attachment control until uploads and document checking are implemented; plain chat must never pretend that an ID has been verified.
+
+**Right: Agent activity**
+
+- Title: **Agent activity** with a quiet sparkle icon.
+- Empty: “Send Hermes a message to see which booking details it uses.”
+- During a reply show only actual events, such as “Reading booking”, “Checking property details” and “Writing reply”. Do not animate a fake search or expose private internal reasoning.
+- After a reply show a short factual summary and source labels, such as “Answered using Parking in property details”. Show these only when supported by the underlying response data.
+- Unknown or permission-dependent answers show **Needs host answer**, the guest question and a short reason. Hermes tells the guest that host input is needed; do not claim a host notification was sent.
+- Provide a labelled host answer field and “Give answer to Hermes” for continuing the test. This answer belongs to this booking's conversation; it does not silently become permanent property knowledge.
+- Failed requests show “Hermes couldn’t reply. Try again.” with Retry. Preserve the conversation and booking context.
+
+### Sandbox colours, type and shape
+
+This screenshot-specific palette applies only to the sandbox. The existing landing page and later host screens retain their palette below.
+
+| Purpose | Value |
+| --- | --- |
+| Page and cards | #FFFFFF |
+| Main text / phone frame | #111827 |
+| Secondary text | #6B7280 |
+| Small supporting text | #667085 |
+| Borders / dividers | #E5E7EB |
+| Chat header and enabled Send | #075E54 |
+| Avatar | #8DECB0 |
+| Chat canvas | #ECE5DD |
+| Hermes bubble | #FFFFFF |
+| Guest bubble | #DCF8C6 |
+| Composer strip | #F3F4F6 |
+| Error / needs attention | #B42318 |
+
+Font: **Geist**, consistent with this project. Desktop title 40px/44px, panel headings 20px/28px semibold, chat and body 16px/24px, supporting text 13px/18px. Mobile title 28px/34px. Panel corners 24px, bubbles 16px with a subtly squared sender-side corner, composer pill fully rounded. Use 8px spacing steps, 24–32px panel padding and at least 44px touch targets. Use stronger supporting text contrast than the very pale text in the reference.
+
+### Responsive behaviour and access
+
+Breakpoints use the sandbox’s available width. When embedded below the landing banner, the landing page’s side padding reduces that width, so a 768px outer page may use the compact single-column sandbox layout. Keep this layout usable rather than forcing two cramped columns.
+
+- At 1100px and above: three columns, chat about 560–720px tall depending on available height; preserve a usable message area on shorter screens.
+- At 768–1099px: two columns, booking and activity stacked beside the chat; scale or remove decorative phone chrome to avoid squeezing text.
+- Below 768px: one full-width chat, without an outer phone frame or imitation status bar. “Test booking” and “Agent activity” are collapsible sections above/below the chat. Keep selected guest/property visible near the chat header.
+- Use available viewport height and allow for the mobile keyboard. Keep the composer reachable with no horizontal scrolling at 320px width.
+- Inputs have visible labels; icon buttons have accessible names; keyboard focus is clearly visible. New status/reply updates are announced politely to screen readers. Reduced-motion settings suppress decorative transitions. Colour alone never communicates a failure or host request.
+
+### Review before calling the interface working
+
+Check at 320px, 390px, 768px and 1280px widths. Verify: send and receive a real Hermes reply; follow-up uses conversation history; property facts come from saved test details; an unknown question requests host input; host answer continues the conversation; switching bookings never mixes facts/messages; restarting affects only the selected test; errors retain messages and allow retry; reloading restores the intended saved conversation. Inspect the page visually and walk the chat flow in the browser. Record any untested item plainly.
+
+The dashboard, live WhatsApp delivery, billing and automatic ID verification are later work. The user authorized sandbox implementation on 12 October 2026. The sandbox is built; the broader dashboard and live onboarding remain later work.
+
 ## 1. The feeling, in labels
 
 - **Overall product:** calm and in control, by showing what needs attention and hiding operational noise.

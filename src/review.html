@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#FFF7F0"><title>Document review — Logout AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/review.css"><script src="/review-config.js" defer></script><script src="/review.js" defer></script>
+</head>
+<body>
+<header><a class="brand" href="/">Logout<span> AI</span></a><span class="workspace">Guest operations</span><button id="signout" class="quiet" hidden>Lock reviews</button></header>
+<main>
+<div class="intro"><div><h1>Document review</h1><p>Give every guest a clear path to check-in.</p></div><span class="privacy">Private guest documents</span></div>
+<div id="notice" class="notice" role="status" hidden></div>
+<section id="access" class="access" aria-labelledby="access-title">
+<h2 id="access-title">Open your review queue</h2><p>Use your host access key to view guest documents and save decisions.</p>
+<form id="access-form"><label for="key">Host access key</label><input id="key" type="password" autocomplete="off" required minlength="32"><button class="primary" type="submit">Open reviews</button></form>
+<p class="small">Your key stays in this tab and is cleared when you leave.</p>
+<div class="sample-option"><h3>Take a look first</h3><p>Explore three fictional documents. Sample decisions won’t change guest data.</p><button id="sample" class="secondary">Try sample reviews</button></div>
+</section>
+<section id="reviews" hidden>
+<div class="toolbar"><div class="filters" aria-label="Review status"><button data-status="needs_human_review" aria-pressed="true">Needs review</button><button data-status="pending" aria-pressed="false">Pending</button><button data-status="accepted" aria-pressed="false">Approved</button><button data-status="rejected" aria-pressed="false">Rejected</button></div><button id="refresh" class="quiet">Refresh</button></div>
+<div class="review-layout"><aside aria-label="Documents"><p id="queue-summary" class="small"></p><div id="queue"></div><button id="more" class="secondary" hidden>Load more</button></aside>
+<section id="detail" class="detail" aria-label="Selected document"><div class="empty"><h2>Select a document</h2><p>Choose a guest to see their ID and what needs attention.</p></div></section></div>
+</section>
+<p id="error" class="error" role="alert" hidden></p>
+</main>
+</body></html>

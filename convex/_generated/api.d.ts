@@ -8,13 +8,25 @@
  * @module
  */
 
+import type * as checkInRules from "../checkInRules.js";
+import type * as hermes from "../hermes.js";
+import type * as reviews from "../reviews.js";
+import type * as sandbox from "../sandbox.js";
+import type * as sandboxRules from "../sandboxRules.js";
+
 import type {
   ApiFromModules,
   FilterApi,
   FunctionReference,
 } from "convex/server";
 
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  checkInRules: typeof checkInRules;
+  hermes: typeof hermes;
+  reviews: typeof reviews;
+  sandbox: typeof sandbox;
+  sandboxRules: typeof sandboxRules;
+}>;
 
 /**
  * A utility for referencing Convex functions in your app's public API.
@@ -44,4 +56,5 @@ export declare const internal: FilterApi<
 
 export declare const components: {
   staticHosting: import("@convex-dev/static-hosting/_generated/component.js").ComponentApi<"staticHosting">;
+  agent: import("@convex-dev/agent/_generated/component.js").ComponentApi<"agent">;
 };

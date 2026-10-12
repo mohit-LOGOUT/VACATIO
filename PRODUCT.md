@@ -1,5 +1,54 @@
 # Product
 
+## Current requirement: Hermes sandbox first
+
+Updated 12 October 2026. This section defines the immediate build and takes priority over references below to starting with live WhatsApp or a real booking. The broader guest onboarding product remains the destination; we first prove its conversation flow with fictional bookings in a browser.
+
+**Who uses this first:** the vacation rental operator, acting as a guest to test Hermes before connecting a WhatsApp number.
+
+**The job:** give Hermes a dummy booking and property details, then have a realistic arrival conversation, check its answers and supply host input when it does not know enough.
+
+**First value:** the operator asks an arrival question in the sandbox and receives a correct answer based on the selected booking and property, then asks a follow-up that Hermes understands from the conversation.
+
+### First-build journey
+
+1. Open **Test Hermes**, the WhatsApp-like browser interface specified in DESIGN.md. A working AI assistant powers replies; predefined replies do not count as a working agent.
+2. Select one of two clearly labelled fictional bookings. Each has a guest, property, stay dates and guest count. Sample property context includes check-in/out times, location/directions, entry instructions, parking, house rules and ID requirements.
+3. Inspect or edit the test booking and property details, then save them. These saved facts are the source for future replies; they are not a list of manually trained question-and-answer pairs.
+4. Read Hermes's booking-specific welcome and type as the guest.
+5. Hermes reads only this booking's property facts and conversation history, and answers warmly and briefly. It remembers follow-up questions within that conversation.
+6. See a factual activity summary showing the context used, or a request for host input. Activity reflects actual work and does not expose private internal reasoning.
+7. If information is missing or a request needs permission, Hermes explains that host input is needed. It does not invent facts, approve early check-in, change bookings or claim someone has been notified.
+8. Supply a host answer in the sandbox; Hermes uses it to continue the guest conversation. This answer is conversation-specific unless the operator separately edits and saves property details.
+9. Switch to another booking and test again. Conversations and facts remain separate. Restarting a test clears only that selected conversation and activity after confirmation, preserving its booking and property details.
+10. Reload and confirm saved context and conversation history are retained. Failed replies preserve the conversation and offer retry without duplicate messages.
+
+### Scope of the first working version
+
+Must have: editable dummy booking/property context; a real Hermes agent; browser chat; saved conversation history per booking; follow-up understanding; answers grounded in the selected context; host input for unknown or permission-dependent questions; truthful activity/error states; restart and booking switching; responsive layout matching the sandbox section of DESIGN.md.
+
+Not in this build: WhatsApp integration or sending real messages, dashboard, booking API/PMS integration, billing counters, real guest onboarding, ID uploads or automatic document verification, scheduled reminders, payments, booking changes, in-stay services, automatic permanent learning.
+
+Hermes may explain saved ID requirements, but must not mark IDs verified or a guest ready for check-in based on a guest's chat claim. A text-only sandbox does not prove the document verification flow.
+
+### Sandbox milestones and proof
+
+1. Select a dummy booking, ask about parking or check-in time, and see a real agent answer correctly in the browser.
+2. Ask a follow-up and confirm Hermes uses the conversation history.
+3. Ask about an absent detail or early check-in; see Hermes request host input, supply it, and see the conversation continue correctly.
+4. Change saved property details and confirm a subsequent answer uses the updated fact rather than an old answer.
+5. Switch between two bookings and confirm that messages, host answers and property facts do not leak between them.
+6. Reload to verify persistence; restart one test and confirm the other test and saved booking/property details remain intact.
+7. Check the flow on desktop and phone widths, including a failed reply and successful retry.
+
+Success: the operator can run these checks through the sandbox, trust the answer sources, and provide their own dummy property/booking details for a second round. Only then connect a WhatsApp number and test delivery separately. Full onboarding still requires the document and readiness milestones below.
+
+### After the sandbox works
+
+Connect WhatsApp to the same agent and booking context, verify sending/receiving and delivery, then add ID collection, document checks, missing-ID tracking and arrival-information delivery. Build the host dashboard later. Sandbox testing is preparation for this live flow, not evidence that live messaging or full check-in works.
+
+## Broader product: guest onboarding
+
 <!-- impeccable:product-schema 1 -->
 ## 1. The job
 When a guest is due to arrive, I want their identity checks, check-in details and arrival questions handled without my team stepping in, so I can get every guest ready for check-in without manual back-and-forth.

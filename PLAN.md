@@ -1,10 +1,21 @@
 # PLAN.md
 
-Landing page first, one hour.
+## Current build: Hermes sandbox
 
-Then the milestones from PRODUCT.md, riskiest part first, in its simplest form:
+Approved 12 October 2026. Build the browser chat before WhatsApp or the dashboard.
 
-1. I can upload a valid identity document and a random PDF, and LOGOUT AI accepts the ID but rejects the random file.   <- now
+1. Select a fictional booking and receive a real Hermes answer from saved property details. <- now
+2. Test conversation memory and host input for unknown or permission-dependent questions.
+3. Save updated context, switch between isolated bookings, reload history and restart one test.
+4. Verify desktop/phone layout and retry failures in the real browser flow.
+
+Use the sandbox sections in PRODUCT.md, DESIGN.md and AGENT.md. No milestone is complete until its actual flow has been verified. Preserve the existing landing page and manual ID review work.
+
+## Later: live guest onboarding
+
+These milestones resume after the sandbox works and WhatsApp is connected:
+
+1. I can upload a valid identity document and a random PDF, and LOGOUT AI accepts the ID but rejects the random file.
 2. I can give LOGOUT AI one real booking and property context, ask an arrival question, and get the correct answer.
 3. I can start onboarding for a booking and the guest receives an ID request on WhatsApp.
 4. I can upload IDs for multiple guests and see exactly which required documents are still missing.

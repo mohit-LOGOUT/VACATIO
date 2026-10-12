@@ -1,7 +1,18 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { contextValidator } from "./sandboxRules";
 
 export default defineSchema({
+  sandboxSessions: defineTable({ tokenHash: v.string(), expiresAt: v.number(), usage: v.number(), windowStart: v.number() }).index("by_token_hash", ["tokenHash"]),
+  sandboxBookings: defineTable({ sessionId: v.id("sandboxSessions"), context: contextValidator, generation: v.number(), threadId: v.string(), busyTurnId: v.optional(v.id("sandboxTurns")) }).index("by_session", ["sessionId"]),
+  sandboxTurns: defineTable({
+    bookingId: v.id("sandboxBookings"), generation: v.number(), requestId: v.string(), text: v.string(),
+    kind: v.union(v.literal("guest"), v.literal("host")), originalTurnId: v.optional(v.id("sandboxTurns")),
+    promptMessageId: v.string(), attempt: v.number(), threadId: v.string(),
+    status: v.union(v.literal("queued"), v.literal("reading"), v.literal("replying"), v.literal("complete"), v.literal("failed")),
+    reply: v.optional(v.string()), sources: v.optional(v.array(v.string())), hostReason: v.optional(v.string()),
+    resolved: v.optional(v.boolean()), error: v.optional(v.string()), createdAt: v.number(), completedAt: v.optional(v.number()),
+  }).index("by_booking_generation", ["bookingId", "generation"]).index("by_booking_request", ["bookingId", "requestId"]),
   properties: defineTable({
     name: v.string(),
     logoutPropertyId: v.optional(v.string()),
@@ -60,6 +71,7 @@ export default defineSchema({
     uploadedAt: v.number(),
     reviewedAt: v.optional(v.number()),
   })
+    .index("by_review_status", ["reviewStatus"])
     .index("by_guest", ["guestId"])
     .index("by_guest_and_status", ["guestId", "reviewStatus"]),
 
