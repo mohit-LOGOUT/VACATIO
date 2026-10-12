@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
 .chat-context{display:none}@media(max-width:767px){.chat-context{display:block;margin:0;padding:0 16px 12px;background:#075e54;color:#ceeee5;font-size:12px;line-height:18px;overflow-wrap:anywhere}.chat-caption{display:none}}
+
+.precheck-panel{margin-bottom:20px}.precheck-panel p{font-size:13px;line-height:1.6;overflow-wrap:anywhere}.precheck-status{font-weight:700;color:#075e54}.guest-check{border-top:1px solid #e5e7eb;padding:16px 0}.guest-check h3{font-size:16px}.guest-check .actions{gap:6px}.guest-check button{font-size:12px;flex:1}.guest-check label{margin-top:14px}.guest-check input{font-size:12px;max-width:100%}.document-check{background:#f3f6f4;padding:10px;margin:8px 0;border-radius:8px;font-size:12px}.document-check p{margin-bottom:0}#precheck-error{color:#b42318}#precheck-settings{margin:14px 0}#precheck-settings summary{cursor:pointer;padding:10px 0}#precheck-settings label{margin-top:12px}#precheck-host{border-top:1px solid #e5e7eb;margin-top:20px;padding-top:12px}#precheck-host h3{font-size:15px}

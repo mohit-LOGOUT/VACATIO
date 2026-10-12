@@ -6,6 +6,7 @@ await mkdir('dist', { recursive: true });
 await cp('src', 'dist', { recursive: true });
 await build({ entryPoints: ['src/sandbox.js'], bundle: true, format: 'esm', platform: 'browser', outfile: 'dist/sandbox-app.js', minify: true });
 await rm('dist/sandbox.js');
+await rm('dist/precheck.js');
 await build({entryPoints:['src/admin.jsx'],bundle:true,format:'esm',platform:'browser',outfile:'dist/admin-app.js',minify:true,define:{'process.env.NODE_ENV':'"production"'}});
 await rm('dist/admin.jsx');
 let convexUrl = process.env.CONVEX_URL || process.env.VITE_CONVEX_URL;

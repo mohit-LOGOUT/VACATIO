@@ -1,6 +1,18 @@
 # PLAN.md
 
-## Next build: admin dashboard and property URL import
+## Current build: per-guest pre-check-in (13 October 2026)
+
+Authorized: build and deploy image-AI name checking in the existing browser sandbox before WhatsApp. The public demo accepts fictional documents; the protected admin shows progress/review and can start a fictional booking using a saved property. Real-ID accuracy has not yet been evaluated.
+
+1. Track each named guest and property-specific one-of/combined ID requirements. Reuse booking email; do not collect it again.
+2. Save an upload against its guest and booking, acknowledge receipt, then read type/name with GPT-4.1 mini. Compare the name in code; route unclear/mismatched results to replacement or host review.
+3. Answer guest questions and add appropriate reminders in separate messages. Respect pause requests and avoid reminders while checks are pending.
+4. Save completion only after every guest satisfies requirements and essential arrival information is provided. Show guest and protected host notices; preserve isolation, retry safety and reload progress.
+5. Test fictional images/PDFs through the actual image reader and live browser. Publish on the existing Convex link. Report real-ID evaluation and external delivery as separate, unproven capabilities.
+
+Status: implementation in progress. No WhatsApp integration or design overhaul in this phase.
+
+## Implemented: admin dashboard and property URL import
 
 Requested 12 October 2026. These are must-have features, ahead of live WhatsApp. This order supersedes older instructions to defer the dashboard. Requirements are recorded in PRODUCT.md. Core implementation is published. The owner account is configured and authenticated production browser checks passed for login, the supplied Airbnb import, saved edits/reload, duplicates, private-address rejection and sign-out. Airbnb and SaffronStays imports were also tested in development. Keep the published landing page and free Hermes demo working throughout.
 
@@ -25,16 +37,7 @@ Use the sandbox sections in PRODUCT.md, DESIGN.md and AGENT.md. No milestone is 
 
 ## Later: live guest onboarding
 
-After the admin property catalogue and URL import are verified, connect WhatsApp and resume these milestones:
-
-1. I can upload a valid identity document and a random PDF, and LOGOUT AI accepts the ID but rejects the random file.
-2. I can give LOGOUT AI one real booking and property context, ask an arrival question, and get the correct answer.
-3. I can start onboarding for a booking and the guest receives an ID request on WhatsApp.
-4. I can upload IDs for multiple guests and see exactly which required documents are still missing.
-5. I can see LOGOUT AI mark the guest as ready for check-in only when all required valid IDs have been received.
-6. I can see LOGOUT AI send the guest the correct arrival and check-in information.
-7. I can ask something LOGOUT AI cannot safely answer and see it escalate instead of making up an answer.
-8. I can close it, reopen it, and my data is still there.
+After the browser pre-check-in flow passes, evaluate the document reader on authorised real samples in a protected environment, decide real-ID retention/access rules, then connect actual booking data and WhatsApp. Verify sending, receiving and completion-notification delivery separately. Fictional test completion does not prove government authenticity or physical check-in.
 
 Parked (not now):
 - Inquiry form popup before testing

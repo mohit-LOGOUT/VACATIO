@@ -1,3 +1,4 @@
+import {initPrecheck,selectPrecheck,precheckState} from './precheck.js';
 import { ConvexClient } from 'convex/browser';
 import { api } from '../convex/_generated/api.js';
 const $ = id => document.getElementById(id);
@@ -12,10 +13,10 @@ const fields = [
 ];
 function node(tag, text, className) { const e = document.createElement(tag); if (text !== undefined) e.textContent = text; if (className) e.className = className; return e; }
 function error(message = '') { $('page-error').textContent = message; $('page-error').hidden = !message; }
-function readable(err) { const text = err?.message || 'Something went wrong. Try again.'; return text.split('Uncaught Error: ').at(-1).split('\n')[0].replace(/^\[CONVEX[^\]]*\]\s*/, ''); }
+function readable(err) { const text = err?.data || err?.message || 'Something went wrong. Try again.'; return text.split('Uncaught Error: ').at(-1).split('\n')[0].replace(/^\[CONVEX[^\]]*\]\s*/, ''); }
 function current() { return bookings.find(b => b.id === selected); }
 function date(s) { return new Intl.DateTimeFormat('en-IN', { day:'numeric', month:'short', year:'numeric', timeZone:'UTC' }).format(new Date(s)); }
-function time(s) { const [h,m] = s.split(':'); return `${Number(h)%12 || 12}:${m} ${Number(h)<12?'am':'pm'}`; }
+function time(s) { if(!s)return 'Not provided'; const [h,m] = s.split(':'); return `${Number(h)%12 || 12}:${m} ${Number(h)<12?'am':'pm'}`; }
 function randomToken() { return [...crypto.getRandomValues(new Uint8Array(32))].map(x => x.toString(16).padStart(2,'0')).join(''); }
 function wire() {
   unsubscribe?.();
@@ -37,11 +38,12 @@ async function start() {
   error(); $('startup').hidden=false; $('startup-status').textContent='Loading fictional bookings…'; $('retry-start').hidden=true;
   if(!/^[a-f0-9]{64}$/.test(token))token=randomToken();
   localStorage.setItem('hermes-session',token);
+  initPrecheck(client,token,()=>{lastChatKey='';if(current())render();});
   try { await client.action(api.sandbox.open,{token}); wire(); }
   catch(err) { startupError(err); }
 }
 function render() {
-  const b = current(); if (!b) return;
+  const b = current(); if (!b) return;selectPrecheck(b);
   const selector = $('booking-select'); selector.replaceChildren(...bookings.map(x => { const o = node('option', `${x.context.guestName} · ${x.context.propertyName}`); o.value=x.id; return o; })); selector.value=b.id;
   $('booking-summary').replaceChildren(node('h2', b.context.guestName, 'guest-name'),node('p',b.context.propertyName,'property-name'));
   const meta=node('div',undefined,'booking-meta');
@@ -55,14 +57,17 @@ function render() {
   const failed=b.turns.find(t=>t.status==='failed');
   $('agent-status').textContent=b.busy?'Replying…':failed?'Unavailable':'Ready';
   $('message-input').disabled=b.busy || !!failed;updateSend();
-  const key=JSON.stringify({id:b.id,generation:b.generation,guest:b.context.guestName,property:b.context.propertyName,turns:b.turns});
+  const key=JSON.stringify({id:b.id,generation:b.generation,guest:b.context.guestName,property:b.context.propertyName,turns:b.turns,precheck:precheckState()});
   if(key!==lastChatKey){
     lastChatKey=key; const area=$('messages');const scroll=area.scrollTop;
     area.replaceChildren();
     bubble(area,`Hi ${b.context.guestName}, I’m Hermes, your arrival assistant for ${b.context.propertyName}. Ask me about your stay.`,'hermes');
-    for(const turn of b.turns){
+    const timeline=[...b.turns.map(turn=>({stamp:turn.createdAt,turn})),...(precheckState()?.events??[]).map(event=>({stamp:event.createdAt,event}))].sort((a,b)=>a.stamp-b.stamp);
+    for(const item of timeline){
+      if(item.event){bubble(area,item.event.text,'hermes',item.event.createdAt);continue;}
+      const turn=item.turn;
       if(turn.kind==='host')area.append(node('div',`Host answer: ${turn.text}`,'host-note'));else bubble(area,turn.text,'guest',turn.createdAt);
-      if(turn.reply)bubble(area,turn.reply,'hermes',turn.completedAt);
+      for(const reply of turn.replies??(turn.reply?[turn.reply]:[]))bubble(area,reply,'hermes',turn.completedAt);
       if(turn.status==='failed'){
         const box=node('div',undefined,'reply-error');box.setAttribute('role','alert');box.append(node('p',turn.error||'Hermes couldn’t reply. Try again.'));const retry=node('button','Retry reply');retry.type='button';retry.addEventListener('click',()=>retryTurn(turn.id,retry));box.append(retry);area.append(box);
       }
@@ -108,7 +113,7 @@ $('messages').addEventListener('scroll',()=>{const a=$('messages');following=a.s
 $('new-message').addEventListener('click',()=>{following=true;$('messages').scrollTop=$('messages').scrollHeight;$('new-message').hidden=true;});
 $('booking-select').addEventListener('change',()=>{if(editing&&!confirm('Discard your unsaved edits and switch bookings?')){$('booking-select').value=selected;return;}selected=$('booking-select').value;localStorage.setItem('hermes-booking',selected);closeEdit();$('message-input').value=drafts.get(selected)||'';following=true;lastChatKey='';wasBusy=false;error();render();});
 function closeEdit(){editing=false;$('context-form').hidden=true;$('edit-details').hidden=false;$('save-status').textContent='';}
-$('edit-details').addEventListener('click',()=>{const b=current();if(!b)return;editing=true;$('context-form').hidden=false;$('edit-details').hidden=true;const area=$('context-fields');area.replaceChildren();for(const [key,label,type]of fields){const l=node('label',label);l.htmlFor=`field-${key}`;const input=node(type==='textarea'?'textarea':'input');input.id=`field-${key}`;input.name=key;if(type!=='textarea')input.type=type;input.value=b.context[key];if(type==='number'){input.min='1';input.max='100';input.step='1';}else input.maxLength=2000;input.required=['guestName','propertyName','arrivalDate','departureDate','guestCount','checkInTime','checkOutTime','location'].includes(key);area.append(l,input);} $('field-guestName').focus();});
+$('edit-details').addEventListener('click',()=>{const b=current();if(!b)return;editing=true;$('context-form').hidden=false;$('edit-details').hidden=true;const area=$('context-fields');area.replaceChildren();for(const [key,label,type]of fields){const l=node('label',label);l.htmlFor=`field-${key}`;const input=node(type==='textarea'?'textarea':'input');input.id=`field-${key}`;input.name=key;if(key==='idRequirements'){input.readOnly=true;input.title='Change these in Guest names and ID requirements.';}if(type!=='textarea')input.type=type;input.value=b.context[key];if(type==='number'){input.min='1';input.max='100';input.step='1';}else input.maxLength=2000;input.required=['guestName','propertyName','arrivalDate','departureDate','guestCount','checkInTime','checkOutTime','location'].includes(key);area.append(l,input);} $('field-guestName').focus();});
 $('cancel-edit').addEventListener('click',closeEdit);
 $('context-form').addEventListener('submit',async e=>{e.preventDefault();const b=current(),context={};for(const[key,,type]of fields)context[key]=type==='number'?Number($(`field-${key}`).value):$(`field-${key}`).value.trim();const button=e.submitter;button.disabled=true;error();try{await client.mutation(api.sandbox.edit,{token,bookingId:b.id,context});closeEdit();$('save-status').textContent='Test details saved. Hermes will use them in its next reply.';}catch(err){error(readable(err));}finally{button.disabled=false;}});
 $('restart').addEventListener('click',()=>$('restart-dialog').showModal());
@@ -116,6 +121,7 @@ $('restart-dialog').addEventListener('close',async()=>{if($('restart-dialog').re
 $('retry-start').addEventListener('click',start);
 const fragment=new URLSearchParams(location.hash.slice(1));const supplied=fragment.get('session');if(supplied&&/^[a-f0-9]{64}$/.test(supplied)){token=supplied;localStorage.setItem('hermes-session',token);history.replaceState(null,'',location.pathname+location.search);}
 if(innerWidth<768){$('booking-panel').open=false;$('activity-panel').open=false;}
+initPrecheck(client,token,()=>{lastChatKey="";if(current())render();});
 start();
 if (window.parent !== window) {
   new ResizeObserver(() => window.parent.postMessage({ type: 'hermes-height', height: Math.ceil(document.body.getBoundingClientRect().height) + 24 }, location.origin)).observe(document.body);

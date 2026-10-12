@@ -4,6 +4,8 @@ import type { Id } from "./_generated/dataModel";
 import { internal, components } from "./_generated/api";
 import { createThread, saveMessage } from "@convex-dev/agent";
 import { v } from "convex/values";
+import { reminderGuest } from "./precheckRules";
+import { precheckSummary } from "./precheck";
 import { contextValidator, samples, validateContext } from "./sandboxRules";
 
 async function tokenHash(token: string) {
@@ -16,7 +18,7 @@ async function session(ctx: QueryCtx | MutationCtx, token: string) {
   if (!row || row.expiresAt < Date.now()) throw new Error("Your sandbox session has expired. Open it again.");
   return row;
 }
-async function ownedBooking(ctx: QueryCtx | MutationCtx, token: string, bookingId: Id<"sandboxBookings">) {
+export async function ownedBooking(ctx: QueryCtx | MutationCtx, token: string, bookingId: Id<"sandboxBookings">) {
   const owner = await session(ctx, token);
   const booking = await ctx.db.get("sandboxBookings", bookingId);
   if (!booking || booking.sessionId !== owner._id) throw new Error("This booking is not in your sandbox.");
@@ -50,7 +52,7 @@ export const initialize = internalMutation({
     return null;
   },
 });
-const turnView = v.object({ id: v.id("sandboxTurns"), text: v.string(), kind: v.union(v.literal("guest"), v.literal("host")), status: v.string(), reply: v.union(v.string(), v.null()), sources: v.array(v.string()), hostReason: v.union(v.string(), v.null()), resolved: v.boolean(), error: v.union(v.string(), v.null()), createdAt: v.number(), completedAt: v.union(v.number(), v.null()) });
+const turnView = v.object({ id: v.id("sandboxTurns"), text: v.string(), kind: v.union(v.literal("guest"), v.literal("host")), status: v.string(), reply: v.union(v.string(), v.null()), replies: v.array(v.string()), sources: v.array(v.string()), hostReason: v.union(v.string(), v.null()), resolved: v.boolean(), error: v.union(v.string(), v.null()), createdAt: v.number(), completedAt: v.union(v.number(), v.null()) });
 export const state = query({
   args: { token: v.string() },
   returns: v.array(v.object({ id: v.id("sandboxBookings"), context: contextValidator, generation: v.number(), busy: v.boolean(), turns: v.array(turnView) })),
@@ -58,7 +60,7 @@ export const state = query({
     const owner = await session(ctx, token);
     const bookings = await ctx.db.query("sandboxBookings").withIndex("by_session", q => q.eq("sessionId", owner._id)).take(3);
     return await Promise.all(bookings.map(async b => ({ id: b._id, context: b.context, generation: b.generation, busy: !!b.busyTurnId,
-      turns: (await ctx.db.query("sandboxTurns").withIndex("by_booking_generation", q => q.eq("bookingId", b._id).eq("generation", b.generation)).take(101)).map(t => ({ id: t._id, text: t.text, kind: t.kind, status: t.status, reply: t.reply ?? null, sources: t.sources ?? [], hostReason: t.hostReason ?? null, resolved: t.resolved ?? false, error: t.error ?? null, createdAt: t.createdAt, completedAt: t.completedAt ?? null }))
+      turns: (await ctx.db.query("sandboxTurns").withIndex("by_booking_generation", q => q.eq("bookingId", b._id).eq("generation", b.generation)).take(101)).map(t => ({ id: t._id, text: t.text, kind: t.kind, status: t.status, reply: t.reply ?? null, replies: t.replies ?? (t.reply ? [t.reply] : []), sources: t.sources ?? [], hostReason: t.hostReason ?? null, resolved: t.resolved ?? false, error: t.error ?? null, createdAt: t.createdAt, completedAt: t.completedAt ?? null }))
     })));
   },
 });
@@ -68,7 +70,12 @@ export const edit = mutation({
     const { booking } = await ownedBooking(ctx, args.token, args.bookingId);
     if (booking.busyTurnId) throw new Error("Wait for Hermes to finish before editing details.");
     validateContext(args.context);
-    await ctx.db.patch("sandboxBookings", booking._id, { context: args.context }); return null;
+    await ctx.db.patch("sandboxBookings", booking._id, { context: args.context });
+    const run=await ctx.db.query('precheckRuns').withIndex('by_booking',q=>q.eq('bookingId',booking._id)).first();
+    if(run){if(args.context.idRequirements!==booking.context.idRequirements)throw new Error('Change ID requirements in Guest names and ID requirements, so the checklist stays consistent.');const identityChanged=args.context.guestName!==booking.context.guestName||args.context.guestCount!==booking.context.guestCount||args.context.idRequirements!==booking.context.idRequirements||args.context.propertyName!==booking.context.propertyName;
+      const arrivalChanged=['location','entry','checkInTime','houseRules'].some(k=>args.context[k as keyof typeof args.context]!==booking.context[k as keyof typeof args.context]);
+      await ctx.db.patch('precheckRuns',run._id,{...(identityChanged?{names:Array.from({length:args.context.guestCount},(_,i)=>i===0?args.context.guestName:run.names[i]||`Test Guest ${i+1}`),revision:run.revision+1,complete:false,completionAt:undefined}:{}),...(arrivalChanged?{arrivalProvided:false,complete:false,completionAt:undefined}:{}),updatedAt:Date.now()});
+    }return null;
   },
 });
 export const restart = mutation({
@@ -131,7 +138,7 @@ export const generationContext = internalQuery({
     const turn = await ctx.db.get("sandboxTurns", args.turnId); if (!turn || turn.attempt !== args.attempt || turn.status === "complete" || turn.status === "failed") return null;
     const booking = await ctx.db.get("sandboxBookings", turn.bookingId); if (!booking || booking.generation !== turn.generation) return null;
     const turns = await ctx.db.query("sandboxTurns").withIndex("by_booking_generation", q => q.eq("bookingId", booking._id).eq("generation", booking.generation)).take(101);
-    return { turn, context: booking.context, hostAnswers: turns.filter(t => t.kind === "host").map(t => ({ question: turns.find(x => x._id === t.originalTurnId)?.text, answer: t.text })), sessionId: booking.sessionId };
+    return { turn, precheck: await precheckSummary(ctx,booking._id), context: booking.context, hostAnswers: turns.filter(t => t.kind === "host").map(t => ({ question: turns.find(x => x._id === t.originalTurnId)?.text, answer: t.text })), sessionId: booking.sessionId };
   },
 });
 export const stage = internalMutation({
@@ -142,14 +149,22 @@ export const stage = internalMutation({
   },
 });
 export const finish = internalMutation({
-  args: { turnId: v.id("sandboxTurns"), attempt: v.number(), reply: v.optional(v.string()), sources: v.optional(v.array(v.string())), hostReason: v.optional(v.string()), error: v.optional(v.string()) }, returns: v.null(),
+  args: { turnId: v.id("sandboxTurns"), attempt: v.number(), reply: v.optional(v.string()), replies: v.optional(v.array(v.string())), pauseReminders:v.optional(v.boolean()), sources: v.optional(v.array(v.string())), hostReason: v.optional(v.string()), error: v.optional(v.string()) }, returns: v.null(),
   handler: async (ctx, args) => {
     const turn = await ctx.db.get("sandboxTurns", args.turnId);
     if (!turn || turn.attempt !== args.attempt || ["complete", "failed"].includes(turn.status)) return null;
     const booking = await ctx.db.get("sandboxBookings", turn.bookingId);
     if (!booking || booking.generation !== turn.generation) return null;
-    if (args.reply) await saveMessage(ctx, components.agent, { threadId: turn.threadId, promptMessageId: turn.promptMessageId, message: { role: "assistant", content: args.reply } });
-    await ctx.db.patch("sandboxTurns", turn._id, { status: args.error ? "failed" : "complete", ...(args.reply ? { reply: args.reply } : {}), sources: args.sources ?? [], ...(args.hostReason ? { hostReason: args.hostReason, resolved: false } : {}), ...(args.error ? { error: args.error } : {}), completedAt: Date.now() });
+    const replies=args.replies??(args.reply?[args.reply]:[]);
+    if(args.pauseReminders!==undefined){const run=await ctx.db.query('precheckRuns').withIndex('by_booking',q=>q.eq('bookingId',booking._id)).first();if(run)await ctx.db.patch('precheckRuns',run._id,{paused:args.pauseReminders});}
+    if(replies.length>1){
+      const state=await precheckSummary(ctx,booking._id),name=reminderGuest(state,Date.now());
+      if(!name)replies.splice(1);
+      else {replies[1]=`When you have a moment, could you share ${name}'s missing ID using the checklist? We'd love to finish the paperwork before you arrive so you can enjoy your stay.`;await ctx.db.patch('precheckRuns',state!.run._id,{lastReminderAt:Date.now()});}
+    }
+    const reply=replies.join('\n\n');
+    if (reply) await saveMessage(ctx, components.agent, { threadId: turn.threadId, promptMessageId: turn.promptMessageId, message: { role: "assistant", content: reply } });
+    await ctx.db.patch("sandboxTurns", turn._id, { status: args.error ? "failed" : "complete", ...(reply ? { reply, replies } : {}), sources: args.sources ?? [], ...(args.hostReason ? { hostReason: args.hostReason, resolved: false } : {}), ...(args.error ? { error: args.error } : {}), completedAt: Date.now() });
     if (!args.error && turn.originalTurnId) await ctx.db.patch("sandboxTurns", turn.originalTurnId, { resolved: true });
     if (booking.busyTurnId === turn._id) await ctx.db.patch("sandboxBookings", booking._id, { busyTurnId: undefined }); return null;
   },

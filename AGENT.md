@@ -1,8 +1,12 @@
 # AGENT.md
 
-Build instructions, updated 12 October 2026. This file guides implementation; it does not itself configure or create the running Hermes agent.
+Build instructions, updated 13 October 2026. This file guides implementation; it does not itself configure or create the running Hermes agent.
 
-## 1. How the current build works
+## Current authorized phase: pre-check-in
+
+Build/deploy the 13 October Product.md flow before WhatsApp. Track each guest, support alternative/combined IDs, use image-reading AI for type/name extraction and compare names outside the model. The first release accepts fictional test documents; do not claim real-ID accuracy or authenticity. Keep raw uploads out of chat model history. Acknowledge a saved upload before reporting a later check result. Use separate friendly answer/reminder bubbles, no repeated email request, and respect reminder pauses. Only saved checklist results can complete pre-check-in; guest chat cannot approve an ID. The protected host view shows results and recorded manual reviews. These requirements supersede older text-only sandbox exclusions below.
+
+## 1. Existing foundation
 
 Current authorized phase: implement the admin property catalogue and listing URL import in PRODUCT.md and PLAN.md before WhatsApp. The owner explicitly deferred visual redesign; use basic usable forms and lists. Use Convex Auth for ID/password sign-in, protect all property reads/writes, and keep public account creation disabled. Use the existing agent component for extraction and a Convex workflow for durable imports. The owner account is configured on production; never record its credentials in source or documents. Temporary test access must expire or be revoked. Keep the public demo open and preserve existing data.
 
