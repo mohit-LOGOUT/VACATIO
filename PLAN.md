@@ -1,10 +1,22 @@
 # PLAN.md
 
-## Current build: Hermes sandbox
+## Next build: admin dashboard and property URL import
 
-Approved 12 October 2026. Build the browser chat before WhatsApp or the dashboard. Public visitors enter directly, choose a fictional stay loaded from Convex and chat without a key or form.
+Requested 12 October 2026. These are must-have features, ahead of live WhatsApp. This order supersedes older instructions to defer the dashboard. Requirements are recorded in PRODUCT.md; implementation has not started. Keep the published landing page and free Hermes demo working throughout.
 
-1. Select a fictional booking and receive a real Hermes answer from saved property details. <- now
+1. **Admin entry and authentication.** Add the requested top-right **Sign up** button and an admin ID/password entry page. Set up protected admin pages and Convex access, failed-login feedback and sign-out. The owner supplies credentials later through secure setup; never commit them or put them in browser code. Prove correct login, rejection of incorrect login, and protection of direct page/data access. <- next
+2. **Existing property catalogue.** Show all existing property records from Convex in the authenticated dashboard, with a detail view. Keep fictional test sessions separate. Prove that real stored properties and their details appear and survive reload.
+3. **Import a property from a URL.** Add Add property with a listing-link field. The agent reads an Airbnb or other property-listing page, extracts its available property facts, maps them to the relevant Convex fields and automatically saves the property. Store source URL, import time and additional useful listing notes. Show progress, saved results and missing fields. Start by proving extraction from actual Airbnb and one other listing website; do not promise universal coverage before checking it.
+4. **Reliable import outcomes.** Handle invalid/inaccessible/unsupported links, partial information and repeated listing URLs. Offer retry or manual entry after failure; permit corrections to imported facts. Restrict the importer to public website addresses, and treat page text as data rather than instructions. Prove no invented facts, silent duplicates or unintended overwrites. Images are optional for this flow; manual uploads are a separately specified step.
+5. **Verify and publish the complete admin flow.** On the existing Convex website, sign in, inspect an existing property, import a real listing, compare saved fields with its source, reload the dashboard and sign out. Verify both target source types, error recovery, signed-out data protection and that public visitors can still test fictional stays without logging in.
+
+Credential setup is pending the owner's later input. Do not mark authentication or import complete until the real flow has been verified. Update the relevant design and agent build instructions before implementation so they reflect this phase.
+
+## Existing build: Hermes sandbox — preserve and check
+
+Approved 12 October 2026 and already implemented with browser verification. Public visitors enter directly, choose a fictional stay loaded from Convex and chat without a key or form. Keep these checks as the baseline while adding admin features; this is not a claim of user sign-off on every milestone.
+
+1. Select a fictional booking and receive a real Hermes answer from saved property details.
 2. Test conversation memory and host input for unknown or permission-dependent questions.
 3. Save updated context, switch between isolated bookings, reload history and restart one test.
 4. Verify desktop/phone layout and retry failures in the real browser flow.
@@ -13,7 +25,7 @@ Use the sandbox sections in PRODUCT.md, DESIGN.md and AGENT.md. No milestone is 
 
 ## Later: live guest onboarding
 
-These milestones resume after the sandbox works and WhatsApp is connected:
+After the admin property catalogue and URL import are verified, connect WhatsApp and resume these milestones:
 
 1. I can upload a valid identity document and a random PDF, and LOGOUT AI accepts the ID but rejects the random file.
 2. I can give LOGOUT AI one real booking and property context, ask an arrival question, and get the correct answer.

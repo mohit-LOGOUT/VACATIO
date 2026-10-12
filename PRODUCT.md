@@ -1,10 +1,46 @@
 # Product
 
-## Current requirement: Hermes sandbox first
+## Next build: authenticated admin dashboard and property import
+
+Requested 12 October 2026. **These are must-have features**, next after the public Hermes sandbox and before live WhatsApp integration. This section supersedes the earlier plan to defer the dashboard until after WhatsApp. It records requirements; these features are not implemented yet.
+
+### Admin entry and access
+
+- Add a **Sign up** button at the top right of the landing page, using the requested label.
+- The button opens the admin entry page. Require an admin ID and password before showing the dashboard or allowing access to its property data.
+- The owner will provide the ID and password later through secure setup. Do not put credentials in these documents or browser code. The requested first version uses the owner's configured admin credentials; public account creation is not part of this requirement.
+- Support sign-out, reject incorrect credentials, and protect both the admin pages and their Convex reads and writes. Opening an admin URL directly must still require authentication.
+- The existing fictional-booking demo remains freely available without signing in. Adding an admin entry must not put a login or inquiry form in front of that demo.
+
+### Property dashboard
+
+After signing in, show all property records already added to the existing Convex property catalogue, plus properties imported subsequently. Allow the admin to open a property and inspect its saved information. Use the existing Convex database; do not substitute a hard-coded property list or treat visitors' fictional test sessions as the real catalogue.
+
+### Must-have: add a property from a listing URL
+
+**Core journey:** sign in → open the property dashboard → choose Add property → paste an Airbnb or another property-listing website URL → start import → the agent reads the listing, extracts its available facts, and automatically saves them into the relevant property fields in Convex → the new property appears in the dashboard.
+
+- Airbnb and other property-listing websites are target sources. Import must read the actual supplied page; canned examples or manual retyping do not satisfy this feature.
+- Extract all available property information relevant to the catalogue and arrival assistant: listing title, description, property type, published location/address, guest capacity, bedrooms, beds, bathrooms, amenities, check-in/out times, house rules, parking, and any published directions, access instructions or ID requirements.
+- Map the extracted facts into the corresponding Convex fields. Retain additional useful listing details in property notes rather than silently dropping them. Save the source URL and import time alongside the property.
+- Only save facts supported by the listing. Mark absent or uncertain fields as needing details; do not invent an exact address, entry code, parking provision or other missing information. The admin can fill gaps and correct imported values.
+- Show progress and an honest outcome: imported, imported with missing details, or failed. If a page is inaccessible, blocked or unsupported, explain that and offer retry or manual entry. Never call an unsuccessful import complete. Support for every website is a goal to validate, not an already-proven capability.
+- Recognize a repeated listing URL and offer to open its existing property rather than silently creating a duplicate or overwriting saved details.
+- Photos may be uploaded manually in a separate step. Automatic image downloading is not required, and missing photos must not block importing and saving property information. The manual photo-upload flow can be specified separately.
+
+### Proof required before calling this complete
+
+1. The top-right button opens admin entry; incorrect credentials and signed-out direct access cannot reveal property data. The owner's configured credentials open the dashboard, and sign-out removes access.
+2. Existing Convex properties appear, and a property's saved details remain available after reloading.
+3. An actual Airbnb listing and at least one other property-listing website import into the correct fields in Convex. Compare saved values against the source pages and verify the resulting properties in the dashboard after reload.
+4. Missing facts remain visibly missing, an inaccessible URL produces a recoverable failure, and importing the same listing again does not silently duplicate it. A fallback alone does not establish that a target source works.
+5. A property can be imported without images, and the public fictional-booking demo still works without admin login.
+
+## Existing build: public Hermes sandbox
 
 Public demo requirement (12 October 2026): anyone landing on the website can choose a fictional booking and its property and immediately chat with Hermes. Load the sample data from Convex automatically. Do not require sign-up, an access key, booking creation or an inquiry form. Keep each visitor’s conversation and test edits independent behind the scenes. An inquiry popup is later work.
 
-Updated 12 October 2026. This section defines the immediate build and takes priority over references below to starting with live WhatsApp or a real booking. The broader guest onboarding product remains the destination; we first prove its conversation flow with fictional bookings in a browser.
+Updated 12 October 2026. This section defines the existing sandbox to preserve while building the admin features above. The broader guest onboarding product remains the destination; we first prove its conversation flow with fictional bookings in a browser.
 
 **Who uses this first:** any website visitor, including vacation rental operators, acting as a fictional guest to test Hermes.
 
@@ -29,7 +65,7 @@ Updated 12 October 2026. This section defines the immediate build and takes prio
 
 Must have: editable dummy booking/property context; a real Hermes agent; browser chat; saved conversation history per booking; follow-up understanding; answers grounded in the selected context; host input for unknown or permission-dependent questions; truthful activity/error states; restart and booking switching; responsive layout matching the sandbox section of DESIGN.md.
 
-Not in this build: WhatsApp integration or sending real messages, dashboard, booking API/PMS integration, billing counters, real guest onboarding, ID uploads or automatic document verification, scheduled reminders, payments, booking changes, in-stay services, automatic permanent learning.
+Outside the sandbox itself: admin property management (the next build above), WhatsApp integration or sending real messages, booking API/PMS integration, billing counters, real guest onboarding, ID uploads or automatic document verification, scheduled reminders, payments, booking changes, in-stay services, automatic permanent learning.
 
 Hermes may explain saved ID requirements, but must not mark IDs verified or a guest ready for check-in based on a guest's chat claim. A text-only sandbox does not prove the document verification flow.
 
@@ -47,7 +83,7 @@ Success: the operator can run these checks through the sandbox, trust the answer
 
 ### After the sandbox works
 
-Connect WhatsApp to the same agent and booking context, verify sending/receiving and delivery, then add ID collection, document checks, missing-ID tracking and arrival-information delivery. Build the host dashboard later. Sandbox testing is preparation for this live flow, not evidence that live messaging or full check-in works.
+Build the authenticated admin property dashboard and URL import described above. Then connect WhatsApp to the same agent and booking context, verify sending/receiving and delivery, and add ID collection, document checks, missing-ID tracking and arrival-information delivery. The broader guest-operations dashboard remains later work. Sandbox testing is preparation for this live flow, not evidence that live messaging or full check-in works.
 
 ## Broader product: guest onboarding
 
@@ -178,7 +214,7 @@ It drafts/sends the ID request and can answer a real arrival question using the 
 **First value:** the operator sees that Logout can correctly handle a real guest without being manually taught every question.
 
 **Login:**  
-Not before first value in v1. The operator should experience the first booking before being asked to create an account.
+No login is needed for the public fictional-booking demo. The admin dashboard and real property catalogue require the configured admin ID and password, as specified in the next-build requirements above.
 
 **What we don’t ask on day one:**  
 Profile setup, full property catalogue, long product tour, complete SOPs, FAQs, PMS integration, staff permissions, payment setup.
