@@ -1,4 +1,5 @@
-import { cp, mkdir, rm, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, rm, readFile, writeFile, readdir, rename } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { build } from 'esbuild';
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist', { recursive: true });
@@ -16,4 +17,18 @@ if (convexUrl && !/^https:\/\/[a-z0-9-]+\.convex\.cloud$/.test(convexUrl)) {
   throw new Error('CONVEX_URL must be a Convex cloud deployment URL.');
 }
 await writeFile('dist/review-config.js', `window.REVIEW_CONFIG = ${JSON.stringify({ convexUrl: convexUrl || null })};\n`);
+// A new URL for changed code prevents returning browsers mixing old scripts with new HTML.
+const files = await readdir('dist');
+const assets = new Map();
+for (const file of files.filter(name => /\.(js|css)$/.test(name))) {
+  const hash = createHash('sha256').update(await readFile(`dist/${file}`)).digest('hex').slice(0, 16);
+  const versioned = file.replace(/\.(js|css)$/, `.${hash}.$1`);
+  await rename(`dist/${file}`, `dist/${versioned}`);
+  assets.set(file, versioned);
+}
+for (const file of files.filter(name => name.endsWith('.html'))) {
+  let html = await readFile(`dist/${file}`, 'utf8');
+  for (const [original, versioned] of assets) html = html.replaceAll(`"/${original}"`, `"/${versioned}"`);
+  await writeFile(`dist/${file}`, html);
+}
 console.log('Landing page, document review and Hermes sandbox built in dist/');
