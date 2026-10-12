@@ -27,6 +27,9 @@ import type * as propertyWorkflow from "../propertyWorkflow.js";
 import type * as reviews from "../reviews.js";
 import type * as sandbox from "../sandbox.js";
 import type * as sandboxRules from "../sandboxRules.js";
+import type * as trainer from "../trainer.js";
+import type * as trainerAI from "../trainerAI.js";
+import type * as trainerRules from "../trainerRules.js";
 
 import type {
   ApiFromModules,
@@ -54,6 +57,9 @@ declare const fullApi: ApiFromModules<{
   reviews: typeof reviews;
   sandbox: typeof sandbox;
   sandboxRules: typeof sandboxRules;
+  trainer: typeof trainer;
+  trainerAI: typeof trainerAI;
+  trainerRules: typeof trainerRules;
 }>;
 
 /**

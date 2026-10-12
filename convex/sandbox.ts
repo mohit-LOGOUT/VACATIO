@@ -1,10 +1,12 @@
+import { publishedTraining } from "./trainer";
+import { trainingValidator, defaultTraining } from "./trainerRules";
 import { query, mutation, internalQuery, internalMutation, action } from "./_generated/server";
 import type { QueryCtx, MutationCtx } from "./_generated/server";
 import type { Id } from "./_generated/dataModel";
 import { internal, components } from "./_generated/api";
 import { createThread, saveMessage } from "@convex-dev/agent";
 import { v } from "convex/values";
-import { reminderGuest } from "./precheckRules";
+import { reminderMessage } from "./precheckRules";
 import { precheckSummary } from "./precheck";
 import { contextValidator, samples, validateContext } from "./sandboxRules";
 
@@ -138,7 +140,7 @@ export const generationContext = internalQuery({
     const turn = await ctx.db.get("sandboxTurns", args.turnId); if (!turn || turn.attempt !== args.attempt || turn.status === "complete" || turn.status === "failed") return null;
     const booking = await ctx.db.get("sandboxBookings", turn.bookingId); if (!booking || booking.generation !== turn.generation) return null;
     const turns = await ctx.db.query("sandboxTurns").withIndex("by_booking_generation", q => q.eq("bookingId", booking._id).eq("generation", booking.generation)).take(101);
-    return { turn, precheck: await precheckSummary(ctx,booking._id), context: booking.context, hostAnswers: turns.filter(t => t.kind === "host").map(t => ({ question: turns.find(x => x._id === t.originalTurnId)?.text, answer: t.text })), sessionId: booking.sessionId };
+    return { turn, training:await publishedTraining(ctx), precheck: await precheckSummary(ctx,booking._id), context: booking.context, hostAnswers: turns.filter(t => t.kind === "host").map(t => ({ question: turns.find(x => x._id === t.originalTurnId)?.text, answer: t.text })), sessionId: booking.sessionId };
   },
 });
 export const stage = internalMutation({
@@ -149,7 +151,7 @@ export const stage = internalMutation({
   },
 });
 export const finish = internalMutation({
-  args: { turnId: v.id("sandboxTurns"), attempt: v.number(), reply: v.optional(v.string()), replies: v.optional(v.array(v.string())), pauseReminders:v.optional(v.boolean()), sources: v.optional(v.array(v.string())), hostReason: v.optional(v.string()), error: v.optional(v.string()) }, returns: v.null(),
+  args: { turnId: v.id("sandboxTurns"), attempt: v.number(), training:v.optional(trainingValidator), reply: v.optional(v.string()), replies: v.optional(v.array(v.string())), pauseReminders:v.optional(v.boolean()), sources: v.optional(v.array(v.string())), hostReason: v.optional(v.string()), error: v.optional(v.string()) }, returns: v.null(),
   handler: async (ctx, args) => {
     const turn = await ctx.db.get("sandboxTurns", args.turnId);
     if (!turn || turn.attempt !== args.attempt || ["complete", "failed"].includes(turn.status)) return null;
@@ -157,10 +159,11 @@ export const finish = internalMutation({
     if (!booking || booking.generation !== turn.generation) return null;
     const replies=args.replies??(args.reply?[args.reply]:[]);
     if(args.pauseReminders!==undefined){const run=await ctx.db.query('precheckRuns').withIndex('by_booking',q=>q.eq('bookingId',booking._id)).first();if(run)await ctx.db.patch('precheckRuns',run._id,{paused:args.pauseReminders});}
-    if(replies.length>1){
-      const state=await precheckSummary(ctx,booking._id),name=reminderGuest(state,Date.now());
-      if(!name)replies.splice(1);
-      else {replies[1]=`When you have a moment, could you share ${name}'s missing ID using the checklist? We'd love to finish the paperwork before you arrive so you can enjoy your stay.`;await ctx.db.patch('precheckRuns',state!.run._id,{lastReminderAt:Date.now()});}
+    if(!args.error&&replies.length){
+      const state=await precheckSummary(ctx,booking._id),training=args.training??defaultTraining;
+      const reminder=reminderMessage(state,Date.now(),training.reminderFrequency,training.offerHelp);
+      replies.splice(1);
+      if(reminder){replies.push(reminder);await ctx.db.patch('precheckRuns',state!.run._id,{lastReminderAt:Date.now(),replyReminderSent:true});}
     }
     const reply=replies.join('\n\n');
     if (reply) await saveMessage(ctx, components.agent, { threadId: turn.threadId, promptMessageId: turn.promptMessageId, message: { role: "assistant", content: reply } });

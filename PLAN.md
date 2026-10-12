@@ -1,6 +1,12 @@
 # PLAN.md
 
-## Current build: per-guest pre-check-in (13 October 2026)
+## Current addition: host trainer — 13 October 2026
+
+Build a protected Train Hermes panel in admin: natural-language feedback → AI-proposed editable guidance → same-agent preview → explicit save. Keep revision history and an option to restore a previous version as a draft. Saved guidance applies to all browser test bookings. Fix the first-answer reminder delay and request only each guest's missing document groups in a separate friendly message. Preserve pauses, document review, completion, property facts and ownership boundaries.
+
+Verification: automated access/revision/reminder rules, real browser suggestion/preview/save/reload, production guest answer using saved guidance, mobile layout, and existing landing/pre-check-in checks. Deployment and browser verification status will be recorded after checks finish. WhatsApp and real-ID evaluation remain later work.
+
+## Implemented: per-guest pre-check-in (13 October 2026)
 
 Authorized: build and deploy image-AI name checking in the existing browser sandbox before WhatsApp. The public demo accepts fictional documents; the protected admin shows progress/review and can start a fictional booking using a saved property. Real-ID accuracy has not yet been evaluated.
 

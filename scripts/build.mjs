@@ -9,6 +9,7 @@ await rm('dist/sandbox.js');
 await rm('dist/precheck.js');
 await build({entryPoints:['src/admin.jsx'],bundle:true,format:'esm',platform:'browser',outfile:'dist/admin-app.js',minify:true,define:{'process.env.NODE_ENV':'"production"'}});
 await rm('dist/admin.jsx');
+await rm('dist/trainer.jsx');
 let convexUrl = process.env.CONVEX_URL || process.env.VITE_CONVEX_URL;
 if (!convexUrl) {
   try {

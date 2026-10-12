@@ -627,3 +627,14 @@ Five-second test: **MISSING — must be tested with a real vacation rental opera
 - **Guest-facing interactions stay on WhatsApp unless WhatsApp cannot complete the job.**
 - **Every extra screen needs to earn its place by serving a step in the core flow.**
 - **Mobile first: one card per row, large tap targets, no dense operational tables.**
+
+## Admin: Train Hermes — 13 October 2026
+
+Add a panel in the authenticated admin dashboard before pre-check-in testing. Reuse existing panel/form styles; no visual redesign in this phase. Keep the public guest interface free of trainer controls.
+
+1. Describe the change: labelled feedback box and **Suggest a change**, followed by the trainer's explanation.
+2. Review the draft: editable speaking guidance, saved-arrival-context toggle, further-help toggle and reminder frequency selector.
+3. Try a guest question: property and guest-progress selectors, question input and **Preview Hermes reply**. Render the answer and follow-up in separate bubbles. Label the scenario fictional and show its ID policy.
+4. **Save for Hermes**, **Reload saved training**, and **Use default draft**. Show saved version/date, unsaved status, errors and successful save. Earlier versions load into the draft and require Save to publish.
+
+Disable relevant controls while requests run, keep drafts on errors, announce status/errors, and prevent silent overwrite when another window saves. Use existing stacked mobile forms and wrapping buttons.

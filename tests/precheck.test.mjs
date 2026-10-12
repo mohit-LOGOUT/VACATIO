@@ -51,7 +51,24 @@ test('replacement upload removes old approval and missing arrival information bl
 });
 test('reminders stop after completion, a pause, a recent request or a pending review',async()=>{
  const {reminderGuest}=await import('data:text/javascript;base64,'+Buffer.from(r.outputFiles[0].text).toString('base64'));
- const state={run:{complete:false,paused:false,lastReminderAt:0},guests:[{name:'Priya',complete:false,documents:[]}]};assert.equal(reminderGuest(state,200000),'Priya');
+ const state={run:{complete:false,paused:false,replyReminderSent:true,lastReminderAt:0},guests:[{name:'Priya',complete:false,documents:[]}]};assert.equal(reminderGuest(state,200000),'Priya');
  for(const patch of[{complete:true},{paused:true},{lastReminderAt:199000}])assert.equal(reminderGuest({...state,run:{...state.run,...patch}},200000),null);
  for(const status of['checking','uploading','review'])assert.equal(reminderGuest({...state,guests:[{name:'Priya',complete:false,documents:[{status}]}]},200000),null);
+});
+
+test('first guest answer gets a follow-up even just after opening the checklist',async()=>{
+ const {reminderGuest}=await import('data:text/javascript;base64,'+Buffer.from(r.outputFiles[0].text).toString('base64'));
+ const state={run:{complete:false,paused:false,lastReminderAt:200000},guests:[{name:'Priya',complete:false,documents:[]}]};
+ assert.equal(reminderGuest(state,200001),'Priya');
+});
+const sandboxBundle=buildSync({entryPoints:['convex/sandbox.ts'],bundle:true,platform:'node',format:'esm',write:false});
+const sandbox=await import('data:text/javascript;base64,'+Buffer.from(sandboxBundle.outputFiles[0].text).toString('base64'));
+test('reply delivery rechecks saved completion and pause before sending a reminder',async()=>{
+ for(const change of [{complete:true},{paused:true},{}]){
+  const {ctx,tables}=db();Object.assign(tables.precheckRuns[0],{paused:false,lastReminderAt:0,replyReminderSent:false},change);
+  tables.sandboxBookings=[{_id:'booking',generation:0,busyTurnId:'turn'}];tables.sandboxTurns=[{_id:'turn',bookingId:'booking',generation:0,attempt:1,status:'replying',threadId:'thread',promptMessageId:'prompt'}];ctx.runMutation=async()=>({messages:[{_id:'message'}]});
+  await sandbox.finish._handler(ctx,{turnId:'turn',attempt:1,reply:'Check-in is at 2 pm.'});
+  assert.equal(tables.sandboxTurns[0].replies.length,Object.keys(change).length?1:2);
+  if(!Object.keys(change).length)assert.equal(tables.precheckRuns[0].replyReminderSent,true);
+ }
 });

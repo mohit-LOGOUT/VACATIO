@@ -294,3 +294,13 @@ Validation trial: use authorised samples for Aadhaar, PAN and passport, includin
 6. Resolving the final required check and other blocking onboarding tasks saves pre-check-in completion and produces the guest confirmation and protected host notice without duplicates.
 7. The browser flow survives reload, booking switching, failed checks, replacements and retries; unrelated questions do not lose progress or block completion.
 8. After browser proof and protected document-service evaluation, connect WhatsApp and verify real message delivery separately.
+
+## Host trainer — 13 October 2026
+
+Must-have: a protected **Train Hermes** section inside the admin dashboard. The host describes what Hermes should do differently; the trainer agent proposes editable speaking guidance and options. The host previews a real model reply against a fictional booking and either the demo property or a saved property, then chooses **Save for Hermes**. Unsaved drafts do not affect guests. Saved instructions apply across test bookings to future replies; in-progress replies keep their starting version. Keep the latest ten versions accessible for restoring a draft.
+
+Training controls tone/language, how thoroughly to answer, relevant saved arrival context, a natural offer of help, and ID-reminder frequency. Default: first eligible answer gets a separate warm reminder immediately, later reminders at least two minutes apart. A host may choose a reminder after every eligible answer. Request only the missing document groups for the next eligible guest, respecting one-of and combined requirements. Do not chase completed, paused, or waiting-for-review guests.
+
+Preview scenarios: all guests missing IDs, only the third guest missing, IDs being checked, pre-check-in complete, and paused reminders. Preview calls use the same response generator and reminder rules as guest chat, without writing guest conversations or changing bookings. Preview is a single-turn example; real conversations also include history.
+
+These are saved instructions, not model fine-tuning. Training must not invent property facts, change ID requirements, collect email again, authenticate government documents, mark guests complete, or bypass access checks. Property corrections belong in property details; checklist changes remain in guest setup. Only the signed-in owner can read/write training or call its AI tools. Bound suggestions/previews to 60 calls per owner per hour, validate text length, preserve revisions, and reject stale edits from another window.

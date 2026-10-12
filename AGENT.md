@@ -62,3 +62,7 @@ When I report a bug, I'll name the part. Look there first, and tell me if you th
 - Protect conversation separation and duplicate-safe retry with meaningful automated checks; run existing project tests too.
 - Inspect at 320px, 390px, 768px and 1280px, including long messages, loading and failures. Explain how to test on the user's phone.
 - Report deployment, model availability and browser checks separately. State anything untested; a sample UI or mocked reply is not a working Hermes flow.
+
+## Host trainer implementation — 13 October 2026
+
+Host-approved scope now includes an admin-only trainer. Use the existing Convex Agent component for proposed instruction changes and the same Hermes answer generator for preview/live guest replies. Persist revisioned guidance in Convex; every public trainer endpoint must authorize the current owner. Read saved guidance at the start of each real reply. Publish only through the explicit Save button; preview never updates guest records. Host style guidance is subordinate to saved property facts and immutable document/completion/access rules. Recheck current checklist state before appending a reminder, including uploads or pause changes during model generation. First eligible reply must not be suppressed by the opening checklist message. Cover this regression, missing document groups, protected access, stale versions and paid-call limits with tests.
