@@ -9,7 +9,7 @@ export const status = query({ args: {}, returns: v.boolean(), handler: async ctx
 }});
 export const configure = internalAction({ args: { temporary: v.optional(v.boolean()) }, returns: v.null(), handler: async (ctx,args) => {
   const id = process.env.ADMIN_SETUP_ID?.trim().toLowerCase(), secret = process.env.ADMIN_SETUP_PASSWORD;
-  if (!id || id.length > 120 || !secret || secret.length < 12) throw new Error('Set ADMIN_SETUP_ID and ADMIN_SETUP_PASSWORD (at least 12 characters) in Convex, then run configure.');
+  if (!id || id.length > 120 || !secret || secret.length < 7) throw new Error('Set ADMIN_SETUP_ID and ADMIN_SETUP_PASSWORD (at least 7 characters) in Convex, then run configure.');
   const { user } = await createAccount(ctx, { provider: 'password', account: { id }, profile: { email: id }, shouldLinkViaEmail: false, shouldLinkViaPhone: false });
   await modifyAccountCredentials(ctx, { provider: 'password', account: { id, secret } });
   await invalidateSessions(ctx, { userId: user._id });

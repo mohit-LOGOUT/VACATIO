@@ -2,13 +2,13 @@
 
 ## Next build: authenticated admin dashboard and property import
 
-Requested 12 October 2026. **These are must-have features**, next after the public Hermes sandbox and before live WhatsApp integration. This section supersedes the earlier plan to defer the dashboard until after WhatsApp. Implementation status: the ID/password screen, protected catalogue, editable details, and listing-import workflow are built. Development browser checks verified login, edits/reload, duplicates, failure handling and sign-out; real Airbnb and SaffronStays imports were saved in the development database. Production sign-in and import verification remain pending approved credential setup. Visual redesign and photos are deferred.
+Requested 12 October 2026. **These are must-have features**, next after the public Hermes sandbox and before live WhatsApp integration. This section supersedes the earlier plan to defer the dashboard until after WhatsApp. Implementation status: the ID/password screen, protected catalogue, editable details, and listing-import workflow are built. Development browser checks verified login, edits/reload, duplicates, failure handling and sign-out; real Airbnb and SaffronStays imports were saved in the development database. The owner account is now configured on production. Live Chrome checks passed for correct/incorrect login, the supplied Airbnb import, editing/reload, duplicate protection, blocked private URLs, phone layout and sign-out. The second listing source was verified in development only. Visual redesign and photos are deferred.
 
 ### Admin entry and access
 
 - Add a **Sign up** button at the top right of the landing page, using the requested label.
 - The button opens the admin entry page. Require an admin ID and password before showing the dashboard or allowing access to its property data.
-- The owner will provide the ID and password later through secure setup. Do not put credentials in these documents or browser code. The requested first version uses the owner's configured admin credentials; public account creation is not part of this requirement.
+- The owner has provided the ID and password, and the production account is configured. Do not put credentials in these documents or browser code. The requested first version uses the owner's configured admin credentials; public account creation is not part of this requirement.
 - Support sign-out, reject incorrect credentials, and protect both the admin pages and their Convex reads and writes. Opening an admin URL directly must still require authentication.
 - The existing fictional-booking demo remains freely available without signing in. Adding an admin entry must not put a login or inquiry form in front of that demo.
 

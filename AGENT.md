@@ -4,7 +4,7 @@ Build instructions, updated 12 October 2026. This file guides implementation; it
 
 ## 1. How the current build works
 
-Current authorized phase: implement the admin property catalogue and listing URL import in PRODUCT.md and PLAN.md before WhatsApp. The owner explicitly deferred visual redesign; use basic usable forms and lists. Use Convex Auth for ID/password sign-in, protect all property reads/writes, and keep public account creation disabled. Use the existing agent component for extraction and a Convex workflow for durable imports. Credentials are configured securely later; temporary test access must expire or be revoked. Keep the public demo open and preserve existing data.
+Current authorized phase: implement the admin property catalogue and listing URL import in PRODUCT.md and PLAN.md before WhatsApp. The owner explicitly deferred visual redesign; use basic usable forms and lists. Use Convex Auth for ID/password sign-in, protect all property reads/writes, and keep public account creation disabled. Use the existing agent component for extraction and a Convex workflow for durable imports. The owner account is configured on production; never record its credentials in source or documents. Temporary test access must expire or be revoked. Keep the public demo open and preserve existing data.
 
 Public demo requirement (12 October 2026): anyone landing on the website can choose a fictional booking and its property and immediately chat with Hermes. Load the sample data from Convex automatically. Do not require sign-up, an access key, booking creation or an inquiry form. Keep each visitor’s conversation and test edits independent behind the scenes. An inquiry popup is later work.
 
