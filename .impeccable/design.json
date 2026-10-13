@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-14T01:21:05+05:30",
+  "generatedAt": "2026-10-14T01:48:06+05:30",
   "title": "Design System: Logout AI \u2014 dashboard",
   "extensions": {
     "shadows": [],
@@ -54,6 +54,21 @@
         "role": "neutral",
         "displayName": "Quiet neutral selection"
       }
+    },
+    "listingPhotos": {
+      "scope": "Real imported listing photos; no generated assets, source-image hotlinks or manual upload/editor.",
+      "coverCss": ".property-cover { display: block; width: 100%; height: 100%; min-height: 162px; max-height: 220px; object-fit: cover; border-radius: 6px; background: #f6f6f7; } @media(max-width:1199px) { .property-cover { min-height: 132px; max-height: 200px; } } @media(max-width:767px) { .property-cover { min-height: 100px; max-height: 180px; } }",
+      "galleryCss": ".property-gallery { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; } .property-gallery a { display: block; border-radius: 6px; overflow: hidden; } .property-gallery img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #f6f6f7; } @media(max-width:1199px) { .property-gallery { grid-template-columns: repeat(3,minmax(0,1fr)); } } @media(max-width:767px) { .property-gallery { grid-template-columns: repeat(2,minmax(0,1fr)); } }",
+      "states": [
+        "Importing photos\u2026",
+        "No photo added",
+        "Photo unavailable",
+        "ready",
+        "partial",
+        "unavailable",
+        "failed"
+      ],
+      "provenance": "Database photos entries contain fileId and sourceUrl; protected admin queries compute storage URL."
     }
   },
   "components": [
@@ -124,9 +139,9 @@
       "name": "Minimal saved listing card",
       "kind": "card",
       "refersTo": "listing-card",
-      "description": "Saved property facts with an honest empty-photo slot, real metadata and editor action. Preview values are fictional examples.",
+      "description": "Empty-photo variant of the saved property card. Populated records show the first available stored listing photo with 6px corners and cover crop; example facts here are fictional.",
       "html": "<article class=\"ds-list-card\"><div class=\"ds-no-photo\">No photo added</div><div class=\"ds-card-body\"><button class=\"ds-property-title\">Palm House</button><p class=\"ds-location\">Saved property location</p><div class=\"ds-tags\"><span>Villa</span><span>6 amenities</span></div><p class=\"ds-source\">Saved property</p></div><div class=\"ds-card-actions\"><span class=\"ds-saved\">Saved</span><button class=\"ds-edit\">Edit property</button></div></article>",
-      "css": ".ds-list-card{box-sizing:border-box;font-family:Geist,Arial,sans-serif;display:grid;grid-template-columns:152px minmax(0,1fr) auto;gap:24px;min-height:196px;border:1px solid #e3e3e7;border-radius:8px;padding:16px;background:#fff;color:#171717}.ds-no-photo{display:flex;align-items:center;justify-content:center;background:#f6f6f7;border:1px solid #ececef;border-radius:6px;color:#606069;font-size:12px}.ds-card-body{min-width:0;padding:2px 0}.ds-property-title{font-family:Geist,Arial,sans-serif;display:inline;min-height:44px;padding:0;border:0;border-radius:4px;background:transparent;color:#18181b;text-align:left;font-size:20px;line-height:28px;font-weight:500;overflow-wrap:anywhere;cursor:pointer}.ds-property-title:hover{text-decoration:underline;text-underline-offset:5px}.ds-property-title:focus-visible,.ds-edit:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-location{margin:4px 0 12px;color:#606069;font-size:14px;line-height:21px;overflow-wrap:anywhere}.ds-tags{display:flex;flex-wrap:wrap;gap:8px}.ds-tags span{padding:2px 10px;border:1px solid #e3e3e7;border-radius:999px;background:#fafafa;font-size:12px;line-height:18px;color:#606069}.ds-source{font-size:12px;line-height:18px;color:#606069;margin:20px 0 0}.ds-card-actions{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:24px;padding:8px 0 0}.ds-saved{display:inline-flex;border-radius:999px;padding:4px 10px;font-size:12px;line-height:20px;font-weight:500;color:#606069;background:#f6f6f7;border:1px solid #e3e3e7}.ds-edit{font-family:Geist,Arial,sans-serif;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:8px;background:#18181b;color:#fff;font-size:14px;line-height:21px;font-weight:500;cursor:pointer}.ds-edit:hover{background:#35353b}@media(max-width:1199px){.ds-list-card{grid-template-columns:100px minmax(0,1fr);gap:16px}.ds-no-photo{min-height:132px}.ds-card-actions{grid-column:2;flex-direction:row;align-items:center;padding:0}.ds-property-title{font-size:18px;line-height:26px}}@media(max-width:767px){.ds-list-card{grid-template-columns:72px minmax(0,1fr);padding:14px;min-height:0}.ds-no-photo{min-height:100px;font-size:11px;text-align:center}.ds-card-actions{grid-column:1/-1;padding-top:16px;border-top:1px solid #e3e3e7}.ds-property-title{font-size:16px;line-height:24px}.ds-location{font-size:13px}.ds-source{margin-top:12px}}"
+      "css": ".ds-list-card{box-sizing:border-box;font-family:Geist,Arial,sans-serif;display:grid;grid-template-columns:152px minmax(0,1fr) auto;gap:24px;min-height:196px;border:1px solid #e3e3e7;border-radius:8px;padding:16px;background:#fff;color:#171717}.ds-no-photo{display:flex;align-items:center;justify-content:center;background:#f6f6f7;border:1px solid #ececef;border-radius:6px;color:#606069;font-size:12px}.ds-card-body{min-width:0;padding:2px 0}.ds-property-title{font-family:Geist,Arial,sans-serif;display:inline;min-height:44px;padding:0;border:0;border-radius:4px;background:transparent;color:#18181b;text-align:left;font-size:20px;line-height:28px;font-weight:500;overflow-wrap:anywhere;cursor:pointer}.ds-property-title:hover{text-decoration:underline;text-underline-offset:5px}.ds-property-title:focus-visible,.ds-edit:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-location{margin:4px 0 12px;color:#606069;font-size:14px;line-height:21px;overflow-wrap:anywhere}.ds-tags{display:flex;flex-wrap:wrap;gap:8px}.ds-tags span{padding:2px 10px;border:1px solid #e3e3e7;border-radius:999px;background:#fafafa;font-size:12px;line-height:18px;color:#606069}.ds-source{font-size:12px;line-height:18px;color:#606069;margin:20px 0 0}.ds-card-actions{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:24px;padding:8px 0 0}.ds-saved{display:inline-flex;border-radius:999px;padding:4px 10px;font-size:12px;line-height:20px;font-weight:500;color:#606069;background:#f6f6f7;border:1px solid #e3e3e7}.ds-edit{font-family:Geist,Arial,sans-serif;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:8px;background:#18181b;color:#fff;font-size:14px;line-height:21px;font-weight:500;cursor:pointer}.ds-edit:hover{background:#35353b}@media(max-width:1199px){.ds-list-card{grid-template-columns:100px minmax(0,1fr);gap:16px}.ds-no-photo{min-height:132px}.ds-card-actions{grid-column:2;flex-direction:row;align-items:center;padding:0}.ds-property-title{font-size:18px;line-height:26px}}@media(max-width:767px){.ds-list-card{grid-template-columns:72px minmax(0,1fr);padding:14px;min-height:0}.ds-no-photo{min-height:100px;font-size:11px;text-align:center}.ds-card-actions{grid-column:1/-1;padding-top:16px;border-top:1px solid #e3e3e7}.ds-property-title{font-size:16px;line-height:24px}.ds-location{font-size:13px}.ds-source{margin-top:12px}}@media(max-width:1199px){.ds-card-actions{flex-wrap:wrap;gap:8px;justify-content:flex-end}.ds-card-actions>.ds-saved{margin-right:auto}}"
     }
   ],
   "narrative": {
@@ -150,7 +165,7 @@
       "Do keep website, sandbox and dashboard values scoped to their own surfaces."
     ],
     "donts": [
-      "Don't imply photos, production Check-ins or One Inbox screens exist.",
+      "Don't imply manual photo upload/editing, production Check-ins or One Inbox screens exist.",
       "Don't treat a name check or a host decision as government verification."
     ]
   }

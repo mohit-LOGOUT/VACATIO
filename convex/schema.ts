@@ -12,7 +12,7 @@ export default defineSchema({
   precheckDocuments: defineTable({runId:v.id("precheckRuns"),revision:v.number(),guestIndex:v.number(),expectedName:v.string(),type:idType,requestId:v.string(),status:v.union(v.literal("uploading"),v.literal("checking"),v.literal("passed"),v.literal("review"),v.literal("replacement"),v.literal("failed"),v.literal("expired")),fileId:v.optional(v.id("_storage")),sha:v.optional(v.string()),reading:v.optional(readingValidator),reason:v.optional(v.string()),method:v.optional(v.string()),attempt:v.number(),createdAt:v.number(),checkedAt:v.optional(v.number()),expiresAt:v.number()}).index("by_run",["runId"]).index("by_run_request",["runId","requestId"]).index("by_file",["fileId"]),
   precheckEvents: defineTable({runId:v.id("precheckRuns"),revision:v.number(),text:v.string(),kind:v.union(v.literal("receipt"),v.literal("result"),v.literal("complete"),v.literal("arrival"),v.literal("setup")),createdAt:v.number()}).index("by_run",["runId"]),
   adminSettings: defineTable({key:v.literal("owner"),trainerWindowStart:v.optional(v.number()),trainerUses:v.optional(v.number()),userId:v.id("users"),expiresAt:v.optional(v.number())}).index("by_key",["key"]),
-  propertyImports: defineTable({sourceUrl:v.string(),requestedBy:v.id("users"),status:v.union(v.literal("queued"),v.literal("reading"),v.literal("extracting"),v.literal("complete"),v.literal("failed")),propertyId:v.optional(v.id("properties")),error:v.optional(v.string()),createdAt:v.number(),finishedAt:v.optional(v.number())}).index("by_source",["sourceUrl"]).index("by_status",["status"]),
+  propertyImports: defineTable({sourceUrl:v.string(),requestedBy:v.id("users"),status:v.union(v.literal("queued"),v.literal("reading"),v.literal("extracting"),v.literal("importing_photos"),v.literal("complete"),v.literal("failed")),propertyId:v.optional(v.id("properties")),error:v.optional(v.string()),createdAt:v.number(),finishedAt:v.optional(v.number())}).index("by_source",["sourceUrl"]).index("by_status",["status"]),
   sandboxSessions: defineTable({ tokenHash: v.string(), expiresAt: v.number(), usage: v.number(), windowStart: v.number() }).index("by_token_hash", ["tokenHash"]),
   sandboxBookings: defineTable({ sessionId: v.id("sandboxSessions"), context: contextValidator, generation: v.number(), threadId: v.string(), busyTurnId: v.optional(v.id("sandboxTurns")) }).index("by_session", ["sessionId"]),
   sandboxTurns: defineTable({
@@ -24,6 +24,9 @@ export default defineSchema({
     resolved: v.optional(v.boolean()), error: v.optional(v.string()), createdAt: v.number(), completedAt: v.optional(v.number()),
   }).index("by_booking_generation", ["bookingId", "generation"]).index("by_booking_request", ["bookingId", "requestId"]),
   properties: defineTable({
+    photos: v.optional(v.array(v.object({fileId:v.id("_storage"),sourceUrl:v.string()}))),
+    photoImportStatus: v.optional(v.union(v.literal("pending"),v.literal("ready"),v.literal("partial"),v.literal("unavailable"),v.literal("failed"))),
+    photoImportMessage: v.optional(v.string()), photoImportJobId:v.optional(v.id("propertyImports")),
     name: v.string(),
     sourceUrl: v.optional(v.string()), importedAt: v.optional(v.number()),
     description: v.optional(v.string()), propertyType: v.optional(v.string()),

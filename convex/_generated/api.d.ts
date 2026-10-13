@@ -23,6 +23,7 @@ import type * as precheckRules from "../precheckRules.js";
 import type * as precheckWorkflow from "../precheckWorkflow.js";
 import type * as propertyFields from "../propertyFields.js";
 import type * as propertyImporter from "../propertyImporter.js";
+import type * as propertyPhotos from "../propertyPhotos.js";
 import type * as propertyWorkflow from "../propertyWorkflow.js";
 import type * as reviews from "../reviews.js";
 import type * as sandbox from "../sandbox.js";
@@ -53,6 +54,7 @@ declare const fullApi: ApiFromModules<{
   precheckWorkflow: typeof precheckWorkflow;
   propertyFields: typeof propertyFields;
   propertyImporter: typeof propertyImporter;
+  propertyPhotos: typeof propertyPhotos;
   propertyWorkflow: typeof propertyWorkflow;
   reviews: typeof reviews;
   sandbox: typeof sandbox;

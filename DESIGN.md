@@ -160,15 +160,19 @@ Listing cards, panels and actions have compact 8px corners; listing inputs, navi
 
 Implemented destinations are **Properties**, **Train Hermes** and **Guest tests**. The selected navigation link announces the current page and carries a neutral-grey fill and near-black text. Views remain mounted and are hidden when inactive, preserving unsaved training drafts.
 
-Listing primary buttons use black with a charcoal hover; training/test primary buttons retain dark red. Both retain visible focus and pending/disabled states. Secondary buttons use a white surface and visible neutral edge. Fields retain visible labels, a 48px minimum height and entered text after errors. Panels group property essentials, arrival/access, and guest requirements/directions. Listing cards show an explicit No photo added placeholder because records have no photo field. Real saved property type and amenity count appear as small chips; property name and Edit property open the existing editor. No calendar, occupancy, live switch or extra navigation is inferred from the reference. Status pills describe actual saved states. Training previews distinguish the guest question from the model reply. Guest tests explicitly identify fictional bookings and test documents.
+Listing primary buttons use black with a charcoal hover; training/test primary buttons retain dark red. Both retain visible focus and pending/disabled states. Secondary buttons use a white surface and visible neutral edge. Fields retain visible labels, a 48px minimum height and entered text after errors. Panels group property essentials, arrival/access, and guest requirements/directions. Listing cards show the first available stored listing photo as their cover. Importing photos…, No photo added and Photo unavailable remain honest loading/empty/load-failure states. Real saved property type and amenity count appear as small chips; property name and Edit property open the existing editor. No calendar, occupancy, live switch or extra navigation is inferred from the reference. Photo slots have 6px corners and use object-fit: cover, which crops only the display rather than changing the original pixels. The editor gallery uses four columns on desktop, three below 1200px and two below 768px, with 12px gaps and 4:3 thumbnails. Import photos and Refresh photos use existing minimal secondary controls with visible pending/error feedback; photo failures preserve saved facts. Real image provenance is stored; no generated property imagery is used. Status pills describe actual saved states. Training previews distinguish the guest question from the model reply. Guest tests explicitly identify fictional bookings and test documents.
 
 ## Do's and Don'ts
 
 - **Do** use the existing saved data and protected functions for every working screen.
 - **Do** preserve visible navigation labels, keyboard focus and draft retention.
 - **Do** keep website, sandbox and dashboard values scoped to their own surfaces.
-- **Don't** imply photos, production Check-ins or One Inbox screens exist.
+- **Don't** imply manual photo upload/editing, production Check-ins or One Inbox screens exist.
 - **Don't** treat a name check or a host decision as government verification.
+
+### Listing photo extension — 14 October 2026
+
+The owner authorized automatic listing-photo import, cover images and an editor gallery. This extends the established minimal system without changing its white surfaces, 8px cards or black listing actions. New imports save property facts before the bounded photo step; existing properties with a saved listing link offer Import photos, and the editor offers Refresh photos when photos exist. Refresh adds eligible missing photos up to the stored limit; it does not replace saved facts or provide photo editing/manual upload. Photo support is published, with production storage/data checks complete. Authenticated cover/gallery UI was checked in development. See DASHBOARD_DESIGN.md for production evidence.
 
 ## Website and dashboard design systems
 
