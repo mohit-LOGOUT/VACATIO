@@ -14,7 +14,7 @@ test('landing page preserves approved copy and opens the Hermes sandbox below th
 test('build contains only intended public files', async () => {
   const names=(await readdir('dist')).map(name=>name.replace(/\.[a-f0-9]{16}(?=\.(js|css)$)/,''));
   assert.deepEqual(names.sort(), ['admin-app.js', 'admin.css', 'admin.html', 'images', 'index.html', 'landing-sandbox.js', 'review-config.js', 'review.css', 'review.html', 'review.js', 'sandbox-app.js', 'sandbox.css', 'sandbox.html', 'styles.css']);
-  assert.deepEqual(await readdir('dist/images'), ['landing-hero.png']);
+  assert.deepEqual(await readdir('dist/images'), ['landing-hero.png', 'logout-icon.png', 'logout-wordmark.jpg']);
 });
 test('pages reference matching content-versioned code and styles so old browser caches cannot break updates', async () => {
   for(const name of ['index.html','sandbox.html','review.html','admin.html']){

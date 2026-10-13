@@ -20,3 +20,8 @@ a:focus-visible { outline: 3px solid #171717; outline-offset: 5px; }
 @media(max-width: 767px) { .sandbox-section { margin-top: 40px; border-radius: 16px; } .sandbox-section iframe { height: 1100px; } }
 
 .site-header{display:flex;align-items:center;justify-content:space-between}.admin-entry{color:inherit;font-size:15px;font-weight:600;text-decoration:none;border:1px solid #222;border-radius:6px;padding:10px 18px;min-height:44px}.admin-entry:focus-visible{outline:3px solid #075e54;outline-offset:3px}
+
+/* Original supplied logo, with only the surrounding blank margins hidden. */
+.wordmark { display: inline-flex; }
+.logout-logo { display: block; position: relative; width: 144px; height: 64px; overflow: hidden; flex: none; }
+.logout-logo img { position: absolute; width: 222px; height: auto; max-width: none; left: -42px; top: -51px; }

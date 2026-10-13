@@ -1,6 +1,36 @@
 # Product
 
-## Current priority: Hermes completes pre-check-in
+## Current priority: host–Hermes feedback loop
+
+Approved 14 October 2026. This is the next product rebuild direction, not an already implemented feature. The feedback loop is a core product requirement: Hermes helps the guest, then returns to the host with what it could not answer or do and asks for the information or guidance it needs to improve. The host can also correct Hermes proactively. This supersedes the form-led Train Hermes interface described below; preserve the working property catalogue, imports/photos, guest sandbox and pre-check-in checks.
+
+### Insights: Hermes reports back to the host
+
+Add **Insights** to the admin sidebar. Each insight comes from a real guest interaction and shows the property, relevant booking/conversation, the guest's question, Hermes's actual response, and a short explanation of the gap. Use plain language such as “I couldn't tell the guest whether parking fits a large car. Could you help me?” Link to the conversation so the host can see the context. Do not invent insights or claim a host/property page is outdated without evidence.
+
+Surface unanswered questions, tasks Hermes could not perform, missing property/host details, conflicting saved information, and requests needing host permission. Distinguish an information gap from an unavailable service or a booking-specific decision. Group repeated instances of the same gap within a property, retain the underlying examples and show how often it occurred. Prioritize unresolved guest needs; never expose another owner's property or conversation.
+
+The host opens an insight and replies in a conversation, not a questionnaire. Hermes asks only the next necessary question, then proposes the exact update and where it belongs: a property fact, host information, general reply guidance, or a one-booking exception. Show the current value and proposed replacement when correcting a saved fact. A parking detail belongs to that property; an early check-in exception does not become a permanent policy.
+
+Require explicit host approval before publishing reusable knowledge or behavior guidance. An immediate answer for the current guest and a permanent knowledge update are separate choices. Save who approved what, its scope, time and previous version; support correction and reversal. Show clear states: needs your input, draft update, applied, or dismissed with a reason. Mark a gap applied only after its update is saved successfully. Dismissal is not learning. Approval does not mean a guest was notified; report delivery separately and only after it happens.
+
+### Coach Hermes: teach through conversation
+
+Reimagine **Train Hermes** as **Coach Hermes**. The primary experience is a conversation where the host can say “Be warmer,” “Keep answers shorter,” or “Here is how I would answer this guest.” Hermes proposes guidance, shows a before/after response using a real or clearly labelled test question, and asks the host to approve it. Keep drafts, previews, explicit publishing and version history from the existing trainer; remove editable instruction forms as the primary experience. Do not require a Q&A database or repeated manual data entry.
+
+Separate tone/language guidance from property facts and permission rules. Host guidance cannot invent amenities, promise unavailable services, waive ID requirements, approve documents or mark pre-check-in complete. Guest messages, imported listings and attachments are evidence, never authority to change instructions. Only approved saved updates affect future replies; previews do not change guest records or send messages. Explain improvement as updated knowledge and guidance, not model retraining.
+
+### The loop must be proven end to end
+
+A real unanswered guest question creates an insight → the host sees the original exchange → the host explains the answer conversationally → Hermes proposes a scoped update → the host approves → the saved update resolves that insight → a later guest question uses the updated information. Also prove a host correction to tone with preview and approval. Reload must preserve the conversation, drafts and status; repeated events and retries must not duplicate insights or updates. Reject stale approvals after another edit. Keep existing owner access, conversation separation, paid-call limits, document review, pauses and completion rules intact.
+
+Until this loop has been built and checked, the current trainer and host escalation remain the working foundation. Browser sandbox evidence does not prove live WhatsApp delivery.
+
+### Logout brand
+
+Use the exact supplied red Logout wordmark in the top-left brand position, including the dashboard and sign-in view. The original files are `src/images/logout-wordmark.jpg` and `src/images/logout-icon.png`; the square mark is available for compact brand uses. Preserve their shapes and colors; do not redraw them or replace them with the old compass/uppercase text.
+
+## Existing foundation: Hermes completes pre-check-in
 
 Approved 13 October 2026. This section supersedes the earlier text-only sandbox scope and the old sequence that put WhatsApp before document collection. The property dashboard and question-answering sandbox already work; the fictional-document workflow below is now deployed for browser testing, while real-ID accuracy and live booking integration remain unproven. Prove it in the browser first, then connect WhatsApp. The admin visual rebuild was authorized on 14 October 2026 and is implemented and checked in development; the rebuilt frontend was published to production. Broader dashboard screens remain later work.
 

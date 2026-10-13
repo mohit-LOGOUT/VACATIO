@@ -142,7 +142,7 @@ The minimal-prefixed and listing-prefixed tokens are normative for the listing v
 
 ## Typography
 
-Geist with Arial and sans-serif fallbacks is shared identity. Dashboard titles, headings, body and buttons use the roles in frontmatter. Phone titles become 24px/32px. Labels are 14px medium; listing names are 20px/28px medium on desktop, 18px/26px at tablet widths and 16px/24px on phones. The shared brand uses an outlined compass and uppercase LOGOUT wordmark. Keep long instructions and saved facts readable and wrapped.
+Geist with Arial and sans-serif fallbacks is shared identity. Dashboard titles, headings, body and buttons use the roles in frontmatter. Phone titles become 24px/32px. Labels are 14px medium; listing names are 20px/28px medium on desktop, 18px/26px at tablet widths and 16px/24px on phones. The shared brand uses the exact supplied red Logout wordmark from `src/images/logout-wordmark.jpg`, displayed legibly with its surrounding blank margins cropped by the layout. Use `src/images/logout-icon.png` for compact brand uses. Preserve the supplied shapes/colors; the former compass and uppercase LOGOUT are retired. Keep long instructions and saved facts readable and wrapped.
 
 ## Layout
 

@@ -1,5 +1,10 @@
 # PLAN.md
 
+## Next approved rebuild: feedback loop — 14 October 2026
+
+Build Insights and conversational Coach Hermes to the acceptance criteria at the top of PRODUCT.md and AGENT.md. Reuse existing host escalation and trainer persistence. The key proof is a real knowledge gap → host conversation → exact scoped proposal → explicit approval → saved update → a later correct guest answer. Preserve current property/photo imports and pre-check-in. Status: product direction recorded; Insights and the conversational rebuild are not implemented yet. Supersedes the form-led trainer as the next interface direction.
+
+
 ## Current addition: host trainer — 13 October 2026
 
 Build a protected Train Hermes panel in admin: natural-language feedback → AI-proposed editable guidance → same-agent preview → explicit save. Keep revision history and an option to restore a previous version as a draft. Saved guidance applies to all browser test bookings. Fix the first-answer reminder delay and request only each guest's missing document groups in a separate friendly message. Preserve pauses, document review, completion, property facts and ownership boundaries.
