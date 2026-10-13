@@ -313,4 +313,3 @@ Training controls tone/language, how thoroughly to answer, relevant saved arriva
 Preview scenarios: all guests missing IDs, only the third guest missing, IDs being checked, pre-check-in complete, and paused reminders. Preview calls use the same response generator and reminder rules as guest chat, without writing guest conversations or changing bookings. Preview is a single-turn example; real conversations also include history.
 
 These are saved instructions, not model fine-tuning. Training must not invent property facts, change ID requirements, collect email again, authenticate government documents, mark guests complete, or bypass access checks. Property corrections belong in property details; checklist changes remain in guest setup. Only the signed-in owner can read/write training or call its AI tools. Bound suggestions/previews to 60 calls per owner per hour, validate text length, preserve revisions, and reject stale edits from another window.
-
