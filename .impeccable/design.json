@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T01:09:14+05:30",
+  "title": "Design System: Logout AI \u2014 dashboard",
+  "extensions": {
+    "shadows": [],
+    "motion": [
+      {
+        "name": "dashboard-control-transition",
+        "value": "150ms ease-out",
+        "purpose": "Background and text colour changes; removed under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "dashboard-phone",
+        "value": "768px"
+      },
+      {
+        "name": "dashboard-desktop",
+        "value": "1200px"
+      }
+    ],
+    "focus": [
+      {
+        "name": "dashboard-focus",
+        "value": "2px solid #171717; outline-offset: 4px",
+        "purpose": "Visible keyboard focus."
+      }
+    ],
+    "scope": "Admin dashboard only. Website and sandbox retain their documented separate systems."
+  },
+  "components": [
+    {
+      "name": "Dashboard primary button",
+      "kind": "button",
+      "refersTo": "dashboard-button-primary",
+      "description": "Import or save a working record.",
+      "html": "<button class=\"ds-primary\">Import property</button>",
+      "css": ".ds-primary{font-family: Geist, Arial, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:999px;font-size:14px;font-weight:500;line-height:21px;cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out;background:#b42318;color:#fff}.ds-primary:hover{background:#912018}.ds-primary:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-primary:disabled{opacity:.55;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Dashboard secondary button",
+      "kind": "button",
+      "refersTo": "dashboard-button-secondary",
+      "description": "Secondary action such as back, cancel or sign out.",
+      "html": "<button class=\"ds-secondary\">Back to properties</button>",
+      "css": ".ds-secondary{font-family: Geist, Arial, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:999px;font-size:14px;font-weight:500;line-height:21px;cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out;background:#fff;border-color:#dedad4;color:#171717}.ds-secondary:hover{background:#f1efeb}.ds-secondary:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-secondary:disabled{opacity:.55;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+    },
+    {
+      "name": "Dashboard labelled field",
+      "kind": "input",
+      "refersTo": "dashboard-field",
+      "description": "Persistent label and readable editable property fact.",
+      "html": "<label class=\"ds-label\">Property name<input class=\"ds-input\" value=\"Palm House\"></label>",
+      "css": ".ds-label{font-family: Geist, Arial, sans-serif;display:block;font-size:14px;font-weight:500;color:#171717;margin-bottom:20px}.ds-input{font-family: Geist, Arial, sans-serif;display:block;box-sizing:border-box;width:100%;min-height:48px;padding:12px 14px;margin-top:8px;border:1px solid #8a8278;border-radius:12px;background:#fff;color:#171717;font-size:16px;font-weight:400;line-height:24px;caret-color:#b42318}.ds-input:focus-visible{outline:2px solid #171717;outline-offset:4px;}"
+    },
+    {
+      "name": "Dashboard navigation",
+      "kind": "nav",
+      "refersTo": "dashboard-navigation-selected",
+      "description": "Visible current destination and ordinary navigation links.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Workspace\"><a href=\"#properties\" aria-current=\"page\">Properties</a><a href=\"#train-hermes\">Train Hermes</a><a href=\"#guest-tests\">Guest tests</a></nav>",
+      "css": ".ds-nav{font-family: Geist, Arial, sans-serif;display:flex;flex-direction:column;gap:8px;background:#fff}.ds-nav a{display:flex;align-items:center;gap:12px;min-height:48px;padding:12px 16px;border-radius:12px;text-decoration:none;color:#595650;font-size:15px;line-height:22.5px}.ds-nav a:hover{background:#f1efeb;color:#171717}.ds-nav a[aria-current=\"page\"]{background:#fff0ed;color:#b42318;font-weight:600}.ds-nav a[aria-current=\"page\"]:after{content:\"\";width:6px;height:6px;border-radius:50%;background:currentColor;margin-left:auto}.ds-nav a:focus-visible{outline:2px solid #171717;outline-offset:4px;}"
+    },
+    {
+      "name": "Dashboard status pill",
+      "kind": "chip",
+      "refersTo": "dashboard-status-neutral",
+      "description": "Saved or missing information with an explicit text label.",
+      "html": "<span class=\"ds-pill\">Saved</span> <span class=\"ds-pill ds-attention\">Missing details</span>",
+      "css": ".ds-pill{font-family: Geist, Arial, sans-serif;display:inline-flex;align-items:center;border-radius:999px;padding:4px 10px;font-size:12px;line-height:20px;font-weight:500;color:#595650;background:#f1efeb}.ds-attention{color:#b42318;background:#fff0ed}"
+    },
+    {
+      "name": "Dashboard panel",
+      "kind": "card",
+      "refersTo": "dashboard-panel",
+      "description": "White working surface with quiet border and grouped facts.",
+      "html": "<section class=\"ds-panel\"><h2>Saved properties</h2><p>Your saved arrival details help Hermes answer guests.</p></section>",
+      "css": ".ds-panel{font-family: Geist, Arial, sans-serif;background:#fff;color:#171717;border:1px solid #dedad4;border-radius:24px;padding:24px;margin-bottom:24px;min-width:0}.ds-panel h2{font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.02em;margin:0 0 12px}.ds-panel p{font-size:14px;line-height:21px;color:#595650;margin:8px 0 20px;overflow-wrap:anywhere}@media(max-width:767px){.ds-panel{padding:20px 16px}}"
+    },
+    {
+      "name": "Training reply preview",
+      "kind": "custom",
+      "description": "Fictional single-turn preview keeps guest and Hermes messages distinct.",
+      "html": "<section class=\"ds-preview\"><p class=\"ds-question\">What time can we arrive?</p><p class=\"ds-bubble\">Check-in begins at 3 pm. Happy to help with your arrival.</p></section>",
+      "css": ".ds-preview{font-family: Geist, Arial, sans-serif;background:#f7f5f2;padding:24px;border-radius:16px;color:#171717;font-size:16px;line-height:24px}.ds-preview p{margin:8px 0 20px;white-space:pre-wrap;overflow-wrap:anywhere}.ds-question{background:#e8f5ed;color:#176447;padding:14px 16px;border-radius:16px;margin-left:10%!important}.ds-bubble{background:#fff;padding:14px 16px;border-radius:16px;max-width:90%}@media(max-width:767px){.ds-preview{padding:16px}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Calm operational dashboard",
+    "overview": "The admin dashboard implements the established screenshot-derived direction: white panels on warm cream, visible labelled navigation, grouped property facts and restrained red actions. It was rebuilt with existing code and real saved data/functions, without a generated composition. This system applies to `/admin.html`; the website and guest sandbox keep their distinct guidance below.",
+    "keyCharacteristics": [
+      "White working surfaces on warm cream.",
+      "Visible labels and readable saved facts.",
+      "Dark-red controls, quiet borders and rounded panels."
+    ],
+    "rules": [
+      {
+        "name": "The Labelled State Rule",
+        "body": "Selection, progress and document outcomes must remain understandable without colour.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do use the existing saved data and protected functions for every working screen.",
+      "Do preserve visible navigation labels, keyboard focus and draft retention.",
+      "Do keep website, sandbox and dashboard values scoped to their own surfaces."
+    ],
+    "donts": [
+      "Don't imply photos, production Check-ins or One Inbox screens exist.",
+      "Don't treat a name check or a host decision as government verification."
+    ]
+  }
+}

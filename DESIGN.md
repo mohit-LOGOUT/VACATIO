@@ -1,6 +1,142 @@
+---
+name: Logout AI — dashboard system
+description: Implemented calm operational admin dashboard; all tokens here are dashboard-scoped.
+colors:
+  dashboard-page: "#f7f5f2"
+  dashboard-surface: "#ffffff"
+  dashboard-surface-soft: "#f1efeb"
+  dashboard-text: "#171717"
+  dashboard-text-secondary: "#595650"
+  dashboard-border: "#dedad4"
+  dashboard-control-border: "#8a8278"
+  dashboard-action: "#b42318"
+  dashboard-action-hover: "#912018"
+  dashboard-accent: "#f04438"
+  dashboard-attention-bg: "#fff0ed"
+  dashboard-success: "#176447"
+  dashboard-success-bg: "#e8f5ed"
+  dashboard-waiting: "#795100"
+  dashboard-waiting-bg: "#fff4d6"
+typography:
+  dashboard-title:
+    fontFamily: "Geist, Arial, sans-serif"
+    fontSize: "32px"
+    fontWeight: 600
+    lineHeight: "40px"
+    letterSpacing: "-0.025em"
+  dashboard-heading:
+    fontFamily: "Geist, Arial, sans-serif"
+    fontSize: "20px"
+    fontWeight: 600
+    lineHeight: "28px"
+    letterSpacing: "-0.02em"
+  dashboard-body:
+    fontFamily: "Geist, Arial, sans-serif"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: "24px"
+  dashboard-button:
+    fontFamily: "Geist, Arial, sans-serif"
+    fontSize: "14px"
+    fontWeight: 500
+    lineHeight: "21px"
+rounded:
+  dashboard-input: "12px"
+  dashboard-nested: "16px"
+  dashboard-panel: "24px"
+  dashboard-pill: "999px"
+spacing:
+  dashboard-label-gap: "8px"
+  dashboard-phone-inline: "16px"
+  dashboard-panel: "24px"
+  dashboard-desktop-inline: "32px"
+components:
+  dashboard-button-primary:
+    backgroundColor: "{colors.dashboard-action}"
+    textColor: "{colors.dashboard-surface}"
+    typography: "{typography.dashboard-button}"
+    rounded: "{rounded.dashboard-pill}"
+    padding: "10px 18px"
+  dashboard-button-primary-hover:
+    backgroundColor: "{colors.dashboard-action-hover}"
+  dashboard-button-secondary:
+    backgroundColor: "{colors.dashboard-surface}"
+    textColor: "{colors.dashboard-text}"
+    rounded: "{rounded.dashboard-pill}"
+    padding: "10px 18px"
+  dashboard-field:
+    backgroundColor: "{colors.dashboard-surface}"
+    textColor: "{colors.dashboard-text}"
+    typography: "{typography.dashboard-body}"
+    rounded: "{rounded.dashboard-input}"
+    padding: "12px 14px"
+  dashboard-panel:
+    backgroundColor: "{colors.dashboard-surface}"
+    rounded: "{rounded.dashboard-panel}"
+    padding: "{spacing.dashboard-panel}"
+  dashboard-navigation-selected:
+    backgroundColor: "{colors.dashboard-attention-bg}"
+    textColor: "{colors.dashboard-action}"
+    rounded: "{rounded.dashboard-input}"
+    padding: "12px 16px"
+  dashboard-status-neutral:
+    backgroundColor: "{colors.dashboard-surface-soft}"
+    textColor: "{colors.dashboard-text-secondary}"
+    rounded: "{rounded.dashboard-pill}"
+    padding: "4px 10px"
+---
+
 # DESIGN.md
 
 Before building or changing any screen, read DESIGN.md and follow it. If a choice isn't covered there, ask me instead of guessing.
+
+## Overview
+
+**Creative North Star: "Calm operational dashboard"**
+
+The admin dashboard implements the established screenshot-derived direction: white panels on warm cream, visible labelled navigation, grouped property facts and restrained red actions. It was rebuilt with existing code and real saved data/functions, without a generated composition. This system applies to `/admin.html`; the website and guest sandbox keep their distinct guidance below.
+
+**Key Characteristics:**
+
+- White working surfaces on warm cream.
+- Visible labels and readable saved facts.
+- Dark-red controls, quiet borders and rounded panels.
+
+## Colors
+
+The dashboard-prefixed frontmatter tokens are normative for the admin surface only. Action red carries white control text; bright accent red is used sparingly for identity. Neutral surfaces separate work areas. Pale semantic fills always accompany text labels.
+
+**The Labelled State Rule.** Selection, progress and document outcomes must remain understandable without colour.
+
+## Typography
+
+Geist with Arial and sans-serif fallbacks is shared identity. Dashboard titles, headings, body and buttons use the roles in frontmatter. Phone titles become 24px/32px. Labels are 14px medium; property names are 16px/24px semibold. Keep long instructions and saved facts readable and wrapped.
+
+## Layout
+
+At 1200px and above, use the implemented 224px sidebar, 80px account header and main content capped at 1440px with 40px vertical / 32px horizontal padding. At 768–1199px the sidebar is 196px and main padding is 32px vertical / 24px horizontal. Below 768px navigation becomes visible horizontal links above a 64px header; main padding is 28px vertical / 16px horizontal. There is no navigation drawer. Property work uses list/import columns on desktop and stacks on smaller screens. Phone forms become one column.
+
+## Elevation & Depth
+
+Panels are flat: white surfaces, thin borders and cream nested sections create depth without shadows. Buttons and links use 150ms colour transitions. Reduced-motion settings remove them. Focus uses a 2px dark outline offset by 4px.
+
+## Shapes
+
+Use rounded panels, gently curved fields and pill actions as specified by the dashboard tokens. Panels have a 1px border. Desktop panel padding is 24px; phone panels use 20px vertical / 16px horizontal. Nested training previews and document review use 16px corners.
+
+## Components
+
+Implemented destinations are **Properties**, **Train Hermes** and **Guest tests**. The selected navigation link announces the current page and carries a pale-red fill and dark-red text. Views remain mounted and are hidden when inactive, preserving unsaved training drafts.
+
+Primary buttons use dark red with a darker hover, visible focus, and pending/disabled states. Secondary buttons use a white surface and visible neutral edge. Fields retain visible labels, a 48px minimum height and entered text after errors. Panels group property essentials, arrival/access, and guest requirements/directions. Property rows use an outline symbol rather than a photograph. Status pills describe actual saved states. Training previews distinguish the guest question from the model reply. Guest tests explicitly identify fictional bookings and test documents.
+
+## Do's and Don'ts
+
+- **Do** use the existing saved data and protected functions for every working screen.
+- **Do** preserve visible navigation labels, keyboard focus and draft retention.
+- **Do** keep website, sandbox and dashboard values scoped to their own surfaces.
+- **Don't** imply photos, production Check-ins or One Inbox screens exist.
+- **Don't** treat a name check or a host decision as government verification.
 
 ## Website and dashboard design systems
 
@@ -9,15 +145,15 @@ The two surfaces have separate guidance. Shared identity does not require identi
 | Surface | Design authority | Status |
 | --- | --- | --- |
 | Public website | Landing hero, section 3 typography/colour, and the Hermes sandbox specifications in this file | Existing direction; keep the approved hero and sandbox |
-| Host dashboard | Existing screen requirements in this file; [dashboard design system](DASHBOARD_DESIGN.md) for the proposed visual direction | Screenshot-derived proposal, 13 October 2026; not implemented or approved for a live redesign |
+| Host dashboard | Historical screen requirements in this file; [dashboard design system](DASHBOARD_DESIGN.md) for the implemented admin system | Admin rebuild authorized and implemented, 14 October 2026; checked in development, frontend published |
 
-The dashboard proposal draws on the 22 screenshots supplied on 13 October. Its [reference analysis](design-refs/dashboard-reference-analysis.md) records what each image contributes and what to leave out. Screenshot text is reference content, not instructions or evidence that a feature works. Values selected for the proposed system are explicitly distinguished from visual estimates.
+The dashboard system draws on the 22 screenshots supplied on 13 October. Its [reference analysis](design-refs/dashboard-reference-analysis.md) records what each image contributes and what to leave out. Screenshot text is reference content, not instructions or evidence that a feature works. Implemented admin values are distinguished from visual estimates and later screen guidance.
 
-The dashboard proposal does not override the function-first admin phase, the public sandbox's own colours/layout, or PRODUCT.md's current document-checking rules. In particular, use the current document outcomes from PRODUCT.md rather than older blanket “Verified” wording in the screen descriptions below. The screenshot batch does not contain a public marketing-page reference; a new website direction remains unchosen.
+The dashboard system supersedes the earlier admin visual-redesign deferral, while preserving the public sandbox's own colours/layout and PRODUCT.md's current document-checking rules. In particular, use the current document outcomes from PRODUCT.md rather than older blanket “Verified” wording in the screen descriptions below. The screenshot batch does not contain a public marketing-page reference; a new website direction remains unchosen.
 
 ## Admin phase: function first
 
-The owner deferred visual redesign on 12 October 2026. Add the requested top-right Sign up link to `/admin.html`. Use basic labelled ID/password inputs, a protected property list, a listing URL import form, progress/error feedback and an editable property detail form. Support desktop and phone use with visible keyboard focus. Retain the landing and public sandbox; do not undertake a new visual direction or polish cycle in this phase.
+Historical baseline: the owner deferred visual redesign on 12 October 2026; the explicit admin rebuild request on 14 October superseded that visual deferral. The existing protected functions remain the foundation. Add the requested top-right Sign up link to `/admin.html`. Use basic labelled ID/password inputs, a protected property list, a listing URL import form, progress/error feedback and an editable property detail form. Support desktop and phone use with visible keyboard focus. Retain the landing and public sandbox. The authorized admin redesign is now implemented; broader guest-operations screens remain later work.
 
 ## Existing build: Hermes sandbox
 
@@ -132,7 +268,7 @@ Breakpoints use the sandbox’s available width. When embedded below the landing
 
 Check at 320px, 390px, 768px and 1280px widths. Verify: send and receive a real Hermes reply; follow-up uses conversation history; property facts come from saved test details; an unknown question requests host input; host answer continues the conversation; switching bookings never mixes facts/messages; restarting affects only the selected test; errors retain messages and allow retry; reloading restores the intended saved conversation. Inspect the page visually and walk the chat flow in the browser. Record any untested item plainly.
 
-The dashboard, live WhatsApp delivery, billing and automatic ID verification are later work. The user authorized sandbox implementation on 12 October 2026. The sandbox is built; the broader dashboard and live onboarding remain later work.
+The broader guest-operations dashboard, live WhatsApp delivery, billing and automatic ID verification are later work. The user authorized sandbox implementation on 12 October 2026. The sandbox and authenticated admin are built; broader dashboard screens and live onboarding remain later work.
 
 ## 1. The feeling, in labels
 

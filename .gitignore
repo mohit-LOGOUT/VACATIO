@@ -10,3 +10,6 @@ test-results/
 .agents/
 .codex/
 .aws/
+
+# Local design review screenshots
+.impeccable/review/

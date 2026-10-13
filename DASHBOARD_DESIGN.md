@@ -1,6 +1,6 @@
 # Host dashboard design system
 
-Status: **proposed design rules**, extracted from the owner's 22 screenshots on 13 October 2026. This document specifies a future visual direction; it does not claim that components exist, work, or have been tested. DESIGN.md remains the entry point. PRODUCT.md defines behaviour and data truth. Visual redesign is still deferred until requested.
+Status: **implemented admin system**, 14 October 2026. The owner explicitly authorized rebuilding the admin dashboard after the design documentation changed. This supersedes the 12 October visual-redesign deferral. The implemented scope is Properties, Train Hermes and fictional Guest tests in `src/admin.jsx`, `src/admin.css` and `src/admin.html`; existing trainer behaviour remains. Development verification passed; the rebuilt frontend was published to production. DESIGN.md is the entry point and its dashboard-prefixed frontmatter owns the normative tokens. PRODUCT.md defines behaviour and data truth.
 
 ## Direction
 
@@ -8,7 +8,7 @@ Calm, spacious and practical: warm pale background, white surfaces, rounded card
 
 Keep the existing Geist font and Logout palette. The screenshots' blue, yellow, lime and coral accents belong to separate reference products. Combining all of them would make our screens inconsistent. Heavy translucent panels over saturated wallpaper, as in the dark Messenger reference, make small operational text harder to read; use solid surfaces for the dashboard.
 
-All reference measurements and colour estimates are approximate. Device photos distort sizes, and screenshots cannot establish font names or invisible interaction behaviour. The values below are **selected implementation targets**, not claimed samples from the source designs.
+All reference measurements and colour estimates are approximate. Device photos distort sizes, and screenshots cannot establish font names or invisible interaction behaviour. The implemented admin values below are extracted from code, not claimed samples from the references. Guidance for later screens remains provisional.
 
 ## Shared identity, separate surfaces
 
@@ -18,7 +18,7 @@ All reference measurements and colour estimates are approximate. Device photos d
 | Background | Existing cream `#FFF7F0` | Warm neutral `#F7F5F2` |
 | Main accent | Existing red `#F04438` | Same red; dark red fill for small white-text buttons |
 | Font | Existing Geist | Geist, regular body and medium/semibold headings |
-| Image role | Approved large landing hero | Small property thumbnails and relevant detail images |
+| Image role | Approved large landing hero | Implemented outline property symbols; photos remain later work |
 | Layout | Existing landing and sandbox rules | Labelled navigation, task lists, forms, and optional detail panel |
 | Decoration | Existing hero and phone treatment | Quiet surfaces; no device frames around working screens |
 
@@ -40,7 +40,7 @@ These names describe the purpose of each reusable value, also called a design to
 | `dashboard-accent` | `#F04438` | Large accent details and active-agent indicator |
 | `dashboard-action` | `#B42318` | Primary button fill with white text, urgent labels |
 | `dashboard-action-hover` | `#912018` | Primary button hover |
-| `dashboard-attention-bg` | `#FFF0ED` | Selected conversation or attention panel |
+| `dashboard-attention-bg` | `#FFF0ED` | Selected navigation or attention panel |
 | `dashboard-success` / `dashboard-success-bg` | `#176447` / `#E8F5ED` | Completed state with a text label |
 | `dashboard-waiting` / `dashboard-waiting-bg` | `#795100` / `#FFF4D6` | Waiting for guest or document check |
 | `dashboard-error` / `dashboard-error-bg` | `#B42318` / `#FFF0ED` | Error or replacement needed |
@@ -53,31 +53,30 @@ White small text on the existing bright red does not provide enough contrast; us
 
 | Style | Size / line height | Weight | Use |
 | --- | --- | --- | --- |
-| Page title | 32px / 40px desktop; 24px / 32px phone | 600 | Check-ins, One Inbox, Listings |
+| Page title | 32px / 40px desktop; 24px / 32px phone | 600 | Properties, Train Hermes, Guest tests |
 | Section heading | 20px / 28px | 600 | Property details, Guest documents |
 | Card title | 16px / 24px | 600 | Guest/property name |
 | Body and inputs | 16px / 24px | 400 | Messages, instructions, editable values |
-| Labels and supporting text | 14px / 20px | 500 / 400 | Fields, status, dates |
-| Caption | 13px / 18px | 400 | Timestamps and secondary metadata |
-| Summary number | 36px / 40px | 500 | Real task counts; same colour throughout the number |
+| Labels and supporting text | 14px / 21px | 500 / 400 | Fields and supporting copy |
+| Caption | 12px / 18px; count labels 13px / 19.5px | 400 | Property metadata and saved count |
 
-Use spacing steps of 4, 8, 12, 16, 24, 32 and 48px. Card padding: 24px desktop, 16px phone. Gaps between cards: 16–24px. Related label/value gap: 8px. Separate form sections by 32px. Keep paragraph line lengths near 60–75 characters; do not stretch a form across a wide screen.
+Use spacing steps of 4, 8, 12, 16, 24, 32 and 48px. Card padding: 24px desktop, 20px vertical / 16px horizontal on phone. Gaps between cards: 16–24px. Related label/value gap: 8px. Separate form sections by 32px. Keep paragraph line lengths near 60–75 characters; do not stretch a form across a wide screen.
 
-Cards: 24px corners. Compact list rows and images: 16px corners. Inputs: 12px corners. Status labels and toolbar controls may be pills. Use a 1px card border and little or no shadow. A floating menu or dialog may use `0 12px 32px rgb(23 23 23 / 12%)`. Do not stack multiple bordered cards around every individual field.
+Cards: 24px corners. Property rows: 12px corners; property symbols and nested previews: 16px corners. Inputs: 12px corners. Status labels and toolbar controls may be pills. Use a 1px card border and little or no shadow. No menu/dialog shadow is implemented in this admin rebuild. Do not stack multiple bordered cards around every individual field.
 
-Controls should be at least 44px tall, and every touch target at least 44 × 44px. Icons: 20px in buttons, 24px in navigation; consistent approximately 1.75px stroke, rounded ends. Use one outline icon family already available in the project. A circular icon button needs a clear accessible name and a tooltip on desktop; major actions need visible words.
+Controls should be at least 44px tall, and every touch target at least 44 × 44px. Icons: 20px in buttons and desktop navigation, 16px in phone navigation; consistent approximately 1.75px stroke, rounded ends. Use one outline icon family already available in the project. A circular icon button needs a clear accessible name and a tooltip on desktop; major actions need visible words.
 
 ## Layout
 
-Desktop, 1200px and wider: a 224px labelled sidebar, a 72px top header and a flexible content area with 32px padding. Maximum main-content width 1440px. Navigation follows the approved screens in DESIGN.md; the references' Trips, Cards, Reports and other unrelated destinations are not requirements.
+Desktop, 1200px and wider: a 224px labelled sidebar, an 80px account header and main content with 40px vertical / 32px horizontal padding, capped at 1440px. Destinations are Properties, Train Hermes and Guest tests. Each view stays mounted but is hidden while inactive, preserving training drafts when navigating.
 
-For ordinary task screens, place title and explanation first, relevant filters second, then the work list. A page has one main action. Show exceptions before completed work. No map or chart grid just because the reference has one.
+Properties places saved rows beside import/history panels. The property form groups Property essentials, Arrival and access, and Guest requirements and directions. Existing import, manual-add and save functions remain connected to saved data. Property symbols are outline icons; no photo workflow was added.
 
-One Inbox may use three content panes on large screens: conversation list 280–320px, flexible chat at least 400px, context panel 280–320px. At 1200px, open context on demand so the three panes plus sidebar do not squeeze the chat. Use all three panes only when at least 1280px of content width is available. Keep header and composer visible; scroll messages within their area.
+At 768–1199px: a 196px labelled sidebar stays visible, main padding becomes 32px vertical / 24px horizontal, and property/import content stacks. Below 768px: visible horizontal navigation moves above the workspace, the account header becomes 64px, forms and import cards use one column, and main padding becomes 28px vertical / 16px horizontal. There is no drawer. No page-wide horizontal overflow was observed at 320px, 390px, 768px or 1280px.
 
-At 768–1199px: compact navigation opens a labelled drawer; use at most a list and detail pane, with context in a drawer. Below 768px: one active pane at a time, a visible Back to conversations/listings control, 16px page padding and stacked forms/cards. Filters wrap or open in a sheet. No page-wide horizontal scrolling at 320px. These responsive rules are proposals; only reference 7 shows a phone version.
+Later Check-ins and One Inbox screen compositions below are reference guidance only; they were not built by this rebuild.
 
-## Reusable components
+## Reusable components — implementation and later guidance
 
 | Component | Anatomy and variations | Behaviour to implement |
 | --- | --- | --- |
@@ -89,7 +88,7 @@ At 768–1199px: compact navigation opens a labelled drawer; use at most a list 
 | Filter bar | Search, status/property filters, optional dates, Clear filters | Applied choices visible; Apply/Cancel if editing a draft; keep date range and query together |
 | Status pill | Short text, optional icon, semantic pale fill | Use product states; never rely on a tiny coloured dot |
 | Guest task card | Name, property, stay, guest count, status, short summary | One main destination; exception reason visible before secondary details |
-| Property row | Thumbnail, name, location, active state | Selecting opens Property Context; distinguish selected row; no invented availability or price |
+| Property row | Implemented outline symbol, name, location, saved/missing-details state | Selecting opens grouped editable property details; no invented availability or price |
 | Detail panel | Title, record context, grouped facts or fields, main action | Keep selected record obvious; use full screen on phone |
 | Conversation row | Avatar/initials, name, property, preview, time, handler, unread/attention | Selected pale red row; readable preview; distinguish unread from needs host help |
 | Message | Sender, text, time, optional attachment | Familiar left/right bubbles; distinguish guest, Hermes and host with labels; preserve paragraphs |
@@ -97,9 +96,11 @@ At 768–1199px: compact navigation opens a labelled drawer; use at most a list 
 | Composer | Labelled multiline input, Send | Visible when host is handling; Enter sends, Shift+Enter newline; retain draft after failure |
 | Summary card | Label, real count, reporting window, optional detail link | Use only if it answers a host question; no invented trends or decorative rankings |
 
+The table includes future patterns (filters, guest task cards, inbox/composer and summary cards); these are not implemented production screens. Current components are navigation, page header, buttons, fields, property rows, panels, status pills, trainer previews and fictional test-document review.
+
 Destructive actions use explicit labels and explain what is being removed. Saving should show pending, success and failure in the same area. Cancel returns to the last saved value. An unrelated request or record switch must not publish someone else's draft.
 
-## Apply the references to our screens
+## Apply the references to later screens
 
 **Check-ins:** use the travel history rows' clear grouping, with one guest card per row on phones. Show guest, property and check-in date before supporting facts. Group Needs your help and ID needs review first. Preserve all approved screen fields; maps, revenue and travel rankings are outside this job.
 
@@ -121,10 +122,12 @@ Loading: preserve the layout, show a short descriptive label, and announce progr
 
 For disabled controls, explain the reason when it is not obvious. Give dialogs keyboard focus, return focus to their trigger on close, and make Escape close non-destructive overlays. Motion is limited to 120–180ms colour/opacity transitions; respect reduced-motion preferences. No always-pulsing agent indicator.
 
-## Future implementation checks
+## Verification and remaining work
 
-When a dashboard build is requested, inspect the actual pages at 320px, 390px, 768px and 1280px. Confirm readable text, keyboard access, reachable composer with the phone keyboard, persistent labels, long-name wrapping, and no horizontal page overflow. Walk search/filter, selected-record changes, save/retry, conversation handoff and relevant document-review flows against real saved data. Verify text and control contrast against their actual backgrounds. Screenshots establish appearance; they do not prove any of these behaviours.
+Development verification on 14 October 2026: `npm test` passed all 33 tests. `scripts/check-admin.mjs` checked authentication protections, import/edit/reload, duplicates, private-link rejection and sign-out. `scripts/check-trainer.mjs` checked real model suggestions, preview/save and a real guest reply, then restored original settings. `scripts/check-precheck-host.mjs` checked a fictional three-person booking. `scripts/check-admin-design.mjs` checked navigation, draft retention, keyboard access and no horizontal overflow, with screenshots at 320px, 390px, 768px and 1280px.
 
-Current delivery: documentation only. No dashboard code, public website, backend or live deployment changed.
+Visual review of all variants in `.impeccable/review` returned **Ship**, with no material blocker. Minor observations remain: Add manually can wrap at 768px, and native selects may clip long selected text. These are not evidence of lost saved data.
+
+These checks were run in development. The rebuilt frontend was published to production at https://grateful-llama-909.convex.site/admin.html (deployment `e97c496b-9697-4bc8-9935-7155f803f5a4`), without a backend source/function deployment. Live signed-out admin checks passed: the landing Sign up link opens the protected admin page, the configured sign-in is enabled, anonymous property reads are rejected and the phone layout fits. Authenticated redesigned flows were checked in development. The separate public guest-demo check did not pass: its old last-message assumption reads the separate ID reminder, and a proposed count-based replacement raced with welcome messages. Guest-demo source was not changed; the failed check remains an explicit verification limitation. No photos, production inbox or Check-ins screens were added. Future screens still need their own data flows and browser checks; reference screenshots do not prove behaviour.
 
 Source details: [22-image analysis](design-refs/dashboard-reference-analysis.md).
