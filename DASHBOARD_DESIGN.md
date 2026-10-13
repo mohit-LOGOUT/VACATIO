@@ -1,8 +1,28 @@
 # Host dashboard design system
 
-Status: **implemented admin system**, 14 October 2026. The owner explicitly authorized rebuilding the admin dashboard after the design documentation changed. This supersedes the 12 October visual-redesign deferral. The implemented scope is Properties, Train Hermes and fictional Guest tests in `src/admin.jsx`, `src/admin.css` and `src/admin.html`; existing trainer behaviour remains. Development verification passed; the rebuilt frontend was published to production. DESIGN.md is the entry point and its dashboard-prefixed frontmatter owns the normative tokens. PRODUCT.md defines behaviour and data truth.
+Status: **implemented admin system**, 14 October 2026. The owner explicitly authorized rebuilding the admin dashboard after the design documentation changed. This supersedes the 12 October visual-redesign deferral. The implemented scope is Properties, Train Hermes and fictional Guest tests in `src/admin.jsx`, `src/admin.css` and `src/admin.html`; existing trainer behaviour remains. The initial rebuild was published. The subsequent minimal listing/sidebar refinement is published; authenticated flows were checked in development. DESIGN.md is the entry point and its dashboard-prefixed frontmatter owns the normative tokens. PRODUCT.md defines behaviour and data truth.
 
-## Direction
+## Latest scoped override — minimal listings and shared shell
+
+The owner's 14 October request to redesign listings and sidebars using the new minimalist screenshot supersedes the earlier cream/red presentation on those surfaces. Reference: [minimal listing and navigation analysis](design-refs/minimal-listings-analysis.md). Keep real property functions and the three existing destinations. The shared shell is white, the sidebar pale grey, selection neutral grey, and listing actions black. Training/test red controls, 24px panels and their behaviour remain; shared page, soft, border and muted values inherit the shell override. Signed-out entry, website and public sandbox retain their established systems.
+
+| Scoped token | Value | Purpose |
+| --- | --- | --- |
+| `minimal-page` | `#FFFFFF` | Signed-in workspace |
+| `minimal-sidebar` | `#FAFAFA` | Sidebar and metadata chips |
+| `minimal-soft` | `#F6F6F7` | Placeholder and quiet status/hover surfaces |
+| `minimal-border` | `#E3E3E7` | Shared edges, listing cards and chips |
+| `minimal-placeholder-border` | `#ECECEF` | Empty photo slot edge |
+| `minimal-muted` | `#606069` | Supporting text |
+| `minimal-text` | `#18181B` | Listing titles/actions and selected navigation |
+| `minimal-selected` | `#EDEDF0` | Current navigation background |
+| `minimal-action-hover` | `#35353B` | Listing primary-action hover |
+
+Listing card/panel/action corners are 8px; navigation, input and empty-photo corners are 6px. Card padding is 16px desktop / 14px phone. Listing titles are medium weight: 20px/28px desktop, 18px/26px tablet, 16px/24px phone. Saved type and amenity-count chips are derived from records. Cards explicitly say **No photo added**; there is no photo field or photo-upload workflow. **Edit property** and the property title open the existing editor. No calendar, occupancy, live switch or invented navigation was added.
+
+The sidebar has an outlined compass and uppercase LOGOUT wordmark. Desktop sidebar width is 240px; 768–1199px remains 196px. The top header is 72px desktop / 64px phone. Saved listings span the full content width, followed by import/history tools in two desktop columns and one below 1200px. Phone navigation remains visible above the workspace, without a drawer.
+
+## Direction — retained baseline
 
 Calm, spacious and practical: warm pale background, white surfaces, rounded cards, fine outline icons, dark readable text and a single red action colour. The travel dashboard supplies the clearest repeated component system. The light chat supplies the inbox structure. The room-management screen supplies the property list/detail structure. The lending screens contribute generous spacing and quiet metric cards; the orange dashboard contributes warmth.
 
@@ -15,18 +35,18 @@ All reference measurements and colour estimates are approximate. Device photos d
 | Rule | Website | Dashboard |
 | --- | --- | --- |
 | Main purpose | Explain the product and let a visitor try Hermes | Let a host complete work and resolve exceptions |
-| Background | Existing cream `#FFF7F0` | Warm neutral `#F7F5F2` |
-| Main accent | Existing red `#F04438` | Same red; dark red fill for small white-text buttons |
+| Background | Existing cream `#FFF7F0` | White signed-in workspace; pale-grey sidebar |
+| Main accent | Existing red `#F04438` | Black listing actions; retained red training/test controls |
 | Font | Existing Geist | Geist, regular body and medium/semibold headings |
-| Image role | Approved large landing hero | Implemented outline property symbols; photos remain later work |
+| Image role | Approved large landing hero | Explicit No photo added placeholders; photos remain later work |
 | Layout | Existing landing and sandbox rules | Labelled navigation, task lists, forms, and optional detail panel |
 | Decoration | Existing hero and phone treatment | Quiet surfaces; no device frames around working screens |
 
 The public Hermes sandbox retains its documented teal header, beige chat background and green guest bubbles. It is a familiar guest-chat demonstration, not a sample of dashboard navigation.
 
-## Colour rules
+## Colour rules — retained component baseline
 
-These names describe the purpose of each reusable value, also called a design token.
+These names describe the original reusable values. Inside the signed-in shell, page/soft/border/muted inherit the scoped overrides above; listing actions also inherit black. Training/test red controls and document semantic colours remain. The newer navigation overrides the original red selection treatment.
 
 | Name | Value | Use |
 | --- | --- | --- |
@@ -68,9 +88,9 @@ Controls should be at least 44px tall, and every touch target at least 44 × 44p
 
 ## Layout
 
-Desktop, 1200px and wider: a 224px labelled sidebar, an 80px account header and main content with 40px vertical / 32px horizontal padding, capped at 1440px. Destinations are Properties, Train Hermes and Guest tests. Each view stays mounted but is hidden while inactive, preserving training drafts when navigating.
+Desktop, 1200px and wider: a 240px labelled sidebar, a 72px account header and main content with 40px vertical / 32px horizontal padding, capped at 1440px. Destinations are Properties, Train Hermes and Guest tests. Each view stays mounted but is hidden while inactive, preserving training drafts when navigating.
 
-Properties places saved rows beside import/history panels. The property form groups Property essentials, Arrival and access, and Guest requirements and directions. Existing import, manual-add and save functions remain connected to saved data. Property symbols are outline icons; no photo workflow was added.
+Properties places full-width saved listing cards before import/history panels, which form two columns on desktop and one below 1200px. The property form groups Property essentials, Arrival and access, and Guest requirements and directions. Existing import, manual-add and save functions remain connected to saved data. Cards show labelled photo placeholders; no photo workflow was added.
 
 At 768–1199px: a 196px labelled sidebar stays visible, main padding becomes 32px vertical / 24px horizontal, and property/import content stacks. Below 768px: visible horizontal navigation moves above the workspace, the account header becomes 64px, forms and import cards use one column, and main padding becomes 28px vertical / 16px horizontal. There is no drawer. No page-wide horizontal overflow was observed at 320px, 390px, 768px or 1280px.
 
@@ -81,14 +101,14 @@ Later Check-ins and One Inbox screen compositions below are reference guidance o
 | Component | Anatomy and variations | Behaviour to implement |
 | --- | --- | --- |
 | Page header | Title, short explanation, main action | Action describes its result: Create listing, Save changes, Review issue |
-| Navigation item | Outline icon, visible label, optional real count | Active item uses pale red background, dark text and a selected marker; announce current page |
-| Primary button | Dark red fill, white text, optional leading icon | Hover darker; visible focus; pending label such as Saving…; prevent duplicate submission |
+| Navigation item | Outline icon, visible label, optional real count | Active item uses neutral grey background and near-black text, with no selected marker; announce current page |
+| Primary button | Black listing fill; retained dark-red training/test fill, white text | Hover darker; visible focus; pending label such as Saving…; prevent duplicate submission |
 | Secondary button | White/neutral fill, dark text, visible edge | For Cancel, Reload, secondary navigation |
 | Text field | Persistent label, input, optional hint, inline error | Focus visible; keep entered values after failure; never rely on placeholder as label |
 | Filter bar | Search, status/property filters, optional dates, Clear filters | Applied choices visible; Apply/Cancel if editing a draft; keep date range and query together |
 | Status pill | Short text, optional icon, semantic pale fill | Use product states; never rely on a tiny coloured dot |
 | Guest task card | Name, property, stay, guest count, status, short summary | One main destination; exception reason visible before secondary details |
-| Property row | Implemented outline symbol, name, location, saved/missing-details state | Selecting opens grouped editable property details; no invented availability or price |
+| Property row | No photo added placeholder, name, location, real type/amenity chips, saved/missing-details state | Selecting opens grouped editable property details; no invented availability or price |
 | Detail panel | Title, record context, grouped facts or fields, main action | Keep selected record obvious; use full screen on phone |
 | Conversation row | Avatar/initials, name, property, preview, time, handler, unread/attention | Selected pale red row; readable preview; distinguish unread from needs host help |
 | Message | Sender, text, time, optional attachment | Familiar left/right bubbles; distinguish guest, Hermes and host with labels; preserve paragraphs |
@@ -124,10 +144,13 @@ For disabled controls, explain the reason when it is not obvious. Give dialogs k
 
 ## Verification and remaining work
 
+Latest minimal listing/sidebar refinement: all 33 automated tests passed; `scripts/check-admin-design.mjs` and `scripts/check-admin.mjs` passed in development, including the 320px, 390px, 768px and 1280px layout checks. Review returned **Ship**, with no findings. Paid model checks were not repeated because training/model code was unchanged. The refinement was published to https://grateful-llama-909.convex.site/admin.html#properties (deployment `74835245-c019-4a75-8a05-1c671f259f5b`), without a backend deployment. Live signed-out admin checks passed: protected entry, configured sign-in and phone layout. Authenticated screens were checked in development. The evidence below records the earlier dashboard baseline separately.
+
+
 Development verification on 14 October 2026: `npm test` passed all 33 tests. `scripts/check-admin.mjs` checked authentication protections, import/edit/reload, duplicates, private-link rejection and sign-out. `scripts/check-trainer.mjs` checked real model suggestions, preview/save and a real guest reply, then restored original settings. `scripts/check-precheck-host.mjs` checked a fictional three-person booking. `scripts/check-admin-design.mjs` checked navigation, draft retention, keyboard access and no horizontal overflow, with screenshots at 320px, 390px, 768px and 1280px.
 
 Visual review of all variants in `.impeccable/review` returned **Ship**, with no material blocker. Minor observations remain: Add manually can wrap at 768px, and native selects may clip long selected text. These are not evidence of lost saved data.
 
 These checks were run in development. The rebuilt frontend was published to production at https://grateful-llama-909.convex.site/admin.html (deployment `e97c496b-9697-4bc8-9935-7155f803f5a4`), without a backend source/function deployment. Live signed-out admin checks passed: the landing Sign up link opens the protected admin page, the configured sign-in is enabled, anonymous property reads are rejected and the phone layout fits. Authenticated redesigned flows were checked in development. The separate public guest-demo check did not pass: its old last-message assumption reads the separate ID reminder, and a proposed count-based replacement raced with welcome messages. Guest-demo source was not changed; the failed check remains an explicit verification limitation. No photos, production inbox or Check-ins screens were added. Future screens still need their own data flows and browser checks; reference screenshots do not prove behaviour.
 
-Source details: [22-image analysis](design-refs/dashboard-reference-analysis.md).
+Source details: [latest minimal listing/sidebar analysis](design-refs/minimal-listings-analysis.md), [earlier 22-image analysis](design-refs/dashboard-reference-analysis.md).

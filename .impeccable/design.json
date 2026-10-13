@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-14T01:09:14+05:30",
+  "generatedAt": "2026-10-14T01:21:05+05:30",
   "title": "Design System: Logout AI \u2014 dashboard",
   "extensions": {
     "shadows": [],
@@ -28,15 +28,41 @@
         "purpose": "Visible keyboard focus."
       }
     ],
-    "scope": "Admin dashboard only. Website and sandbox retain their documented separate systems."
+    "scope": "Latest minimal listings and shared shell override. Training/test controls and semantic states retain their documented baseline; website and sandbox remain separate.",
+    "colorMeta": {
+      "minimal-page": {
+        "role": "neutral",
+        "displayName": "White workspace"
+      },
+      "minimal-sidebar": {
+        "role": "neutral",
+        "displayName": "Pale-grey sidebar"
+      },
+      "minimal-border": {
+        "role": "neutral",
+        "displayName": "Fine neutral border"
+      },
+      "minimal-muted": {
+        "role": "neutral",
+        "displayName": "Readable grey supporting text"
+      },
+      "minimal-text": {
+        "role": "neutral",
+        "displayName": "Near-black listing action"
+      },
+      "minimal-selected": {
+        "role": "neutral",
+        "displayName": "Quiet neutral selection"
+      }
+    }
   },
   "components": [
     {
       "name": "Dashboard primary button",
       "kind": "button",
       "refersTo": "dashboard-button-primary",
-      "description": "Import or save a working record.",
-      "html": "<button class=\"ds-primary\">Import property</button>",
+      "description": "Retained dark-red training/test action inside the neutral shared shell.",
+      "html": "<button class=\"ds-primary\">Save for Hermes</button>",
       "css": ".ds-primary{font-family: Geist, Arial, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:999px;font-size:14px;font-weight:500;line-height:21px;cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out;background:#b42318;color:#fff}.ds-primary:hover{background:#912018}.ds-primary:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-primary:disabled{opacity:.55;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
     },
     {
@@ -45,23 +71,23 @@
       "refersTo": "dashboard-button-secondary",
       "description": "Secondary action such as back, cancel or sign out.",
       "html": "<button class=\"ds-secondary\">Back to properties</button>",
-      "css": ".ds-secondary{font-family: Geist, Arial, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:999px;font-size:14px;font-weight:500;line-height:21px;cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out;background:#fff;border-color:#dedad4;color:#171717}.ds-secondary:hover{background:#f1efeb}.ds-secondary:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-secondary:disabled{opacity:.55;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+      "css": ".ds-secondary{font-family: Geist, Arial, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:999px;font-size:14px;font-weight:500;line-height:21px;cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out;background:#fff;border-color:#e3e3e7;color:#171717}.ds-secondary:hover{background:#f6f6f7}.ds-secondary:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-secondary:disabled{opacity:.55;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
     },
     {
       "name": "Dashboard labelled field",
       "kind": "input",
       "refersTo": "dashboard-field",
-      "description": "Persistent label and readable editable property fact.",
+      "description": "Retained training/test field geometry; listing fields use their scoped 6px corners.",
       "html": "<label class=\"ds-label\">Property name<input class=\"ds-input\" value=\"Palm House\"></label>",
       "css": ".ds-label{font-family: Geist, Arial, sans-serif;display:block;font-size:14px;font-weight:500;color:#171717;margin-bottom:20px}.ds-input{font-family: Geist, Arial, sans-serif;display:block;box-sizing:border-box;width:100%;min-height:48px;padding:12px 14px;margin-top:8px;border:1px solid #8a8278;border-radius:12px;background:#fff;color:#171717;font-size:16px;font-weight:400;line-height:24px;caret-color:#b42318}.ds-input:focus-visible{outline:2px solid #171717;outline-offset:4px;}"
     },
     {
       "name": "Dashboard navigation",
       "kind": "nav",
-      "refersTo": "dashboard-navigation-selected",
-      "description": "Visible current destination and ordinary navigation links.",
+      "refersTo": "minimal-navigation-selected",
+      "description": "Current minimal shared navigation, retaining only working destinations.",
       "html": "<nav class=\"ds-nav\" aria-label=\"Workspace\"><a href=\"#properties\" aria-current=\"page\">Properties</a><a href=\"#train-hermes\">Train Hermes</a><a href=\"#guest-tests\">Guest tests</a></nav>",
-      "css": ".ds-nav{font-family: Geist, Arial, sans-serif;display:flex;flex-direction:column;gap:8px;background:#fff}.ds-nav a{display:flex;align-items:center;gap:12px;min-height:48px;padding:12px 16px;border-radius:12px;text-decoration:none;color:#595650;font-size:15px;line-height:22.5px}.ds-nav a:hover{background:#f1efeb;color:#171717}.ds-nav a[aria-current=\"page\"]{background:#fff0ed;color:#b42318;font-weight:600}.ds-nav a[aria-current=\"page\"]:after{content:\"\";width:6px;height:6px;border-radius:50%;background:currentColor;margin-left:auto}.ds-nav a:focus-visible{outline:2px solid #171717;outline-offset:4px;}"
+      "css": ".ds-nav{font-family:Geist,Arial,sans-serif;display:flex;flex-direction:column;gap:8px;background:#fafafa}.ds-nav a{display:flex;align-items:center;gap:12px;min-height:48px;padding:12px 16px;border-radius:6px;text-decoration:none;color:#606069;font-size:15px;line-height:22.5px;font-weight:400}.ds-nav a:hover{background:#f6f6f7;color:#171717}.ds-nav a[aria-current=\"page\"]{background:#ededf0;color:#18181b;font-weight:500}.ds-nav a:focus-visible{outline:2px solid #171717;outline-offset:4px;}"
     },
     {
       "name": "Dashboard status pill",
@@ -69,31 +95,47 @@
       "refersTo": "dashboard-status-neutral",
       "description": "Saved or missing information with an explicit text label.",
       "html": "<span class=\"ds-pill\">Saved</span> <span class=\"ds-pill ds-attention\">Missing details</span>",
-      "css": ".ds-pill{font-family: Geist, Arial, sans-serif;display:inline-flex;align-items:center;border-radius:999px;padding:4px 10px;font-size:12px;line-height:20px;font-weight:500;color:#595650;background:#f1efeb}.ds-attention{color:#b42318;background:#fff0ed}"
+      "css": ".ds-pill{font-family: Geist, Arial, sans-serif;display:inline-flex;align-items:center;border-radius:999px;padding:4px 10px;font-size:12px;line-height:20px;font-weight:500;color:#595650;background:#f6f6f7}.ds-attention{color:#b42318;background:#fff0ed}"
     },
     {
       "name": "Dashboard panel",
       "kind": "card",
       "refersTo": "dashboard-panel",
-      "description": "White working surface with quiet border and grouped facts.",
-      "html": "<section class=\"ds-panel\"><h2>Saved properties</h2><p>Your saved arrival details help Hermes answer guests.</p></section>",
-      "css": ".ds-panel{font-family: Geist, Arial, sans-serif;background:#fff;color:#171717;border:1px solid #dedad4;border-radius:24px;padding:24px;margin-bottom:24px;min-width:0}.ds-panel h2{font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.02em;margin:0 0 12px}.ds-panel p{font-size:14px;line-height:21px;color:#595650;margin:8px 0 20px;overflow-wrap:anywhere}@media(max-width:767px){.ds-panel{padding:20px 16px}}"
+      "description": "Retained training/test panel geometry inside the updated neutral shell.",
+      "html": "<section class=\"ds-panel\"><h2>Train Hermes</h2><p>Preview your instructions before saving for guests.</p></section>",
+      "css": ".ds-panel{font-family: Geist, Arial, sans-serif;background:#fff;color:#171717;border:1px solid #e3e3e7;border-radius:24px;padding:24px;margin-bottom:24px;min-width:0}.ds-panel h2{font-size:20px;line-height:28px;font-weight:600;letter-spacing:-.02em;margin:0 0 12px}.ds-panel p{font-size:14px;line-height:21px;color:#606069;margin:8px 0 20px;overflow-wrap:anywhere}@media(max-width:767px){.ds-panel{padding:20px 16px}}"
     },
     {
       "name": "Training reply preview",
       "kind": "custom",
       "description": "Fictional single-turn preview keeps guest and Hermes messages distinct.",
       "html": "<section class=\"ds-preview\"><p class=\"ds-question\">What time can we arrive?</p><p class=\"ds-bubble\">Check-in begins at 3 pm. Happy to help with your arrival.</p></section>",
-      "css": ".ds-preview{font-family: Geist, Arial, sans-serif;background:#f7f5f2;padding:24px;border-radius:16px;color:#171717;font-size:16px;line-height:24px}.ds-preview p{margin:8px 0 20px;white-space:pre-wrap;overflow-wrap:anywhere}.ds-question{background:#e8f5ed;color:#176447;padding:14px 16px;border-radius:16px;margin-left:10%!important}.ds-bubble{background:#fff;padding:14px 16px;border-radius:16px;max-width:90%}@media(max-width:767px){.ds-preview{padding:16px}}"
+      "css": ".ds-preview{font-family: Geist, Arial, sans-serif;background:#fff;padding:24px;border-radius:16px;color:#171717;font-size:16px;line-height:24px}.ds-preview p{margin:8px 0 20px;white-space:pre-wrap;overflow-wrap:anywhere}.ds-question{background:#e8f5ed;color:#176447;padding:14px 16px;border-radius:16px;margin-left:10%!important}.ds-bubble{background:#fff;padding:14px 16px;border-radius:16px;max-width:90%}@media(max-width:767px){.ds-preview{padding:16px}}"
+    },
+    {
+      "name": "Minimal listing action",
+      "kind": "button",
+      "refersTo": "listing-action",
+      "description": "Black action for editing or importing saved listings.",
+      "html": "<button class=\"ds-list-action\">Edit property</button>",
+      "css": ".ds-list-action{font-family:Geist,Arial,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:8px;background:#18181b;color:#fff;font-size:14px;font-weight:500;line-height:21px;cursor:pointer;transition:background-color 150ms ease-out,color 150ms ease-out}.ds-list-action:hover{background:#35353b}.ds-list-action:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-list-action:disabled{opacity:.55;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-list-action{transition:none}}"
+    },
+    {
+      "name": "Minimal saved listing card",
+      "kind": "card",
+      "refersTo": "listing-card",
+      "description": "Saved property facts with an honest empty-photo slot, real metadata and editor action. Preview values are fictional examples.",
+      "html": "<article class=\"ds-list-card\"><div class=\"ds-no-photo\">No photo added</div><div class=\"ds-card-body\"><button class=\"ds-property-title\">Palm House</button><p class=\"ds-location\">Saved property location</p><div class=\"ds-tags\"><span>Villa</span><span>6 amenities</span></div><p class=\"ds-source\">Saved property</p></div><div class=\"ds-card-actions\"><span class=\"ds-saved\">Saved</span><button class=\"ds-edit\">Edit property</button></div></article>",
+      "css": ".ds-list-card{box-sizing:border-box;font-family:Geist,Arial,sans-serif;display:grid;grid-template-columns:152px minmax(0,1fr) auto;gap:24px;min-height:196px;border:1px solid #e3e3e7;border-radius:8px;padding:16px;background:#fff;color:#171717}.ds-no-photo{display:flex;align-items:center;justify-content:center;background:#f6f6f7;border:1px solid #ececef;border-radius:6px;color:#606069;font-size:12px}.ds-card-body{min-width:0;padding:2px 0}.ds-property-title{font-family:Geist,Arial,sans-serif;display:inline;min-height:44px;padding:0;border:0;border-radius:4px;background:transparent;color:#18181b;text-align:left;font-size:20px;line-height:28px;font-weight:500;overflow-wrap:anywhere;cursor:pointer}.ds-property-title:hover{text-decoration:underline;text-underline-offset:5px}.ds-property-title:focus-visible,.ds-edit:focus-visible{outline:2px solid #171717;outline-offset:4px;}.ds-location{margin:4px 0 12px;color:#606069;font-size:14px;line-height:21px;overflow-wrap:anywhere}.ds-tags{display:flex;flex-wrap:wrap;gap:8px}.ds-tags span{padding:2px 10px;border:1px solid #e3e3e7;border-radius:999px;background:#fafafa;font-size:12px;line-height:18px;color:#606069}.ds-source{font-size:12px;line-height:18px;color:#606069;margin:20px 0 0}.ds-card-actions{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:24px;padding:8px 0 0}.ds-saved{display:inline-flex;border-radius:999px;padding:4px 10px;font-size:12px;line-height:20px;font-weight:500;color:#606069;background:#f6f6f7;border:1px solid #e3e3e7}.ds-edit{font-family:Geist,Arial,sans-serif;min-height:44px;padding:10px 18px;border:1px solid transparent;border-radius:8px;background:#18181b;color:#fff;font-size:14px;line-height:21px;font-weight:500;cursor:pointer}.ds-edit:hover{background:#35353b}@media(max-width:1199px){.ds-list-card{grid-template-columns:100px minmax(0,1fr);gap:16px}.ds-no-photo{min-height:132px}.ds-card-actions{grid-column:2;flex-direction:row;align-items:center;padding:0}.ds-property-title{font-size:18px;line-height:26px}}@media(max-width:767px){.ds-list-card{grid-template-columns:72px minmax(0,1fr);padding:14px;min-height:0}.ds-no-photo{min-height:100px;font-size:11px;text-align:center}.ds-card-actions{grid-column:1/-1;padding-top:16px;border-top:1px solid #e3e3e7}.ds-property-title{font-size:16px;line-height:24px}.ds-location{font-size:13px}.ds-source{margin-top:12px}}"
     }
   ],
   "narrative": {
     "northStar": "Calm operational dashboard",
-    "overview": "The admin dashboard implements the established screenshot-derived direction: white panels on warm cream, visible labelled navigation, grouped property facts and restrained red actions. It was rebuilt with existing code and real saved data/functions, without a generated composition. This system applies to `/admin.html`; the website and guest sandbox keep their distinct guidance below.",
+    "overview": "The latest owner screenshot establishes minimal white listings and a pale-grey shared sidebar: compact corners, fine borders, quiet metadata and black listing actions. This 14 October refinement overrides the earlier cream/red direction for the listing view and shared shell. Training and fictional guest tests retain red controls and 24px panels, inside the updated shell. Existing code and real saved data/functions remain the basis; the website and guest sandbox keep their separate guidance below.",
     "keyCharacteristics": [
-      "White working surfaces on warm cream.",
+      "White listings and a pale-grey shared sidebar.",
       "Visible labels and readable saved facts.",
-      "Dark-red controls, quiet borders and rounded panels."
+      "Black listing actions and compact corners; retained red training/test controls."
     ],
     "rules": [
       {

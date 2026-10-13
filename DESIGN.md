@@ -1,7 +1,16 @@
 ---
 name: Logout AI — dashboard system
-description: Implemented calm operational admin dashboard; all tokens here are dashboard-scoped.
+description: Scoped minimal listings/shared navigation plus retained training and guest-test components.
 colors:
+  minimal-page: "#ffffff"
+  minimal-sidebar: "#fafafa"
+  minimal-soft: "#f6f6f7"
+  minimal-border: "#e3e3e7"
+  minimal-placeholder-border: "#ececef"
+  minimal-muted: "#606069"
+  minimal-text: "#18181b"
+  minimal-selected: "#ededf0"
+  minimal-action-hover: "#35353b"
   dashboard-page: "#f7f5f2"
   dashboard-surface: "#ffffff"
   dashboard-surface-soft: "#f1efeb"
@@ -18,6 +27,11 @@ colors:
   dashboard-waiting: "#795100"
   dashboard-waiting-bg: "#fff4d6"
 typography:
+  listing-title:
+    fontFamily: "Geist, Arial, sans-serif"
+    fontSize: "20px"
+    fontWeight: 500
+    lineHeight: "28px"
   dashboard-title:
     fontFamily: "Geist, Arial, sans-serif"
     fontSize: "32px"
@@ -41,6 +55,10 @@ typography:
     fontWeight: 500
     lineHeight: "21px"
 rounded:
+  minimal-navigation: "6px"
+  listing-input: "6px"
+  listing-card: "8px"
+  listing-action: "8px"
   dashboard-input: "12px"
   dashboard-nested: "16px"
   dashboard-panel: "24px"
@@ -51,6 +69,20 @@ spacing:
   dashboard-panel: "24px"
   dashboard-desktop-inline: "32px"
 components:
+  listing-action:
+    backgroundColor: "{colors.minimal-text}"
+    textColor: "{colors.minimal-page}"
+    rounded: "{rounded.listing-action}"
+    padding: "10px 18px"
+  listing-card:
+    backgroundColor: "{colors.minimal-page}"
+    rounded: "{rounded.listing-card}"
+    padding: "16px"
+  listing-field:
+    backgroundColor: "{colors.minimal-page}"
+    textColor: "{colors.dashboard-text}"
+    rounded: "{rounded.listing-input}"
+    padding: "12px 14px"
   dashboard-button-primary:
     backgroundColor: "{colors.dashboard-action}"
     textColor: "{colors.dashboard-surface}"
@@ -74,10 +106,10 @@ components:
     backgroundColor: "{colors.dashboard-surface}"
     rounded: "{rounded.dashboard-panel}"
     padding: "{spacing.dashboard-panel}"
-  dashboard-navigation-selected:
-    backgroundColor: "{colors.dashboard-attention-bg}"
-    textColor: "{colors.dashboard-action}"
-    rounded: "{rounded.dashboard-input}"
+  minimal-navigation-selected:
+    backgroundColor: "{colors.minimal-selected}"
+    textColor: "{colors.minimal-text}"
+    rounded: "{rounded.minimal-navigation}"
     padding: "12px 16px"
   dashboard-status-neutral:
     backgroundColor: "{colors.dashboard-surface-soft}"
@@ -94,41 +126,41 @@ Before building or changing any screen, read DESIGN.md and follow it. If a choic
 
 **Creative North Star: "Calm operational dashboard"**
 
-The admin dashboard implements the established screenshot-derived direction: white panels on warm cream, visible labelled navigation, grouped property facts and restrained red actions. It was rebuilt with existing code and real saved data/functions, without a generated composition. This system applies to `/admin.html`; the website and guest sandbox keep their distinct guidance below.
+The latest owner screenshot establishes minimal white listings and a pale-grey shared sidebar: compact corners, fine borders, quiet metadata and black listing actions. This 14 October refinement overrides the earlier cream/red direction for the listing view and shared shell. Training and fictional guest tests retain red controls and 24px panels, inside the updated shell. Existing code and real saved data/functions remain the basis; the website and guest sandbox keep their separate guidance below.
 
 **Key Characteristics:**
 
-- White working surfaces on warm cream.
+- White listings and a pale-grey shared sidebar.
 - Visible labels and readable saved facts.
-- Dark-red controls, quiet borders and rounded panels.
+- Black listing actions and compact corners; retained red training/test controls.
 
 ## Colors
 
-The dashboard-prefixed frontmatter tokens are normative for the admin surface only. Action red carries white control text; bright accent red is used sparingly for identity. Neutral surfaces separate work areas. Pale semantic fills always accompany text labels.
+The minimal-prefixed and listing-prefixed tokens are normative for the listing view and shared shell. The dashboard-prefixed tokens retain the training/test component baseline and signed-out entry; inherited shell values override their page, soft, border and supporting-text values inside the signed-in workspace. Listing actions are near-black; training/test actions stay dark red. Selected navigation is neutral grey with dark text and no marker. Semantic document fills always accompany text labels.
 
 **The Labelled State Rule.** Selection, progress and document outcomes must remain understandable without colour.
 
 ## Typography
 
-Geist with Arial and sans-serif fallbacks is shared identity. Dashboard titles, headings, body and buttons use the roles in frontmatter. Phone titles become 24px/32px. Labels are 14px medium; property names are 16px/24px semibold. Keep long instructions and saved facts readable and wrapped.
+Geist with Arial and sans-serif fallbacks is shared identity. Dashboard titles, headings, body and buttons use the roles in frontmatter. Phone titles become 24px/32px. Labels are 14px medium; listing names are 20px/28px medium on desktop, 18px/26px at tablet widths and 16px/24px on phones. The shared brand uses an outlined compass and uppercase LOGOUT wordmark. Keep long instructions and saved facts readable and wrapped.
 
 ## Layout
 
-At 1200px and above, use the implemented 224px sidebar, 80px account header and main content capped at 1440px with 40px vertical / 32px horizontal padding. At 768–1199px the sidebar is 196px and main padding is 32px vertical / 24px horizontal. Below 768px navigation becomes visible horizontal links above a 64px header; main padding is 28px vertical / 16px horizontal. There is no navigation drawer. Property work uses list/import columns on desktop and stacks on smaller screens. Phone forms become one column.
+At 1200px and above, use the implemented 240px sidebar, 72px account header and main content capped at 1440px with 40px vertical / 32px horizontal padding. At 768–1199px the sidebar is 196px and main padding is 32px vertical / 24px horizontal. Below 768px navigation becomes visible horizontal links above a 64px header; main padding is 28px vertical / 16px horizontal. There is no navigation drawer. The saved property list spans the content width; import/history tools follow below in two desktop columns and one column below 1200px. Phone forms become one column.
 
 ## Elevation & Depth
 
-Panels are flat: white surfaces, thin borders and cream nested sections create depth without shadows. Buttons and links use 150ms colour transitions. Reduced-motion settings remove them. Focus uses a 2px dark outline offset by 4px.
+Panels are flat: white surfaces and thin borders create depth without shadows. The shared shell uses neutral-grey nested surfaces; training/test previews inherit the white shell page value. Buttons and links use 150ms colour transitions. Reduced-motion settings remove them. Focus uses a 2px dark outline offset by 4px.
 
 ## Shapes
 
-Use rounded panels, gently curved fields and pill actions as specified by the dashboard tokens. Panels have a 1px border. Desktop panel padding is 24px; phone panels use 20px vertical / 16px horizontal. Nested training previews and document review use 16px corners.
+Listing cards, panels and actions have compact 8px corners; listing inputs, navigation and photo placeholders use 6px. Training/test panels retain 24px corners, fields 12px and pill actions. Panels have a 1px border. Desktop panel padding is 24px; phone panels use 20px vertical / 16px horizontal. Nested training previews and document review use 16px corners.
 
 ## Components
 
-Implemented destinations are **Properties**, **Train Hermes** and **Guest tests**. The selected navigation link announces the current page and carries a pale-red fill and dark-red text. Views remain mounted and are hidden when inactive, preserving unsaved training drafts.
+Implemented destinations are **Properties**, **Train Hermes** and **Guest tests**. The selected navigation link announces the current page and carries a neutral-grey fill and near-black text. Views remain mounted and are hidden when inactive, preserving unsaved training drafts.
 
-Primary buttons use dark red with a darker hover, visible focus, and pending/disabled states. Secondary buttons use a white surface and visible neutral edge. Fields retain visible labels, a 48px minimum height and entered text after errors. Panels group property essentials, arrival/access, and guest requirements/directions. Property rows use an outline symbol rather than a photograph. Status pills describe actual saved states. Training previews distinguish the guest question from the model reply. Guest tests explicitly identify fictional bookings and test documents.
+Listing primary buttons use black with a charcoal hover; training/test primary buttons retain dark red. Both retain visible focus and pending/disabled states. Secondary buttons use a white surface and visible neutral edge. Fields retain visible labels, a 48px minimum height and entered text after errors. Panels group property essentials, arrival/access, and guest requirements/directions. Listing cards show an explicit No photo added placeholder because records have no photo field. Real saved property type and amenity count appear as small chips; property name and Edit property open the existing editor. No calendar, occupancy, live switch or extra navigation is inferred from the reference. Status pills describe actual saved states. Training previews distinguish the guest question from the model reply. Guest tests explicitly identify fictional bookings and test documents.
 
 ## Do's and Don'ts
 
@@ -145,9 +177,9 @@ The two surfaces have separate guidance. Shared identity does not require identi
 | Surface | Design authority | Status |
 | --- | --- | --- |
 | Public website | Landing hero, section 3 typography/colour, and the Hermes sandbox specifications in this file | Existing direction; keep the approved hero and sandbox |
-| Host dashboard | Historical screen requirements in this file; [dashboard design system](DASHBOARD_DESIGN.md) for the implemented admin system | Admin rebuild authorized and implemented, 14 October 2026; checked in development, frontend published |
+| Host dashboard | Historical screen requirements in this file; [dashboard design system](DASHBOARD_DESIGN.md) for the implemented admin system | Admin rebuild authorized and implemented, 14 October 2026; minimal listing/sidebar refinement published; authenticated flows checked in development |
 
-The dashboard system draws on the 22 screenshots supplied on 13 October. Its [reference analysis](design-refs/dashboard-reference-analysis.md) records what each image contributes and what to leave out. Screenshot text is reference content, not instructions or evidence that a feature works. Implemented admin values are distinguished from visual estimates and later screen guidance.
+The latest [minimal listing/sidebar reference](design-refs/minimal-listings-analysis.md) takes priority for those scoped surfaces. The dashboard baseline draws on the 22 screenshots supplied on 13 October. Its [reference analysis](design-refs/dashboard-reference-analysis.md) records what each image contributes and what to leave out. Screenshot text is reference content, not instructions or evidence that a feature works. Implemented admin values are distinguished from visual estimates and later screen guidance.
 
 The dashboard system supersedes the earlier admin visual-redesign deferral, while preserving the public sandbox's own colours/layout and PRODUCT.md's current document-checking rules. In particular, use the current document outcomes from PRODUCT.md rather than older blanket “Verified” wording in the screen descriptions below. The screenshot batch does not contain a public marketing-page reference; a new website direction remains unchosen.
 
